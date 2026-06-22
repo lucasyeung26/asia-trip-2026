@@ -2,672 +2,548 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
-<title>🌏 Asia Trip 2026 — Lucas & Caitlin</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
+<title>🌏 Asia 2026 — Lucas & Caitlin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
-:root {
-  --teal:#059669; --teal-bg:#ECFDF5; --amber:#D97706; --amber-bg:#FFFBEB;
-  --red:#DC2626; --blue:#2563EB; --purple:#7C3AED;
-  --surface:#fff; --bg:#F8FAFC; --border:#E2E8F0;
-  --text:#1E293B; --muted:#64748B;
-  --hdr:56px; --radius:14px; --shadow:0 4px 24px rgba(0,0,0,.10);
+:root{
+  --blue:#007AFF;--blue-bg:#EBF5FF;--blue-mid:#3395FF;
+  --green:#34C759;--green-bg:#E8FBF0;
+  --amber:#FF9500;--amber-bg:#FFF3E0;
+  --red:#FF3B30;
+  --text:#1C1C1E;--text2:#6E6E73;--text3:#AEAEB2;
+  --bg:#F2F2F7;--card:#FFFFFF;--border:#E5E5EA;
+  --shadow:0 2px 12px rgba(0,0,0,.08);
+  --shadow-md:0 4px 20px rgba(0,0,0,.10);
+  --shadow-lg:0 8px 32px rgba(0,0,0,.14);
+  --r:16px;--r-sm:10px;--nav:64px;
 }
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);overflow:hidden}
-
-/* ─── HEADER ─── */
-#hdr{
-  position:fixed;top:0;left:0;right:0;height:var(--hdr);z-index:1000;
-  background:#fff;border-bottom:1px solid var(--border);
-  display:flex;align-items:center;padding:0 12px;gap:8px;
-}
-#hdr .logo{font-size:15px;font-weight:700;color:var(--text);flex:1;line-height:1.2}
-#hdr .logo span{font-size:11px;font-weight:400;color:var(--muted);display:block}
-.hdr-btn{
-  display:flex;align-items:center;gap:5px;padding:6px 12px;border-radius:20px;
-  border:1.5px solid var(--border);background:#fff;font-size:13px;font-weight:600;
-  cursor:pointer;color:var(--text);transition:.15s;white-space:nowrap;
-}
-.hdr-btn:active{transform:scale(.96)}
-.hdr-btn.active{background:var(--teal);color:#fff;border-color:var(--teal)}
-#view-toggle{display:flex;background:#F1F5F9;border-radius:22px;padding:3px;gap:2px}
-.vtab{
-  padding:5px 11px;border-radius:18px;font-size:12px;font-weight:600;
-  cursor:pointer;color:var(--muted);transition:.15s;border:none;background:none;
-}
-.vtab.active{background:#fff;color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,.12)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg);color:var(--text);overflow:hidden;font-size:15px}
 
 /* ─── MAP ─── */
-#map-wrap{position:fixed;top:var(--hdr);left:0;right:0;bottom:0;z-index:1}
-#map{width:100%;height:100%}
+#map{position:fixed;inset:0;bottom:var(--nav);z-index:1}
+.leaflet-control-attribution{font-size:9px!important}
 
-/* ─── TIMELINE ─── */
-#timeline-wrap{
-  position:fixed;top:var(--hdr);left:0;right:0;bottom:0;z-index:1;
-  overflow-y:auto;padding:16px 12px 80px;display:none;
-}
-.tl-day{
-  background:#fff;border-radius:var(--radius);margin-bottom:10px;
-  border:1px solid var(--border);overflow:hidden;
-}
-.tl-day-head{
-  display:flex;align-items:center;gap:10px;padding:12px 14px;
-  cursor:pointer;
-}
-.tl-day-num{
-  width:36px;height:36px;border-radius:50%;display:flex;align-items:center;
-  justify-content:center;font-size:13px;font-weight:700;color:#fff;flex-shrink:0;
-}
-.tl-day-info{flex:1}
-.tl-day-title{font-size:14px;font-weight:700;color:var(--text)}
-.tl-day-sub{font-size:12px;color:var(--muted);margin-top:1px}
-.tl-day-body{display:none;border-top:1px solid var(--border)}
-.tl-day-body.open{display:block}
-.tl-slot{display:flex;gap:10px;padding:11px 14px;border-bottom:1px solid #F1F5F9}
-.tl-slot:last-child{border-bottom:none}
-.tl-time{font-size:11px;font-weight:600;color:var(--muted);width:64px;flex-shrink:0;padding-top:2px}
-.tl-slot-body{}
-.tl-slot-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:2px}
-.tl-slot-desc{font-size:12px;color:var(--muted);line-height:1.5}
-.tl-tip{
-  margin:0 14px 12px;padding:8px 10px;background:#FFFBEB;border-radius:8px;
-  font-size:11.5px;color:#92400E;border-left:3px solid #F59E0B;
-}
-
-/* ─── CITY PANEL ─── */
-.panel-overlay{
-  position:fixed;inset:0;z-index:400;background:rgba(0,0,0,0);
-  pointer-events:none;transition:background .25s;
-}
-.panel-overlay.vis{background:rgba(0,0,0,.35);pointer-events:auto}
-.panel{
-  position:fixed;left:0;right:0;bottom:0;z-index:500;
-  background:#fff;border-radius:22px 22px 0 0;
+/* ─── BOTTOM SHEET ─── */
+#sheet{
+  position:fixed;left:0;right:0;bottom:var(--nav);z-index:300;
+  background:var(--card);border-radius:20px 20px 0 0;
+  box-shadow:var(--shadow-lg);
   transform:translateY(100%);transition:transform .32s cubic-bezier(.32,.72,0,1);
-  max-height:92vh;display:flex;flex-direction:column;
+  max-height:78vh;display:flex;flex-direction:column;
 }
-.panel.open{transform:translateY(0)}
-.p-handle{width:36px;height:4px;background:#CBD5E1;border-radius:2px;margin:10px auto 0}
-.p-head{
-  display:flex;align-items:center;gap:10px;padding:12px 16px 10px;
-  flex-shrink:0;
-}
-.p-flag{font-size:28px}
-.p-info{flex:1}
-.p-name{font-size:18px;font-weight:800;color:var(--text)}
-.p-dates{font-size:12px;color:var(--muted);margin-top:1px}
-.p-badge{
-  padding:4px 10px;border-radius:20px;font-size:11px;font-weight:700;color:#fff;
-}
-.p-close{
-  width:30px;height:30px;border-radius:50%;background:#F1F5F9;border:none;
-  display:flex;align-items:center;justify-content:center;font-size:16px;
-  cursor:pointer;color:var(--muted);flex-shrink:0;
-}
-.p-tabs{
-  display:flex;border-bottom:1px solid var(--border);padding:0 12px;
-  flex-shrink:0;overflow-x:auto;
-}
-.p-tabs::-webkit-scrollbar{display:none}
-.ptab{
-  padding:8px 12px;font-size:12px;font-weight:600;color:var(--muted);
-  border-bottom:2.5px solid transparent;cursor:pointer;white-space:nowrap;
-  transition:.15s;border-top:none;border-left:none;border-right:none;
-  background:none;
-}
-.ptab.on{color:var(--teal);border-bottom-color:var(--teal)}
-.p-body{overflow-y:auto;flex:1;padding:12px}
+#sheet.open{transform:translateY(0)}
+.sheet-handle{width:36px;height:4px;background:#D1D1D6;border-radius:2px;margin:12px auto 0;flex-shrink:0}
+#sheet-head{padding:12px 16px 10px;flex-shrink:0}
+.sh-top{display:flex;align-items:center;gap:10px}
+.sh-flag{font-size:30px}
+.sh-info{flex:1}
+.sh-name{font-size:20px;font-weight:800;color:var(--text)}
+.sh-dates{font-size:13px;color:var(--text2);margin-top:1px}
+.sh-badge{padding:5px 12px;border-radius:20px;font-size:12px;font-weight:700;color:#fff}
+.sh-close{width:32px;height:32px;border-radius:50%;background:var(--border);border:none;font-size:16px;color:var(--text2);cursor:pointer;display:flex;align-items:center;justify-content:center}
+.sh-hotel{display:flex;align-items:center;gap:8px;margin-top:10px;padding:9px 12px;background:var(--green-bg);border-radius:var(--r-sm)}
+.sh-hotel-icon{font-size:16px}
+.sh-hotel-text{font-size:12.5px;font-weight:600;color:#1B5E20}
+#sheet-tabs{display:flex;border-bottom:1px solid var(--border);padding:0 4px;flex-shrink:0;overflow-x:auto}
+#sheet-tabs::-webkit-scrollbar{display:none}
+.stab{padding:10px 14px;font-size:13px;font-weight:600;color:var(--text2);border:none;background:none;border-bottom:2.5px solid transparent;cursor:pointer;white-space:nowrap;transition:.15s}
+.stab.on{color:var(--blue);border-bottom-color:var(--blue)}
+#sheet-body{overflow-y:auto;flex:1;padding:14px 14px 6px}
 
 /* ─── CARDS ─── */
 .t-content{display:none}
 .t-content.on{display:block}
 .card{
-  background:var(--bg);border-radius:var(--radius);padding:12px;
-  margin-bottom:8px;border:1px solid var(--border);
-  display:flex;align-items:flex-start;gap:10px;
+  background:var(--card);border-radius:var(--r);padding:13px;
+  margin-bottom:10px;box-shadow:var(--shadow);
+  display:flex;gap:12px;
 }
-.card-icon{
-  width:36px;height:36px;border-radius:10px;display:flex;align-items:center;
-  justify-content:center;font-size:18px;flex-shrink:0;
-}
+.card-icon{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
 .card-body{flex:1;min-width:0}
-.card-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px}
-.card-desc{font-size:12px;color:var(--muted);line-height:1.5}
-.card-type{
-  font-size:10px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;
-  color:var(--muted);margin-bottom:3px;
-}
-.map-link{
-  display:inline-flex;align-items:center;gap:3px;margin-top:5px;
-  font-size:11px;font-weight:600;color:var(--teal);text-decoration:none;
-  background:var(--teal-bg);padding:3px 8px;border-radius:10px;
-}
-.map-link:active{opacity:.7}
-.map-link::before{content:'📍';font-size:10px}
+.card-type{font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--text3);margin-bottom:3px}
+.card-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:3px}
+.card-desc{font-size:12.5px;color:var(--text2);line-height:1.55}
+.order-box{margin-top:8px;padding:7px 9px;background:var(--blue-bg);border-radius:8px}
+.order-label{font-size:10px;font-weight:700;letter-spacing:.4px;color:var(--blue);text-transform:uppercase;margin-bottom:2px;display:block}
+.order-text{font-size:12px;color:#1C3A6B;font-weight:500;line-height:1.4}
+.card-footer{display:flex;align-items:center;justify-content:space-between;margin-top:8px}
+.price-badge{display:inline-flex;align-items:center;gap:3px;padding:3px 9px;background:#F0FDF4;border-radius:20px;font-size:12px;font-weight:700;color:#166534}
+.map-link{display:inline-flex;align-items:center;gap:3px;font-size:12px;font-weight:600;color:var(--blue);text-decoration:none;padding:3px 9px;background:var(--blue-bg);border-radius:20px}
 
 /* Transport cards */
-.tc{
-  background:#fff;border-radius:var(--radius);padding:11px 12px;
-  margin-bottom:8px;border:1px solid var(--border);
-  display:flex;align-items:flex-start;gap:10px;
-}
-.tc-dot{
-  width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:3px;
-}
-.tc-dot.confirmed{background:#10B981}
-.tc-dot.tbc{background:#F59E0B}
-.tc-dot.alt{background:#94A3B8}
-.tc-body{flex:1}
-.tc-method{font-size:12px;font-weight:700;color:var(--text)}
-.tc-detail{font-size:12px;color:var(--muted);margin-top:1px;line-height:1.5}
-.tc-ref{font-size:11px;font-weight:600;color:var(--teal);margin-top:3px}
-.tc-badge{
-  font-size:10px;font-weight:700;padding:2px 7px;border-radius:8px;
-  flex-shrink:0;
-}
-.tc-badge.confirmed{background:#ECFDF5;color:#065F46}
-.tc-badge.tbc{background:#FFFBEB;color:#92400E}
-.tc-badge.alt{background:#F1F5F9;color:#475569}
+.tc{background:var(--card);border-radius:var(--r);padding:12px 14px;margin-bottom:8px;box-shadow:var(--shadow);display:flex;gap:10px;align-items:flex-start}
+.tc-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;margin-top:3px}
+.tc-dot.confirmed{background:var(--green)}.tc-dot.tbc{background:var(--amber)}.tc-dot.alt{background:var(--text3)}
+.tc-body{flex:1}.tc-method{font-size:13px;font-weight:700}.tc-detail{font-size:12px;color:var(--text2);margin-top:2px;line-height:1.5}
+.tc-badge{font-size:11px;font-weight:700;padding:2px 8px;border-radius:8px;flex-shrink:0}
+.tc-badge.confirmed{background:var(--green-bg);color:#166534}.tc-badge.tbc{background:var(--amber-bg);color:#7A4000}.tc-badge.alt{background:var(--bg);color:var(--text2)}
+.next-dest{background:var(--blue-bg);border-radius:var(--r);padding:12px 14px;margin-bottom:10px;display:flex;align-items:center;gap:10px}
+.next-icon{font-size:22px}.next-name{font-size:14px;font-weight:700;color:#1C3A6B}
+.sec-label{font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--text3);margin:14px 0 8px;padding-left:2px}
+.sec-label:first-child{margin-top:0}
 
-/* Section header */
-.sec-head{
-  font-size:11px;font-weight:700;letter-spacing:.5px;color:var(--muted);
-  text-transform:uppercase;margin:14px 0 8px;padding-left:2px;
+/* ─── BOTTOM NAV ─── */
+#nav{
+  position:fixed;left:0;right:0;bottom:0;height:var(--nav);z-index:400;
+  background:rgba(255,255,255,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-top:1px solid var(--border);
+  display:flex;align-items:stretch;
 }
-.sec-head:first-child{margin-top:0}
+.nav-btn{
+  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:4px;border:none;background:none;cursor:pointer;
+  padding:0 0 env(safe-area-inset-bottom,0px);
+  color:var(--text3);font-size:10.5px;font-weight:600;transition:.15s;
+}
+.nav-btn svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transition:.15s}
+.nav-btn.active{color:var(--blue)}.nav-btn.active svg{stroke:var(--blue)}
 
-/* Hotel card */
-.hotel-card{
-  background:linear-gradient(135deg,#ECFDF5,#D1FAE5);border:1px solid #6EE7B7;
-  border-radius:var(--radius);padding:12px 14px;margin-bottom:12px;
-  display:flex;align-items:center;gap:10px;
+/* ─── FULL PANELS ─── */
+.full-panel{
+  position:fixed;left:0;right:0;top:0;bottom:var(--nav);z-index:200;
+  background:var(--bg);
+  transform:translateY(100%);transition:transform .28s cubic-bezier(.32,.72,0,1);
+  display:flex;flex-direction:column;overflow:hidden;
 }
-.hotel-card .hotel-icon{font-size:22px}
-.hotel-card .hotel-name{font-size:13px;font-weight:700;color:#065F46}
-.hotel-card .hotel-sub{font-size:11.5px;color:#059669;margin-top:1px}
+.full-panel.open{transform:translateY(0)}
+.panel-head{padding:16px 16px 8px;background:var(--card);box-shadow:0 1px 0 var(--border);flex-shrink:0}
+.panel-head h1{font-size:22px;font-weight:800}
+.panel-head p{font-size:13px;color:var(--text2);margin-top:2px}
+.panel-scroll{overflow-y:auto;flex:1;padding:14px}
 
-/* Info panel */
-#info-panel{
-  position:fixed;top:0;right:0;bottom:0;width:min(380px,100vw);z-index:800;
-  background:#fff;box-shadow:-4px 0 32px rgba(0,0,0,.15);
-  transform:translateX(100%);transition:transform .28s cubic-bezier(.32,.72,0,1);
-  display:flex;flex-direction:column;
-}
-#info-panel.open{transform:translateX(0)}
-#info-overlay{
-  position:fixed;inset:0;z-index:700;background:rgba(0,0,0,0);
-  pointer-events:none;transition:background .25s;
-}
-#info-overlay.vis{background:rgba(0,0,0,.35);pointer-events:auto}
-.info-head{
-  display:flex;align-items:center;padding:16px;border-bottom:1px solid var(--border);
-  flex-shrink:0;gap:10px;padding-top:calc(16px + env(safe-area-inset-top,0px));
-}
-.info-head h2{font-size:17px;font-weight:800;flex:1}
-.info-close{
-  width:30px;height:30px;border-radius:50%;background:#F1F5F9;border:none;
-  display:flex;align-items:center;justify-content:center;font-size:16px;
-  cursor:pointer;color:var(--muted);
-}
-.info-tabs{
-  display:flex;border-bottom:1px solid var(--border);flex-shrink:0;padding:0 12px;
-  overflow-x:auto;
-}
+/* ─── ITINERARY ─── */
+.tl-item{background:var(--card);border-radius:var(--r);margin-bottom:10px;box-shadow:var(--shadow);overflow:hidden}
+.tl-head{display:flex;align-items:center;gap:12px;padding:13px 14px;cursor:pointer;user-select:none}
+.tl-num{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;flex-shrink:0}
+.tl-meta{flex:1}
+.tl-city{font-size:14px;font-weight:700}
+.tl-date{font-size:12px;color:var(--text2);margin-top:1px}
+.tl-chevron{color:var(--text3);font-size:14px;transition:transform .2s}
+.tl-chevron.open{transform:rotate(90deg)}
+.tl-body{display:none;border-top:1px solid var(--border)}
+.tl-body.open{display:block}
+.tl-slot{display:flex;gap:12px;padding:11px 14px;border-bottom:1px solid #F2F2F7}
+.tl-slot:last-child{border-bottom:none}
+.tl-time{font-size:11px;font-weight:600;color:var(--text3);width:68px;flex-shrink:0;padding-top:1px}
+.tl-slot-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:2px}
+.tl-slot-desc{font-size:12px;color:var(--text2);line-height:1.5}
+.tl-tip{margin:0 14px 12px;padding:9px 11px;background:#FFFBEB;border-radius:10px;font-size:12px;color:#7A4000;border-left:3px solid var(--amber)}
+
+/* ─── INFO TABS ─── */
+.info-tabs{display:flex;background:var(--card);border-bottom:1px solid var(--border);padding:0 4px;overflow-x:auto;flex-shrink:0}
 .info-tabs::-webkit-scrollbar{display:none}
-.itab{
-  padding:10px 12px;font-size:12px;font-weight:600;color:var(--muted);
-  border-bottom:2.5px solid transparent;cursor:pointer;white-space:nowrap;
-  transition:.15s;border-top:none;border-left:none;border-right:none;background:none;
-}
+.itab{padding:11px 14px;font-size:13px;font-weight:600;color:var(--text2);border:none;background:none;border-bottom:2.5px solid transparent;cursor:pointer;white-space:nowrap;transition:.15s}
 .itab.on{color:var(--blue);border-bottom-color:var(--blue)}
-.info-body{overflow-y:auto;flex:1;padding:14px}
-.it-content{display:none}
-.it-content.on{display:block}
-
-/* Booking card */
-.bk-card{
-  background:#F8FAFC;border:1px solid var(--border);border-radius:12px;
-  padding:11px 13px;margin-bottom:8px;
-}
-.bk-card .bk-head{display:flex;align-items:center;gap:8px;margin-bottom:4px}
-.bk-dot{width:8px;height:8px;border-radius:50%}
-.bk-dot.confirmed{background:#10B981}
-.bk-dot.tbc{background:#F59E0B}
-.bk-title{font-size:13px;font-weight:700;color:var(--text)}
-.bk-detail{font-size:12px;color:var(--muted);line-height:1.5}
-.bk-ref{font-size:11px;font-weight:700;color:var(--blue);margin-top:3px}
-
-/* Emergency card */
-.em-country{
-  background:#fff;border:1px solid var(--border);border-radius:12px;
-  margin-bottom:10px;overflow:hidden;
-}
-.em-country-head{
-  padding:10px 13px;background:#FEF2F2;border-bottom:1px solid #FECACA;
-  display:flex;align-items:center;gap:8px;
-}
-.em-country-head span{font-size:14px}
-.em-country-head h4{font-size:13px;font-weight:700;color:#7F1D1D}
-.em-item{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:9px 13px;border-bottom:1px solid var(--border);
-}
-.em-item:last-child{border-bottom:none}
-.em-label{font-size:12px;color:var(--muted)}
+.it-content{display:none}.it-content.on{display:block}
+.em-card{background:var(--card);border-radius:var(--r);margin-bottom:10px;box-shadow:var(--shadow);overflow:hidden}
+.em-head{padding:11px 14px;background:#FEF2F2;display:flex;align-items:center;gap:8px}
+.em-head h4{font-size:13px;font-weight:700;color:#7F1D1D}
+.em-row{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid #F2F2F7}
+.em-row:last-child{border-bottom:none}
+.em-label{font-size:12.5px;color:var(--text2)}
 .em-num{font-size:13px;font-weight:700;color:var(--red);text-decoration:none}
-
-/* SIM card */
-.sim-country{
-  background:#fff;border:1px solid var(--border);border-radius:12px;
-  margin-bottom:10px;overflow:hidden;
-}
-.sim-head{
-  padding:10px 13px;background:#EFF6FF;border-bottom:1px solid #BFDBFE;
-  display:flex;align-items:center;gap:8px;
-}
-.sim-head span{font-size:14px}
+.sim-card{background:var(--card);border-radius:var(--r);margin-bottom:10px;box-shadow:var(--shadow);overflow:hidden}
+.sim-head{padding:11px 14px;background:#EFF6FF;display:flex;align-items:center;gap:8px}
 .sim-head h4{font-size:13px;font-weight:700;color:#1E3A8A}
-.sim-item{padding:9px 13px;border-bottom:1px solid #F1F5F9;font-size:12px;color:var(--muted);line-height:1.5}
-.sim-item:last-child{border-bottom:none}
-.sim-item strong{color:var(--text);font-weight:600}
-
-/* Phrases */
-.phrase-lang{
-  background:#fff;border:1px solid var(--border);border-radius:12px;
-  margin-bottom:10px;overflow:hidden;
-}
-.phrase-head{
-  padding:10px 13px;background:#F5F3FF;border-bottom:1px solid #DDD6FE;
-  display:flex;align-items:center;gap:8px;
-}
-.phrase-head span{font-size:14px}
+.sim-row{padding:10px 14px;border-bottom:1px solid #F2F2F7;font-size:12.5px;color:var(--text2);line-height:1.55}
+.sim-row:last-child{border-bottom:none}
+.sim-row strong{color:var(--text);font-weight:600}
+.phrase-card{background:var(--card);border-radius:var(--r);margin-bottom:10px;box-shadow:var(--shadow);overflow:hidden}
+.phrase-head{padding:11px 14px;background:#F5F3FF;display:flex;align-items:center;gap:8px}
 .phrase-head h4{font-size:13px;font-weight:700;color:#4C1D95}
-.phrase-item{
-  display:flex;justify-content:space-between;align-items:flex-start;
-  padding:8px 13px;border-bottom:1px solid #F1F5F9;gap:12px;
-}
-.phrase-item:last-child{border-bottom:none}
-.phrase-eng{font-size:12px;color:var(--muted);flex:1}
-.phrase-local{font-size:12px;font-weight:600;color:var(--text);text-align:right;max-width:55%}
-.phrase-pron{font-size:10.5px;color:var(--purple);margin-top:1px}
+.phrase-row{display:flex;justify-content:space-between;align-items:flex-start;padding:9px 14px;border-bottom:1px solid #F2F2F7;gap:10px}
+.phrase-row:last-child{border-bottom:none}
+.phrase-eng{font-size:12.5px;color:var(--text2);flex:1}
+.phrase-right{text-align:right}
+.phrase-local{font-size:12.5px;font-weight:600;color:var(--text)}
+.phrase-pron{font-size:11px;color:#6D28D9;margin-top:1px}
 
-/* Pulse marker */
-@keyframes pulse{0%{transform:scale(1);opacity:.8}70%{transform:scale(2.2);opacity:0}100%{transform:scale(2.2);opacity:0}}
-.city-marker{
-  width:26px;height:26px;border-radius:50%;border:2.5px solid #fff;
-  box-shadow:0 2px 8px rgba(0,0,0,.25);cursor:pointer;position:relative;
-  display:flex;align-items:center;justify-content:center;font-size:12px;
-}
-.city-marker::after{
-  content:'';position:absolute;inset:-4px;border-radius:50%;
-  animation:pulse 2s ease-out infinite;border:2px solid currentColor;
-}
+/* ─── BOOKINGS ─── */
+.bk-card{background:var(--card);border-radius:var(--r);margin-bottom:8px;box-shadow:var(--shadow);padding:12px 14px}
+.bk-row{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.bk-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.bk-dot.confirmed{background:var(--green)}.bk-dot.tbc{background:var(--amber)}
+.bk-title{font-size:13px;font-weight:700}
+.bk-detail{font-size:12px;color:var(--text2);line-height:1.5}
 
-/* Scrollbar */
-::-webkit-scrollbar{width:4px}
-::-webkit-scrollbar-thumb{background:#CBD5E1;border-radius:2px}
+/* ─── MAP LEGEND ─── */
+#legend{position:absolute;top:16px;right:12px;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);border-radius:12px;padding:9px 12px;box-shadow:var(--shadow)}
+.leg{display:flex;align-items:center;gap:7px;font-size:11px;font-weight:600;color:var(--text2);margin-bottom:5px}
+.leg:last-child{margin-bottom:0}
+.leg-line{width:22px;height:3px;border-radius:2px}
 
-/* Legend */
-#legend{
-  position:absolute;bottom:20px;left:12px;z-index:10;
-  background:rgba(255,255,255,.92);backdrop-filter:blur(8px);
-  border-radius:10px;padding:8px 11px;font-size:11px;
-  box-shadow:0 2px 12px rgba(0,0,0,.12);
-}
-.leg-item{display:flex;align-items:center;gap:7px;margin-bottom:4px;color:var(--muted)}
-.leg-item:last-child{margin-bottom:0}
-.leg-line{width:24px;height:3px;border-radius:2px}
+/* ─── CITY COUNT CHIP ─── */
+#trip-chip{position:absolute;top:16px;left:12px;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);border-radius:12px;padding:9px 14px;box-shadow:var(--shadow)}
+.chip-title{font-size:13px;font-weight:800;color:var(--text)}
+.chip-sub{font-size:11px;color:var(--text2);margin-top:1px}
+
+/* ─── CITY MARKER ─── */
+.cmarker{width:32px;height:32px;border-radius:50%;border:3px solid #fff;display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.25);transition:transform .15s}
+.cmarker:active{transform:scale(.9)}
+
+/* ─── ANIMATIONS ─── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.fade-up{animation:fadeUp .3s ease forwards}
+@keyframes dotPulse{0%{opacity:1}50%{opacity:.4}100%{opacity:1}}
+
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-thumb{background:#D1D1D6;border-radius:2px}
 </style>
 </head>
 <body>
 
-<!-- ─── HEADER ─── -->
-<div id="hdr">
-  <div class="logo">
-    🌏 Asia 2026
-    <span>Lucas &amp; Caitlin · 14 Jul – 3 Aug</span>
+<!-- MAP -->
+<div id="map">
+  <div id="trip-chip">
+    <div class="chip-title">🌏 Asia 2026</div>
+    <div class="chip-sub">Lucas & Caitlin · 21 days</div>
   </div>
-  <div id="view-toggle">
-    <button class="vtab active" id="btn-map" onclick="setView('map')">🗺️ Map</button>
-    <button class="vtab" id="btn-days" onclick="setView('days')">📅 Days</button>
-  </div>
-  <button class="hdr-btn" onclick="toggleInfo()">ℹ️ Info</button>
-</div>
-
-<!-- ─── MAP VIEW ─── -->
-<div id="map-wrap">
-  <div id="map"></div>
   <div id="legend">
-    <div class="leg-item"><div class="leg-line" style="background:#10B981"></div> Confirmed</div>
-    <div class="leg-item"><div class="leg-line" style="background:#F59E0B;border-top:3px dashed #F59E0B;height:0"></div> To Book</div>
+    <div class="leg"><div class="leg-line" style="background:#34C759"></div>Confirmed</div>
+    <div class="leg"><div class="leg-line" style="background:#FF9500;background:repeating-linear-gradient(90deg,#FF9500 0,#FF9500 5px,transparent 5px,transparent 9px)"></div>To Book</div>
   </div>
 </div>
 
-<!-- ─── TIMELINE VIEW ─── -->
-<div id="timeline-wrap">
-  <div id="timeline-content"></div>
+<!-- BOTTOM SHEET -->
+<div id="sheet">
+  <div class="sheet-handle"></div>
+  <div id="sheet-head"></div>
+  <div id="sheet-tabs"></div>
+  <div id="sheet-body"></div>
 </div>
 
-<!-- ─── CITY PANEL OVERLAY ─── -->
-<div class="panel-overlay" id="overlay" onclick="closePanel()"></div>
-
-<!-- ─── CITY PANEL ─── -->
-<div class="panel" id="panel">
-  <div class="p-handle"></div>
-  <div class="p-head" id="p-head"></div>
-  <div class="p-tabs" id="p-tabs"></div>
-  <div class="p-body" id="p-body"></div>
+<!-- FULL PANELS -->
+<div class="full-panel" id="panel-days">
+  <div class="panel-head"><h1>📅 Day by Day</h1><p>14 Jul – 3 Aug 2026 · 21 days</p></div>
+  <div class="panel-scroll" id="days-content"></div>
 </div>
-
-<!-- ─── INFO OVERLAY ─── -->
-<div id="info-overlay" onclick="closeInfo()"></div>
-
-<!-- ─── INFO PANEL ─── -->
-<div id="info-panel">
-  <div class="info-head">
-    <h2>ℹ️ Trip Info</h2>
-    <button class="info-close" onclick="closeInfo()">✕</button>
-  </div>
+<div class="full-panel" id="panel-info">
+  <div class="panel-head"><h1>ℹ️ Trip Info</h1></div>
   <div class="info-tabs">
-    <button class="itab on" onclick="setInfoTab('bookings',this)">📋 Bookings</button>
-    <button class="itab" onclick="setInfoTab('emergency',this)">🚨 Emergency</button>
+    <button class="itab on" onclick="setInfoTab('emergency',this)">🚨 Emergency</button>
     <button class="itab" onclick="setInfoTab('sim',this)">📱 SIM Cards</button>
     <button class="itab" onclick="setInfoTab('phrases',this)">💬 Phrases</button>
   </div>
-  <div class="info-body">
-    <div class="it-content on" id="it-bookings"></div>
-    <div class="it-content" id="it-emergency"></div>
+  <div class="panel-scroll">
+    <div class="it-content on" id="it-emergency"></div>
     <div class="it-content" id="it-sim"></div>
     <div class="it-content" id="it-phrases"></div>
   </div>
 </div>
+<div class="full-panel" id="panel-bookings">
+  <div class="panel-head"><h1>📋 Bookings</h1><p>All flights & hotels — confirmed and TBC</p></div>
+  <div class="panel-scroll" id="bookings-content"></div>
+</div>
+
+<!-- BOTTOM NAV -->
+<nav id="nav">
+  <button class="nav-btn active" id="nb-map" onclick="setTab('map')">
+    <svg viewBox="0 0 24 24"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 16l4.553 2.276A1 1 0 0021 24.382V8.618a1 1 0 00-1.447-.894L15 10m0 13V10m0 0L9 7"/></svg>
+    Map
+  </button>
+  <button class="nav-btn" id="nb-days" onclick="setTab('days')">
+    <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+    Days
+  </button>
+  <button class="nav-btn" id="nb-info" onclick="setTab('info')">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 17v-5m0-4h.01"/></svg>
+    Info
+  </button>
+  <button class="nav-btn" id="nb-bookings" onclick="setTab('bookings')">
+    <svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2m-2 0V3H9v2m0 0h6"/><path d="M9 12h6m-6 4h4"/></svg>
+    Bookings
+  </button>
+</nav>
 
 <script>
-// ═══════════════════════════════════════════════
-// DATA
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════
+function mapsLink(name,city){return`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(name+' '+city)}`}
 
-function mapsLink(name, city) {
-  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(name + ' ' + city)}`;
-}
-
-const CITIES = {
-  hk: {
-    name:'Hong Kong', flag:'🇭🇰', dates:'14–16 Jul', badge:'2 nights',
-    color:'#F97316', colorBg:'#FFF7ED', latlng:[22.3193,114.1694],
+// ═══════════════════════════════════
+// CITY DATA
+// ═══════════════════════════════════
+const CITIES={
+  hk:{
+    name:'Hong Kong',flag:'🇭🇰',dates:'14–16 Jul',badge:'2 nights',
+    color:'#FF6B35',latlng:[22.3193,114.1694],
     hotel:'Staying with family',
     explore:[
-      {icon:'🌅',bg:'#FFF7ED',title:'Victoria Peak',desc:'Best city skyline views — go at sunset or after 8pm for the full light show. Take the Peak Tram up.'},
-      {icon:'🛶',bg:'#EFF6FF',title:'Star Ferry Crossing',desc:'$2.70 HKD — most iconic harbour crossing in Asia. Day or night, always worth it.'},
-      {icon:'🏮',bg:'#FDF4FF',title:'Temple Street Night Market',desc:'Kowloon\'s famous night market. Street food, fortune tellers, jade stalls. Start at 7pm.'},
-      {icon:'🗿',bg:'#F0FFF4',title:'Tian Tan Buddha (Lantau)',desc:'Giant outdoor Buddha on Lantau Island. Take the Ngong Ping cable car for dramatic approach.'},
-      {icon:'🛍️',bg:'#ECFDF5',title:'Mong Kok Markets',desc:'Ladies Market (Tung Choi St), Goldfish Market, Flower Market. Dense, chaotic, amazing.'},
+      {icon:'🌅',bg:'#FFF7ED',title:'Victoria Peak',desc:'Best city skyline on earth. Take the Peak Tram up — go at dusk for the full magic.'},
+      {icon:'⛴',bg:'#EFF6FF',title:'Star Ferry Crossing',desc:'HK$2.70 and the most iconic harbour crossing in Asia. Night or day, always worth it.'},
+      {icon:'🏮',bg:'#FDF4FF',title:'Temple Street Night Market',desc:'Kowloon\'s famous night market. Street food, fortune tellers, jade. Start at 7pm.'},
+      {icon:'🗿',bg:'#F0FFF4',title:'Tian Tan Buddha (Lantau)',desc:'Giant Buddha on Lantau Island. Take the Ngong Ping cable car — dramatic approach.'},
+      {icon:'🛍',bg:'#ECFDF5',title:'Mong Kok Markets',desc:'Ladies Market, Flower Market, Goldfish Market. Dense, chaotic, totally Hong Kong.'},
     ],
     food:[
-      {icon:'🥟',bg:'#FFF7ED',type:'Dim Sum',title:'Tim Ho Wan',desc:'World\'s cheapest Michelin-star dim sum. Order the baked BBQ pork buns. Expect a queue — worth it.'},
-      {icon:'🦢',bg:'#ECFDF5',type:'Cantonese Classic',title:'Yung Kee Restaurant',desc:'Famous for roast goose. Been open since 1942. Get the roast goose and century egg side.'},
-      {icon:'🍜',bg:'#EFF6FF',type:'Wonton Noodles',title:'Mak\'s Noodle',desc:'The definitive Hong Kong wonton noodle. Springy noodles, delicate pork-shrimp wontons in clear broth.'},
-      {icon:'☕',bg:'#FDF4FF',type:'Cha Chaan Teng',title:'Tsui Wah Restaurant',desc:'Classic 24hr Hong Kong diner. Milk tea, pineapple buns with butter, French toast. Ideal breakfast.'},
-      {icon:'🍚',bg:'#F0FFF4',type:'Congee',title:'Law Fu Kee Congee',desc:'Hidden in Sheung Wan. Silky congee with preserved egg and pork, or fish. Open early morning.'},
-      {icon:'🍖',bg:'#FEF2F2',type:'BBQ Roast Meat',title:'Joy Hing Roasted Meat',desc:'Char siu and roast pork over rice. Wan Chai institution. Small, crowded, cash only — go early.'},
-      {icon:'🥩',bg:'#FFFBEB',type:'Sichuan',title:'Da Ping Huo',desc:'Private kitchen-style Sichuan. Theatrical, intimate, excellent. Book in advance.'},
-      {icon:'🍵',bg:'#F5F3FF',type:'Egg Waffles',title:'Lee Keung Kee North Point',desc:'Original North Point egg waffles (鷄蛋仔). Crispy outside, soft inside. Street food icon.'},
-      {icon:'🦐',bg:'#ECFDF5',type:'Seafood',title:'Lei Yue Mun Seafood Village',desc:'Pick live seafood from tanks, have it cooked to order. Unique HK experience. Take a taxi.'},
+      {icon:'🥟',bg:'#FFF7ED',type:'Dim Sum',title:'Tim Ho Wan',desc:'World\'s cheapest Michelin-star. Queue expected — usually 30–45 min.',order:'Baked BBQ pork buns (必點), shrimp dumplings (har gao), steamed egg cake',price:'~NZ$33 pp'},
+      {icon:'🦢',bg:'#ECFDF5',type:'Cantonese Classic',title:'Yung Kee Restaurant',desc:'Roast goose institution since 1942. No reservation needed for lunch.',order:'Roast goose rice set, century egg & pickled ginger side',price:'~NZ$55 pp'},
+      {icon:'🍜',bg:'#EFF6FF',type:'Wonton Noodles',title:"Mak's Noodle",desc:'The definitive HK wonton noodle. Springy noodles, delicate wontons in clear broth.',order:'Classic wonton noodle (small bowl) + wonton soup — order both',price:'~NZ$18 pp'},
+      {icon:'☕',bg:'#FDF4FF',type:'Cha Chaan Teng',title:'Tsui Wah Restaurant',desc:'24hr Hong Kong diner. Go for breakfast or late night — both are correct.',order:'Pineapple bun with butter, Hong Kong milk tea, scrambled eggs on toast',price:'~NZ$16 pp'},
+      {icon:'🍚',bg:'#F0FFF4',type:'Congee',title:'Law Fu Kee Congee',desc:'Hidden in Sheung Wan. Silky congee, old-school HK at its best.',order:'Preserved egg & pork congee, youtiao (fried dough) for dipping',price:'~NZ$13 pp'},
+      {icon:'🍖',bg:'#FEF2F2',type:'Roast Meat',title:'Joy Hing Roasted Meat',desc:'Wan Chai institution. Small, packed, cash only. Go before noon.',order:'Char siu rice, roast pork belly rice — get both on one plate',price:'~NZ$16 pp'},
+      {icon:'🧇',bg:'#FFFBEB',type:'Street Food',title:'Lee Keung Kee Egg Waffles',desc:'Original North Point egg waffles (雞蛋仔). Crispy outside, pillow inside.',order:'Original plain waffles — eat hot, straight from the griddle',price:'~NZ$5 pp'},
+      {icon:'🦐',bg:'#F0F9FF',type:'Seafood',title:'Lei Yue Mun Seafood Village',desc:'Pick live seafood from tanks, have it cooked your way. Unique HK experience.',order:'Steamed tiger prawns with garlic, stir-fried crab with ginger & spring onion',price:'~NZ$66–88 pp'},
+      {icon:'🫖',bg:'#F5F3FF',type:'Private Kitchen',title:'Da Ping Huo',desc:'Theatrical private-kitchen Sichuan. Intimate and excellent. Book ahead.',order:'Chef\'s set menu only — trust the kitchen, every dish is a surprise',price:'~NZ$100 pp'},
     ],
     transport:[
-      {status:'confirmed',method:'✈️ Arrive Hong Kong',detail:'Arriving HKG — Lantau Island airport. Airport Express to Hong Kong Station (24 min, HK$115).'},
-      {status:'confirmed',method:'🚇 Getting Around',detail:'MTR subway covers everything. Octopus card is essential — tap in/out everywhere including buses and 7-Eleven.'},
+      {status:'confirmed',method:'✈️ Arrive Hong Kong (HKG)',detail:'Airport Express to Hong Kong Station in 24 min. HK$115 one way.'},
+      {status:'confirmed',method:'🚇 Getting Around',detail:'MTR covers everything. Get an Octopus card at the airport — use it on metro, buses, even 7-Eleven.'},
     ],
     nextstop:{destination:'Chengdu 🇨🇳',options:[
-      {status:'tbc',method:'✈️ HKG → CTU',detail:'Cathay or Air China direct ~2.5 hrs. Book via carrier site.'},
+      {status:'tbc',method:'✈️ HKG → CTU',detail:'Cathay or Air China direct ~2.5 hrs. Book via airline site.'},
     ]}
   },
 
-  chengdu: {
-    name:'Chengdu', flag:'🇨🇳', dates:'16–18 Jul', badge:'2 nights',
-    color:'#EF4444', colorBg:'#FEF2F2', latlng:[30.5728,104.0668],
-    hotel:'TBC — Chengdu',
+  chengdu:{
+    name:'Chengdu',flag:'🇨🇳',dates:'16–18 Jul',badge:'2 nights',
+    color:'#FF3B30',latlng:[30.5728,104.0668],
+    hotel:'TBC — Chengdu city centre',
     explore:[
-      {icon:'🐼',bg:'#ECFDF5',title:'Giant Panda Research Base',desc:'Go at 8am sharp — pandas are active and eating. Take a taxi (30 min from centre). Book online in advance.'},
-      {icon:'🏛️',bg:'#EFF6FF',title:'Wuhou Shrine & Jinli Street',desc:'Han dynasty memorial complex + adjacent old street with street food, tea houses, and craftwork.'},
-      {icon:'🫖',bg:'#FDF4FF',title:'Kuanzhai Alley (Wide & Narrow Lanes)',desc:'Preserved Qing dynasty alleyways. Tea houses, local snacks, street performers. Best at dusk.'},
-      {icon:'🌊',bg:'#FFF7ED',title:'Dujiangyan Irrigation System',desc:'UNESCO World Heritage 2,300-year-old water system. 45 min from city — worth a half-day.'},
-      {icon:'🌙',bg:'#F0FFF4',title:'Chunxi Road Night Scene',desc:'Chengdu\'s glittering shopping and food street. Great for street food and people-watching at night.'},
+      {icon:'🐼',bg:'#ECFDF5',title:'Giant Panda Research Base',desc:'Go at 8am sharp — pandas are active and feeding. Book tickets online. Take a taxi (30 min).'},
+      {icon:'🏛',bg:'#EFF6FF',title:'Wuhou Shrine & Jinli Street',desc:'Han dynasty memorial + adjacent old street with street food, tea houses, craftwork.'},
+      {icon:'🫖',bg:'#FDF4FF',title:'Kuanzhai Alley (Wide & Narrow Lanes)',desc:'Preserved Qing dynasty alleyways. Tea houses, snacks, performers. Best at dusk.'},
+      {icon:'🌊',bg:'#FFF7ED',title:'Dujiangyan Irrigation System',desc:'UNESCO World Heritage 2,300-year-old water system. 45 min out — half-day trip.'},
+      {icon:'🌙',bg:'#F0FFF4',title:'Chunxi Road Night Scene',desc:'Chengdu\'s glittering main street. Great for street food and people-watching at night.'},
     ],
     food:[
-      {icon:'🌶️',bg:'#FEF2F2',type:'Sichuan Classic',title:'Chen Mapo Tofu (陈麻婆豆腐)',desc:'The original mapo tofu restaurant since 1862. Silky tofu in numbing Sichuan pepper oil. Essential stop.'},
-      {icon:'🥟',bg:'#FFF7ED',type:'Dumplings',title:'Long Chaoshou (龙抄手)',desc:'Famous dumpling house. Try the dumplings in red oil and the dan dan mian. Cash only, cheap.'},
-      {icon:'🫕',bg:'#FEF9EC',type:'Hot Pot',title:'Huangcheng Laoma (皇城老妈)',desc:'Top-tier Chengdu hot pot with authentic Sichuan broth. Get the divided pot if you can\'t handle the heat.'},
-      {icon:'🍜',bg:'#FDF4FF',type:'Noodles',title:'Dan Dan Noodles (担担面)',desc:'Chengdu street staple. Sesame, chilli oil, ground pork, preserved vegetables. Try them everywhere.'},
-      {icon:'🐰',bg:'#ECFDF5',type:'Local Specialty',title:'Rabbit Head (兔头)',desc:'Chengdu\'s unusual snack obsession. Spiced, braised rabbit head. Try at night market stalls.'},
-      {icon:'🌮',bg:'#EFF6FF',type:'Street Food',title:'Jinli Street Snacks',desc:'Skewers, rice cakes, sweet dumplings, fried tofu. Walk the whole strip and sample everything.'},
-      {icon:'🥘',bg:'#F0FFF4',type:'Traditional',title:'Baguanguan Restaurant',desc:'Old-school Sichuan cooking. Try kung pao chicken, twice-cooked pork, and fish-fragrant eggplant.'},
-      {icon:'🍡',bg:'#FFF7ED',type:'Dessert',title:'Three Cannons (三炮台)',desc:'Traditional Sichuan glutinous rice dessert rolled in soybean powder. Jinli Street specialty.'},
-      {icon:'🔥',bg:'#FEF2F2',type:'Chuanchuan',title:'Chuanchuan Xiang (串串香)',desc:'Sichuan skewer hotpot — pick your sticks, dip in boiling spiced broth. Budget meal, huge flavour.'},
+      {icon:'🌶',bg:'#FEF2F2',type:'Sichuan Classic',title:'Chen Mapo Tofu (陈麻婆豆腐)',desc:'The original mapo tofu restaurant since 1862. Non-negotiable first meal in Chengdu.',order:'Mapo tofu (the signature), dan dan mian on the side — both mandatory',price:'~NZ$13 pp'},
+      {icon:'🥟',bg:'#FFF7ED',type:'Dumplings',title:'Long Chaoshou (龙抄手)',desc:'Famous dumpling house. Simple, cheap, delicious. Local institution since 1941.',order:'Red oil dumplings, wonton noodle soup — order both, total bill will shock you',price:'~NZ$8 pp'},
+      {icon:'🫕',bg:'#FEF9EC',type:'Hot Pot',title:'Huangcheng Laoma (皇城老妈)',desc:'Top-tier Chengdu hot pot. The broth alone is worth the visit.',order:'Split broth pot, prime beef slices, lotus root, pork intestine (adventurous but worth it)',price:'~NZ$30 pp'},
+      {icon:'🍜',bg:'#FDF4FF',type:'Noodles',title:'Dan Dan Noodles',desc:'Chengdu street staple. Try them everywhere — every stall has a different version.',order:'Classic dan dan mian with sesame paste and chilli oil — get extra chilli on the side',price:'~NZ$4 pp'},
+      {icon:'🐰',bg:'#ECFDF5',type:'Local Specialty',title:'Rabbit Head (兔头)',desc:"Chengdu's bizarre obsession. Braised, spiced rabbit head — more addictive than it sounds.",order:'Get the spicy version (麻辣), eat with cold beer',price:'~NZ$6 pp'},
+      {icon:'🌮',bg:'#EFF6FF',type:'Street Food',title:'Jinli Street Snacks',desc:'Walk the whole strip and eat everything. Budget NZ$15–20 for a full snack crawl.',order:'Skewers, sweet rice cakes, glutinous dumplings, fried tofu — just point and eat',price:'~NZ$13 pp'},
+      {icon:'🥘',bg:'#F0FFF4',type:'Traditional',title:'Baguanguan Restaurant',desc:'Old-school Sichuan cooking, no frills, big flavours.',order:'Kung pao chicken, twice-cooked pork, fish-fragrant eggplant — all three',price:'~NZ$21 pp'},
+      {icon:'🍡',bg:'#FFF7ED',type:'Dessert',title:'Three Cannons (三炮台)',desc:'Traditional glutinous rice dessert rolled in soybean powder. Jinli Street.',order:'Original glutinous rice dessert — watch the street performance when they serve it',price:'~NZ$4 pp'},
+      {icon:'🔥',bg:'#FEF2F2',type:'Skewer Hot Pot',title:'Chuanchuan Xiang (串串香)',desc:'Pick skewers, dip in boiling spiced broth. Budget street food at its best.',order:'Beef, mushroom, tofu skin, lotus root skewers — minimum 20 sticks each',price:'~NZ$10 pp'},
     ],
     transport:[
-      {status:'tbc',method:'✈️ HKG → CTU',detail:'~2.5 hr flight. Arrive Chengdu Tianfu International Airport. Metro Line 18 to city centre.'},
-      {status:'confirmed',method:'🚇 Getting Around',detail:'Metro covers main sights. Taxi apps: DiDi (Chinese Uber). Download before arriving.'},
+      {status:'tbc',method:'✈️ HKG → CTU',detail:'~2.5 hr flight. Arrive Chengdu Tianfu Airport. Metro Line 18 to city centre (~45 min).'},
+      {status:'confirmed',method:'🚇 Getting Around',detail:'Metro covers main sights. DiDi (Chinese Uber) for everything else. Download before arriving.'},
     ],
     nextstop:{destination:'Chongqing 🇨🇳',options:[
-      {status:'confirmed',method:'🚄 High-Speed Train',detail:'G-train CTU → CQB, ~75 min. Book on 12306.cn or Trip.com. Under ¥200.'},
+      {status:'confirmed',method:'🚄 High-Speed Train',detail:'G-train from Chengdu East station, ~75 min. Book on Trip.com. Under NZ$30.'},
     ]}
   },
 
-  chongqing: {
-    name:'Chongqing', flag:'🇨🇳', dates:'18–20 Jul', badge:'2 nights',
-    color:'#DC2626', colorBg:'#FEF2F2', latlng:[29.5630,106.5516],
-    hotel:'TBC — Chongqing',
+  chongqing:{
+    name:'Chongqing',flag:'🇨🇳',dates:'18–20 Jul',badge:'2 nights',
+    color:'#DC2626',latlng:[29.5630,106.5516],
+    hotel:'TBC — Chongqing city centre',
     explore:[
-      {icon:'🏔️',bg:'#EFF6FF',title:'Hongyadong Cliff Dwellings',desc:'18-storey stilt houses built into a cliff over the Jialing River. Spectacular at night. Free entry.'},
-      {icon:'🚠',bg:'#FDF4FF',title:'Yangtze River Cableway',desc:'Last cross-river cableway in China. Views over both rivers meeting the city. Old school and iconic.'},
-      {icon:'🏘️',bg:'#ECFDF5',title:'Ciqikou Ancient Town',desc:'Ming and Qing dynasty old town. Street food, tea houses, artisan shops. Crowded but authentic.'},
+      {icon:'🏔',bg:'#EFF6FF',title:'Hongyadong Cliff Dwellings',desc:'18-storey stilt houses built into a cliff. Breathtaking at night. Free to enter.'},
+      {icon:'🚠',bg:'#FDF4FF',title:'Yangtze River Cableway',desc:'Last cross-river cableway in China. Views over both rivers meeting. Old school and iconic.'},
+      {icon:'🏘',bg:'#ECFDF5',title:'Ciqikou Ancient Town',desc:'Ming-Qing dynasty streets. Morning is quieter — locals buying fresh produce.'},
       {icon:'🌇',bg:'#FFF7ED',title:'Eling Park Viewpoint',desc:'Best panoramic view of where the Yangtze and Jialing rivers meet. Free, open daily.'},
-      {icon:'🏗️',bg:'#F0FFF4',title:'Jiefangbei CBD',desc:'Chongqing\'s neon-lit commercial heart. Watch the light show from Liberation Monument at night.'},
+      {icon:'🏗',bg:'#F0FFF4',title:'Jiefangbei CBD at Night',desc:'Liberation Monument neon district. Watch the light show — entire CBD glows.'},
     ],
     food:[
-      {icon:'🍜',bg:'#FFF7ED',type:'Chongqing Classic',title:'Xiaomian Noodles (小面)',desc:'Chongqing\'s breakfast staple. Thin noodles in a fiery, complex pork broth. Every local has a favourite stall.'},
-      {icon:'🫕',bg:'#FEF2F2',type:'Hot Pot',title:'De Zhuang Hot Pot (德庄)',desc:'Chongqing-style hotpot — oilier and spicier than Chengdu. The split pot handles both heat levels.'},
-      {icon:'🔥',bg:'#FFF7ED',type:'Spicy Classic',title:'Chongqing La Zi Ji',desc:'Spicy fried chicken buried in dried red chillies. More chilli than chicken — dig in.'},
-      {icon:'🍢',bg:'#ECFDF5',type:'Street Food',title:'Ciqikou Street Snacks',desc:'Mao blood tofu, fried rice cakes, sesame candy. Walk through the old town and eat as you go.'},
-      {icon:'🥣',bg:'#EFF6FF',type:'Noodles',title:'Suanla Fen (酸辣粉)',desc:'Hot and sour glass noodle soup. Chongqing specialty — addictively sour, spicy, and rich.'},
-      {icon:'🫙',bg:'#FDF4FF',type:'Skewers',title:'Chuanchuan at Hongyadong',desc:'Riverside skewer stalls below the cliff dwellings. Eat with a view of lit-up Jialing River.'},
-      {icon:'🥘',bg:'#FEF9EC',type:'Local',title:'Yubei Countryside Cooking',desc:'Head to local Yubei district restaurants for home-style Chongqing dishes tourists don\'t find.'},
-      {icon:'🍡',bg:'#F5F3FF',type:'Dessert',title:'Tangyuan (汤圆)',desc:'Glutinous rice balls in sweet soup. Black sesame or red bean filling. Perfect after spicy meals.'},
-      {icon:'🍺',bg:'#F0FFF4',type:'Night Eats',title:'Jiefangbei Night Market',desc:'Late-night street food around Liberation Monument. Grills, skewers, cold beer — packed after 9pm.'},
+      {icon:'🍜',bg:'#FFF7ED',type:'Chongqing Classic',title:'Xiaomian Noodles (小面)',desc:'The breakfast of Chongqing. Every local has their favourite stall.',order:'Pork mince noodles, add extra chilli paste. Ask for "la" (spicy)',price:'~NZ$3 pp'},
+      {icon:'🫕',bg:'#FEF2F2',type:'Hot Pot',title:'De Zhuang Hot Pot (德庄)',desc:'Chongqing-style hotpot — oilier and spicier than Chengdu. The original.',order:'Split pot (mandarin), duck blood, beef tripe, pork brain if you\'re feeling bold',price:'~NZ$25 pp'},
+      {icon:'🔥',bg:'#FFF7ED',type:'Spicy Chicken',title:'Chongqing La Zi Ji',desc:'Spicy fried chicken buried in dried chillies. More chilli than chicken — dig for it.',order:'Half portion la zi ji + cold cucumber salad to balance it out',price:'~NZ$13 pp'},
+      {icon:'🍢',bg:'#ECFDF5',type:'Street Food',title:'Ciqikou Street Snacks',desc:'Ancient town snack crawl. Budget NZ$8–12 for a solid hour of eating.',order:'Mao blood tofu, fried rice cakes, sesame candy, sticky rice in bamboo',price:'~NZ$8 pp'},
+      {icon:'🥣',bg:'#EFF6FF',type:'Noodles',title:'Suanla Fen (酸辣粉)',desc:'Hot and sour glass noodle soup. Chongqing specialty — sour, spicy, rich broth.',order:'Original suanla fen, add pork crackling (脆哨) topping — non-negotiable',price:'~NZ$3 pp'},
+      {icon:'🫙',bg:'#FDF4FF',type:'Riverside Skewers',title:'Chuanchuan at Hongyadong',desc:'Riverside skewer stalls below the cliff dwellings. View + food = perfect evening.',order:'Beef, mushroom, pork belly, fishball, lotus root sticks. Cold Chongqing beer',price:'~NZ$13 pp'},
+      {icon:'🍡',bg:'#F5F3FF',type:'Dessert',title:'Tangyuan (汤圆)',desc:'Glutinous rice balls in sweet broth. Perfect after a round of spicy hotpot.',order:'Black sesame tangyuan in osmanthus sweet broth',price:'~NZ$4 pp'},
+      {icon:'🥩',bg:'#FEF9EC',type:'Local',title:'Local Chongqing Family Restaurant',desc:'Ask your hotel for a neighbourhood spot. No English menu. Point at what others have.',order:'Steamed fish, braised pork ribs, stir-fried greens, cold beers',price:'~NZ$17 pp'},
+      {icon:'🍺',bg:'#F0FFF4',type:'Night Eats',title:'Jiefangbei Night Stalls',desc:'CBD comes alive after 9pm. Grills, skewers, cold beer.',order:'BBQ lamb skewers, grilled corn, cold Chongqing Lager beer',price:'~NZ$10 pp'},
     ],
     transport:[
-      {status:'confirmed',method:'🚄 Arrive from Chengdu',detail:'High-speed G-train from Chengdu Dongzhan (~75 min). Chongqing North or Bei station — both have metro.'},
-      {status:'confirmed',method:'🚇 Getting Around',detail:'Metro and monorail cover all major spots. Monorail Line 2 runs through a residential building (famous photo spot).'},
+      {status:'confirmed',method:'🚄 Arrive from Chengdu',detail:'G-train ~75 min. Chongqing North or Bei station — both have metro connections.'},
+      {status:'confirmed',method:'🚇 Getting Around',detail:'Metro + famous monorail Line 2 (runs through a residential building — take photos). DiDi for late nights.'},
     ],
     nextstop:{destination:'Bangkok 🇹🇭',options:[
-      {status:'confirmed',method:'✈️ CKG → BKK',detail:'Fly from Chongqing Jiangbei Airport to Suvarnabhumi (BKK). ~3 hrs.'},
+      {status:'confirmed',method:'✈️ CKG → BKK',detail:'Chongqing Jiangbei Airport to Suvarnabhumi. ~3 hrs.'},
     ]}
   },
 
-  bangkok: {
-    name:'Bangkok', flag:'🇹🇭', dates:'20–23 Jul', badge:'3 nights',
-    color:'#7C3AED', colorBg:'#F5F3FF', latlng:[13.7563,100.5018],
-    hotel:'TBC — Bangkok',
+  bangkok:{
+    name:'Bangkok',flag:'🇹🇭',dates:'20–23 Jul',badge:'3 nights',
+    color:'#7C3AED',latlng:[13.7563,100.5018],
+    hotel:'TBC — Bangkok (Sukhumvit or Silom area)',
     explore:[
-      {icon:'🏯',bg:'#FFF7ED',title:'Grand Palace & Wat Phra Kaew',desc:'Go before 10am. Dress code strictly enforced — shoulders and knees covered. Allow 2–3 hrs. Book online.'},
-      {icon:'⛵',bg:'#EFF6FF',title:'Wat Arun at Sunset',desc:'Temple of Dawn across the river from Wat Pho. Best viewed from the opposite bank at golden hour.'},
-      {icon:'🛍️',bg:'#F0FFF4',title:'Chatuchak Weekend Market',desc:'8,000 stalls. Clothes, antiques, plants, food. Only Sat–Sun. Get there by 9am before heat kicks in.'},
-      {icon:'🌆',bg:'#FDF4FF',title:'Lebua Sky Bar (State Tower)',desc:'Rooftop bar 63 floors up. Pricey drinks but the view is from The Hangover II. Pre-book sunset.'},
-      {icon:'🚢',bg:'#ECFDF5',title:'Chao Phraya River Cruise',desc:'Night cruise with dinner for about 1,500 THB. Or take the Chao Phraya Express (public boat) for 15 THB.'},
+      {icon:'🏯',bg:'#FFF7ED',title:'Grand Palace & Wat Phra Kaew',desc:'Go before 10am. Dress code strictly enforced — shoulders and knees covered. Allow 2–3 hrs.'},
+      {icon:'⛵',bg:'#EFF6FF',title:'Wat Arun at Sunset',desc:'Temple of Dawn across the Chao Phraya. Best viewed from opposite bank at golden hour.'},
+      {icon:'🌆',bg:'#FDF4FF',title:'Lebua Sky Bar (State Tower)',desc:'63 floors up. Pricey drinks but the view is cinematic. Pre-book sunset slot.'},
+      {icon:'🛍',bg:'#F0FFF4',title:'Chatuchak Weekend Market',desc:'8,000 stalls. Clothes, antiques, plants, street food. Sat–Sun only. Go by 9am.'},
+      {icon:'🚢',bg:'#ECFDF5',title:'Chao Phraya River',desc:'Public Chao Phraya Express boat (15 THB / NZ$0.70) or evening dinner cruise ~NZ$55.'},
     ],
     food:[
-      {icon:'🍳',bg:'#FFF7ED',type:'Street Legend',title:'Jay Fai (ร้านเจ๊ไฝ)',desc:'Michelin-starred street food. Crab omelette is the signature — ~1,500 THB. Book way in advance or queue at 2pm.'},
-      {icon:'🍜',bg:'#FEF2F2',type:'Pad Thai',title:'Thip Samai Pad Thai',desc:'Famous since 1966. Pad thai wrapped in egg net, served late night. Queue moves fast. Pratunam area.'},
-      {icon:'🍲',bg:'#ECFDF5',type:'Boat Noodles',title:'Boat Noodle Alley (Victory Monument)',desc:'Tiny bowls of rich, dark broth noodles. Order 5–10 bowls per person. Victory Monument BTS station.'},
-      {icon:'🌶️',bg:'#FDF4FF',type:'Som Tam',title:'Som Tam Nua (สมตำนัว)',desc:'Best papaya salad in the city. Order the crab som tam. Long queues at lunch but worth every minute.'},
-      {icon:'🍗',bg:'#F5F3FF',type:'Chicken Rice',title:'Khao Man Gai Pratunam',desc:'Slow-poached chicken over rice, dark soy sauce, ginger soup. Thai comfort food at its finest.'},
-      {icon:'🦀',bg:'#EFF6FF',type:'Seafood',title:'Ruan Thong Seafood',desc:'Local-favourite Yaowarat seafood. Giant prawns, whole fish, steamed crab. Order the stir-fried shellfish.'},
-      {icon:'🥘',bg:'#FFFBEB',type:'Market Food',title:'Or Tor Kor Market',desc:'Bangkok\'s finest fresh market. Try the mango sticky rice, grilled meats and fresh fruit here.'},
-      {icon:'🌮',bg:'#FEF9EC',type:'Chinatown',title:'Yaowarat Night Market (Chinatown)',desc:'Bangkok\'s Chinatown goes electric at night. Shark fin soup, roast duck, dim sum and seafood.'},
-      {icon:'🥭',bg:'#ECFDF5',type:'Dessert',title:'Mango Sticky Rice Vendors',desc:'Mango sticky rice season is April–June, but year-round vendors operate near Silom and Asok BTS.'},
+      {icon:'🍳',bg:'#FFF7ED',type:'Street Legend',title:'Jay Fai (ร้านเจ๊ไฝ)',desc:'Michelin-starred street food. Crab omelette is the dish. Book weeks in advance or queue at 2pm.',order:'Crab omelette (ไข่เจียวปูอัด) — the only thing you really need to order. ~NZ$69 alone',price:'~NZ$69–92 pp'},
+      {icon:'🍜',bg:'#FEF2F2',type:'Pad Thai',title:'Thip Samai Pad Thai',desc:'Famous since 1966. Pad thai wrapped in egg net. Queue moves fast. Pratunam area.',order:'Pad thai in egg net (ผัดไทยห่อไข่), fresh prawn version — eat immediately',price:'~NZ$7 pp'},
+      {icon:'🍲',bg:'#ECFDF5',type:'Boat Noodles',title:'Boat Noodle Alley (Victory Monument)',desc:'Tiny bowls of rich, dark broth. Each bowl is 15 THB (NZ$0.70). Order 10.',order:'Pork or beef broth noodles — keep ordering until you\'re full (usually 8–12 bowls)',price:'~NZ$5 pp'},
+      {icon:'🌶',bg:'#FDF4FF',type:'Som Tam',title:'Som Tam Nua',desc:'Best papaya salad in the city. Long queue at lunch but worth every minute.',order:'Papaya salad with blue crab (ส้มตำปูม้า), add a sticky rice portion',price:'~NZ$9 pp'},
+      {icon:'🍗',bg:'#F5F3FF',type:'Chicken Rice',title:'Khao Man Gai Pratunam',desc:'Thai comfort food done perfectly. Poached chicken over rice.',order:'Chicken rice plate, dark soy drizzle, ginger soup on the side',price:'~NZ$5 pp'},
+      {icon:'🦀',bg:'#EFF6FF',type:'Seafood',title:'Yaowarat Chinatown Night',desc:'Bangkok Chinatown electric after 7pm. Walk Yaowarat Road and eat as you go.',order:'Roast duck on rice, oyster noodles, dim sum from street stalls',price:'~NZ$14 pp'},
+      {icon:'🥭',bg:'#ECFDF5',type:'Market',title:'Or Tor Kor Market',desc:"Bangkok's finest fresh market. Near Chatuchak. Best in the morning.",order:'Mango sticky rice (the best version in BKK), grilled pork neck with sticky rice',price:'~NZ$9 pp'},
+      {icon:'🌮',bg:'#FFF7ED',type:'Late Night',title:'Silom Late Night Street Food',desc:'Silom Soi 20 area after 10pm. Locals only, no tourists, incredible food.',order:'Pad krapao (basil pork/chicken) with fried egg on rice. Classic nightcap meal',price:'~NZ$5 pp'},
+      {icon:'🥂',bg:'#FDF4FF',type:'Rooftop',title:'Lebua Sky Bar Drinks',desc:'The view is worth one overpriced cocktail. Dress code: smart casual.',order:'Hang Signature cocktail or a classic G&T. One drink, take 100 photos, leave',price:'~NZ$35 pp (drinks only)'},
     ],
     transport:[
-      {status:'confirmed',method:'✈️ Arrive Suvarnabhumi (BKK)',detail:'Airport Rail Link to Phaya Thai Station (30 min, 45 THB). From there BTS Skytrain covers most of the city.'},
-      {status:'confirmed',method:'🚅 Getting Around',detail:'BTS Skytrain + MRT cover key areas. Grab (Thai Uber) for everywhere else. Agree taxi price before — never meters at tourist spots.'},
+      {status:'confirmed',method:'✈️ Arrive Suvarnabhumi (BKK)',detail:'Airport Rail Link to Phaya Thai (30 min, 45 THB / NZ$2). BTS Skytrain from there.'},
+      {status:'confirmed',method:'🚅 Getting Around',detail:'BTS Skytrain + MRT for major areas. Grab (Thai Uber) everywhere else. Never take unmetered taxis.'},
     ],
     nextstop:{destination:'Krabi 🇹🇭',options:[
-      {status:'confirmed',method:'✈️ BKK → KBV',detail:'Bangkok Don Mueang (DMK) to Krabi. ~1.5 hrs. AirAsia or Thai Lion Air.'},
+      {status:'confirmed',method:'✈️ DMK → KBV',detail:'Don Mueang (DMK, not BKK) to Krabi. ~1.5 hrs. AirAsia or Thai Lion Air.'},
     ]}
   },
 
-  krabi: {
-    name:'Krabi', flag:'🇹🇭', dates:'23–26 Jul', badge:'3 nights',
-    color:'#0EA5E9', colorBg:'#F0F9FF', latlng:[8.0863,98.9063],
-    hotel:'TBC — Krabi / Ao Nang',
+  krabi:{
+    name:'Krabi',flag:'🇹🇭',dates:'23–26 Jul',badge:'3 nights',
+    color:'#0EA5E9',latlng:[8.0863,98.9063],
+    hotel:'TBC — Ao Nang, Krabi',
     explore:[
-      {icon:'🏝️',bg:'#F0F9FF',title:'4 Islands Tour',desc:'Longtail boat tour to Tup, Chicken, Poda Islands and Emerald Cave. Book from Ao Nang beach. ~1,200 THB.'},
-      {icon:'⛰️',bg:'#ECFDF5',title:'Tiger Cave Temple (Wat Tham Suea)',desc:'1,237 steps to summit. Go at sunrise (5:30am) for golden light over mangroves and paddy fields. Life-changing.'},
-      {icon:'🏖️',bg:'#EFF6FF',title:'Railay Beach',desc:'Only accessible by longtail boat — no roads. Limestone karst cliffs, crystal water, rock climbing. Day trip.'},
-      {icon:'🛶',bg:'#FDF4FF',title:'Kayak the Mangroves',desc:'Kayak through sea caves and mangrove tunnels around Bor Thor. Best at high tide. Half-day tours available.'},
-      {icon:'🌅',bg:'#FFF7ED',title:'Sunset at Ao Nang Beach',desc:'Watch the sun sink between the limestone karsts from the beach. Walk to a beach bar and order a Chang.'},
+      {icon:'🏝',bg:'#F0F9FF',title:'4 Islands Tour',desc:'Longtail boat to Tup, Chicken, Poda Islands & Emerald Cave. Book from Ao Nang. ~NZ$55.'},
+      {icon:'⛰',bg:'#ECFDF5',title:'Tiger Cave Temple (5:30am)',desc:'1,237 steps to sunrise. Go at 5:30am for golden light over mangroves. Life-changing.'},
+      {icon:'🏖',bg:'#EFF6FF',title:'Railay Beach',desc:'Only by longtail boat — no road access. Limestone karsts, crystal water. Day trip NZ$7.'},
+      {icon:'🛶',bg:'#FDF4FF',title:'Kayak the Mangroves',desc:'Sea caves and mangrove tunnels around Bor Thor. Half-day tours ~NZ$45.'},
+      {icon:'🌅',bg:'#FFF7ED',title:'Ao Nang Beach Sunset',desc:'Watch the sun drop between limestone karsts from the beach. Grab a Chang and a sunlounger.'},
     ],
     food:[
-      {icon:'🦞',bg:'#F0F9FF',type:'Seafood',title:'Ton Kla Restaurant',desc:'Beachfront Thai seafood. Whole grilled barramundi, spicy clams, tom yum soup. Local favourite in Krabi Town.'},
-      {icon:'🍛',bg:'#ECFDF5',type:'Thai',title:'May & Mark\'s Kitchen',desc:'Ao Nang standout. Excellent massaman curry and fresh seafood. Reasonable prices for the beach area.'},
-      {icon:'🌙',bg:'#FFF7ED',type:'Night Market',title:'Krabi Town Night Market',desc:'Tuesday, Friday and weekend walking street markets. 30+ stalls of grilled seafood, satay, fresh juice. Go hungry.'},
-      {icon:'🥘',bg:'#EFF6FF',type:'Local Thai',title:'Ruan Mai Krabi',desc:'No-frills local restaurant, extremely fresh, dirt cheap. Order the papaya salad and grilled pork neck.'},
-      {icon:'🐟',bg:'#FDF4FF',type:'Seafood',title:'Kwan Seafood',desc:'Pick-your-own seafood from ice display. Generous portions, good prices. In Krabi Town near the night market.'},
-      {icon:'🍹',bg:'#F0FFF4',type:'Beach Bar',title:'Relax Beach Bar',desc:'Beachfront Ao Nang. Pad thai, green curry, cold beer, frozen cocktails. Watch the sunset properly.'},
-      {icon:'🫕',bg:'#FEF9EC',type:'Curry',title:'Carnivore Steak & Grill',desc:'Best red meat option in Ao Nang if you need a break from Thai. Good Australian beef, great cocktails.'},
-      {icon:'☕',bg:'#F5F3FF',type:'Breakfast',title:'On the Rock Restaurant',desc:'Breakfast or seafood lunch built on rocks above the sea at Railay East. Views are the whole point.'},
-      {icon:'🍜',bg:'#FEF2F2',type:'Noodles',title:'Local Boat Noodles (Krabi Town)',desc:'Morning ritual — small bowl of rich dark-broth boat noodles at the fresh market near the river. Under 40 THB.'},
+      {icon:'🦞',bg:'#F0F9FF',type:'Seafood',title:'Ton Kla Restaurant',desc:'Beachfront Thai seafood. Whole fish, spicy clams, tom yum — local favourite in Krabi Town.',order:'Grilled barramundi with garlic butter, spicy clam stir-fry, tom yum goong',price:'~NZ$22 pp'},
+      {icon:'🍛',bg:'#ECFDF5',type:'Thai',title:"May & Mark's Kitchen",desc:'Ao Nang standout. Excellent curries and fresh seafood at reasonable beach prices.',order:'Massaman lamb curry, pad see ew with prawns — both are excellent',price:'~NZ$18 pp'},
+      {icon:'🌙',bg:'#FFF7ED',type:'Night Market',title:'Krabi Town Night Market',desc:'Tue/Fri/weekend walking street. 30+ stalls. Go hungry, spend NZ$15 total.',order:'Satay sticks, roti with curry, fresh coconut ice cream, mango juice',price:'~NZ$9 pp'},
+      {icon:'🥘',bg:'#EFF6FF',type:'Local Thai',title:'Ruan Mai Krabi',desc:'No-frills local restaurant. Extremely fresh, dirt cheap. Order the daily specials.',order:'Papaya salad (som tam), grilled pork neck with sticky rice, spicy basil chicken',price:'~NZ$7 pp'},
+      {icon:'🐟',bg:'#FDF4FF',type:'Seafood',title:'Kwan Seafood',desc:'Pick your own seafood from ice display. Generous portions, good prices.',order:'Half crab in yellow curry sauce, giant king prawns with garlic and pepper',price:'~NZ$22 pp'},
+      {icon:'🍹',bg:'#F0FFF4',type:'Beach Bar',title:'Relax Beach Bar (Ao Nang)',desc:'Beachfront views, cold drinks, solid Thai food.',order:'Pad thai (legit version), green curry with roti. Order a frozen mango daiquiri',price:'~NZ$16 pp'},
+      {icon:'🥩',bg:'#FEF9EC',type:'Western',title:'Carnivore Steak & Grill',desc:'Good Australian beef in Ao Nang if you need a break from Thai.',order:'Sirloin or ribeye (250g), house fries, Caesar salad',price:'~NZ$32 pp'},
+      {icon:'☕',bg:'#F5F3FF',type:'Breakfast',title:'On the Rock Restaurant',desc:'Built on rocks above the sea at Railay East. The view is the whole point.',order:'Full breakfast set or fresh seafood lunch. Order a fresh lime soda',price:'~NZ$18 pp'},
+      {icon:'🍜',bg:'#FEF2F2',type:'Morning',title:'Local Boat Noodles (Krabi Town)',desc:'Morning ritual at the fresh market near the river. Under NZ$2 per bowl.',order:'Small pork broth boat noodles. Order 3–4 bowls, eat standing up',price:'~NZ$2 pp'},
     ],
     transport:[
-      {status:'confirmed',method:'✈️ Arrive Krabi Airport (KBV)',detail:'Airport minivan to Ao Nang ~200–300 THB. Or taxi ~600 THB. About 30 min drive.'},
-      {status:'confirmed',method:'🛶 Getting Around',detail:'Longtail boats connect beaches. Songthaew (red trucks) for Krabi Town. Rent a scooter for freedom (~200 THB/day).'},
+      {status:'confirmed',method:'✈️ Arrive Krabi Airport (KBV)',detail:'Minivan to Ao Nang ~NZ$9. Taxi ~NZ$28. About 30 min drive.'},
+      {status:'confirmed',method:'🛶 Getting Around',detail:'Longtail boats for beaches. Songthaew trucks for Krabi Town (NZ$1). Scooter hire NZ$9/day.'},
     ],
     nextstop:{destination:'Phuket 🇹🇭',options:[
-      {status:'tbc',method:'⛵ Ferry + Bus',detail:'Longtail to ferry terminal → Ao Nang ferry to Phuket Rassada Pier (~2.5 hrs, ~700 THB).'},
-      {status:'tbc',method:'🚐 Minivan',detail:'Shared minivan Ao Nang → Phuket Patong (~2.5 hrs, ~350 THB). Book at guesthouses.'},
+      {status:'tbc',method:'⛵ Ferry',detail:'Longtail to ferry → Ao Nang to Phuket Rassada Pier (~2.5 hrs, NZ$32).'},
+      {status:'tbc',method:'🚐 Minivan',detail:'Shared minivan Ao Nang → Phuket Patong (~2.5 hrs, NZ$16). Book at guesthouses.'},
     ]}
   },
 
-  phuket: {
-    name:'Phuket', flag:'🇹🇭', dates:'26–28 Jul', badge:'2 nights',
-    color:'#F97316', colorBg:'#FFF7ED', latlng:[7.8804,98.3923],
-    hotel:'TBC — Phuket',
+  phuket:{
+    name:'Phuket',flag:'🇹🇭',dates:'26–28 Jul',badge:'2 nights',
+    color:'#FF6B35',latlng:[7.8804,98.3923],
+    hotel:'TBC — Phuket (Old Town or Kata area)',
     explore:[
-      {icon:'⛵',bg:'#F0F9FF',title:'Phang Nga Bay (James Bond Island)',desc:'Iconic karst limestone islands. Full-day tour ~1,500 THB. Sea canoeing through caves is the highlight.'},
-      {icon:'🌇',bg:'#FFF7ED',title:'Phuket Old Town',desc:'Portuguese-Sino architecture, street art, indie cafés. Best on foot. Saturday Walking Street market.'},
-      {icon:'🙏',bg:'#F5F3FF',title:'Big Buddha Viewpoint',desc:'45m white marble Buddha on Nakkerd Hill. Panoramic views over south Phuket. Free. Great at sunrise.'},
-      {icon:'🏄',bg:'#EFF6FF',title:'Kata/Karon Beach Surfing',desc:'July has decent waves. Surf lesson for beginners ~1,000 THB including board. Karon is quieter than Patong.'},
-      {icon:'🎭',bg:'#FEF9EC',title:'Phuket Fantasea Show',desc:'Over-the-top Thai cultural entertainment show. Camels, elephants, acrobatics. Fun evening if you\'re curious.'},
+      {icon:'⛵',bg:'#F0F9FF',title:'Phang Nga Bay (James Bond Island)',desc:'Karst limestone islands, sea canoeing through caves. Full day ~NZ$69. Book night before.'},
+      {icon:'🌇',bg:'#FFF7ED',title:'Phuket Old Town',desc:'Sino-Portuguese architecture, street art, indie cafés. Saturday Walking Street.'},
+      {icon:'🙏',bg:'#F5F3FF',title:'Big Buddha Viewpoint',desc:'45m white marble Buddha on Nakkerd Hill. Panoramic south Phuket views. Free.'},
+      {icon:'🏄',bg:'#EFF6FF',title:'Kata/Karon Beach',desc:'July has decent waves. Surf lesson (beginner) ~NZ$46 including board. Karon is quieter.'},
+      {icon:'🌅',bg:'#FFF7ED',title:'Promthep Cape Sunset',desc:"Southernmost point of Phuket. The whole island turns up for this. Then dinner at Da Maurizio."},
     ],
     food:[
-      {icon:'🦀',bg:'#FFF7ED',type:'Seafood',title:'Kan Eang @ Pier',desc:'Rawai pier seafood restaurant. Whole crabs, grilled fish, sea urchin. Watch the fishing boats while you eat.'},
-      {icon:'☕',bg:'#ECFDF5',type:'Local Café',title:'Kopitiam by Wilai',desc:'Phuket Old Town institution. Genuine Peranakan food. Mee hun sua, o-tao (oyster cake), local coffee.'},
-      {icon:'🥩',bg:'#EFF6FF',type:'Fine Dining',title:'Suay Restaurant (Phuket Town)',desc:'Chef Noi\'s modern Thai. Excellent tasting menu. Book in advance. Best fine dining on the island.'},
-      {icon:'🌊',bg:'#FDF4FF',title:'Baan Rim Pa',type:'Fine Dining',desc:'Cliffside restaurant above Kalim Beach. Royal Thai cuisine, sunset views. Dress smart. Worth the splurge.'},
-      {icon:'🌙',bg:'#F0FFF4',type:'Night Market',title:'Phuket Town Night Market (Indy)',desc:'Walking street Friday–Sunday. 100+ stalls. Great for Thai desserts, grilled satay, fresh juices.'},
-      {icon:'🍜',bg:'#FFF7ED',type:'Noodles',title:'Mor Mu Dong Floating Restaurant',desc:'Built on a wooden pier over a pond in Phuket Town. Order khanom jeen (rice noodles with curry).'},
-      {icon:'🍞',bg:'#FFFBEB',type:'Breakfast',title:'Roti Tarad Morning Market',desc:'Pre-dawn roti market near Ranong Road. Roti with curry, sweet roti with banana, hot Thai tea.'},
-      {icon:'🍕',bg:'#FEF2F2',type:'Italian',title:'Da Maurizio',desc:'Sunset cocktails and Italian food on the cliffs at Promthep Cape. Best sunset point in south Phuket.'},
-      {icon:'🦞',bg:'#F0F9FF',type:'Seafood',title:'Rock Salt Restaurant',desc:'Beachfront at Mai Khao. Fresh-catch seafood, beach bonfire nights, excellent service. North Phuket.'},
+      {icon:'🦀',bg:'#FFF7ED',type:'Seafood',title:'Kan Eang @ Pier',desc:'Rawai pier seafood. Watch the fishing boats while eating whole crab.',order:'Whole steamed blue crab, grilled tiger prawns, sea urchin if available',price:'~NZ$32 pp'},
+      {icon:'☕',bg:'#ECFDF5',type:'Local Café',title:'Kopitiam by Wilai',desc:'Phuket Old Town institution. Genuine Peranakan food.',order:'O-tao (oyster cake), mee hun sua (rice vermicelli), local kopi O coffee',price:'~NZ$11 pp'},
+      {icon:'🥩',bg:'#EFF6FF',type:'Fine Dining',title:'Suay Restaurant',desc:"Chef Noi's modern Thai. Best fine dining on the island. Book ahead.",order:'5-course tasting menu — let them choose. The wagyu larb course is exceptional',price:'~NZ$55 pp'},
+      {icon:'🌊',bg:'#FDF4FF',type:'Fine Dining',title:'Baan Rim Pa',desc:'Royal Thai cuisine on a cliffside above Kalim Beach. Dress smart.',order:'Roast duck red curry, grilled sea bass, mango sticky rice to finish',price:'~NZ$69 pp'},
+      {icon:'🌙',bg:'#F0FFF4',type:'Night Market',title:'Phuket Town Night Market',desc:'Walking street Fri–Sun. 100+ stalls. Good for a NZ$20 all-in dinner.',order:'Satay skewers, khanom krok (coconut pancakes), pad thai, fresh mango juice',price:'~NZ$9 pp'},
+      {icon:'🍜',bg:'#FFF7ED',type:'Noodles',title:'Mor Mu Dong Floating Restaurant',desc:'Built on a wooden pier in Phuket Town. Order the house noodle dish.',order:'Khanom jeen (rice noodles with green curry sauce), Thai sausage side',price:'~NZ$11 pp'},
+      {icon:'🍞',bg:'#FFFBEB',type:'Breakfast',title:'Roti Tarad Morning Market',desc:'Pre-dawn roti market near Ranong Road. Get there before 7am.',order:'Roti with massaman curry dip, banana sweet roti, hot Thai iced tea',price:'~NZ$4 pp'},
+      {icon:'🍕',bg:'#FEF2F2',type:'Italian',title:'Da Maurizio',desc:'Cliffside sunset cocktails and Italian food at Promthep Cape.',order:'Squid ink spaghetti, grilled fresh catch of the day, tiramisu. One glass of wine',price:'~NZ$55 pp'},
+      {icon:'🦞',bg:'#F0F9FF',type:'Seafood',title:'Rock Salt Restaurant',desc:'Beachfront at Mai Khao. Fresh catch, beach fire pits, excellent service.',order:'Seafood BBQ platter for two, signature cocktails — book sunset slot',price:'~NZ$37 pp'},
     ],
     transport:[
-      {status:'tbc',method:'🚐 Arrive from Krabi',detail:'Minivan or ferry transfer from Krabi/Ao Nang. ~2–3 hrs depending on route.'},
-      {status:'confirmed',method:'🚗 Getting Around',detail:'Rent a car or scooter — Phuket\'s beaches are spread out and tuk-tuks are tourist-priced. Grab works in town.'},
+      {status:'tbc',method:'🚐 Arrive from Krabi',detail:'Minivan or ferry transfer from Ao Nang. ~2–3 hrs depending on route.'},
+      {status:'confirmed',method:'🚗 Getting Around',detail:'Rent a car or scooter — beaches are spread out. Grab works in Phuket Town. Avoid tuk-tuks.'},
     ],
     nextstop:{destination:'Singapore 🇸🇬',options:[
-      {status:'confirmed',method:'✈️ HKT → SIN',detail:'Phuket (HKT) to Singapore (SIN) ~1.5 hrs. Scoot, AirAsia, or SilkAir.'},
+      {status:'confirmed',method:'✈️ HKT → SIN',detail:'Phuket to Singapore Changi. ~1.5 hrs. Scoot, AirAsia or SilkAir.'},
     ]}
   },
 
-  singapore: {
-    name:'Singapore', flag:'🇸🇬', dates:'28–30 Jul', badge:'2 nights',
-    color:'#DC2626', colorBg:'#FEF2F2', latlng:[1.3521,103.8198],
-    hotel:'TBC — Singapore',
+  singapore:{
+    name:'Singapore',flag:'🇸🇬',dates:'28–30 Jul',badge:'2 nights',
+    color:'#DC2626',latlng:[1.3521,103.8198],
+    hotel:'TBC — Singapore (Marina Bay or Tanjong Pagar area)',
     explore:[
-      {icon:'🌿',bg:'#ECFDF5',title:'Gardens by the Bay',desc:'Free during the day. Supertrees are spectacular at night (light show 7:45pm & 8:45pm). Cloud Forest indoors worth it.'},
-      {icon:'🏙️',bg:'#EFF6FF',title:'Marina Bay Sands Skypark',desc:'Book SkyPark observation deck in advance. Infinity pool for hotel guests only but views are accessible.'},
-      {icon:'🎡',bg:'#FDF4FF',title:'Sentosa Island',desc:'Universal Studios, beach clubs, cable car, S.E.A. Aquarium. Full day. Good if you want resort-style beach.'},
-      {icon:'🕌',bg:'#FFF7ED',title:'Kampong Glam & Arab Street',desc:'Historic Malay quarter. Haji Lane for street art and boutiques. Sultan Mosque. Great for dinner too.'},
-      {icon:'🦁',bg:'#F0FFF4',title:'Singapore Zoo (Night Safari)',desc:'Night Safari is world-class — open 7:30pm. Tram tour through nocturnal animals. Book tickets online.'},
+      {icon:'🌿',bg:'#ECFDF5',title:'Gardens by the Bay',desc:'Cloud Forest dome is worth the $28 entry. Supertree light show 7:45pm & 8:45pm — free.'},
+      {icon:'🏙',bg:'#EFF6FF',title:'Marina Bay Sands Skypark',desc:'Book observation deck in advance. Infinity pool for hotel guests only — views are public.'},
+      {icon:'🎡',bg:'#FDF4FF',title:'Sentosa Island',desc:'Beach clubs, Universal Studios, cable car. Good if you want resort-style beach day.'},
+      {icon:'🕌',bg:'#FFF7ED',title:'Kampong Glam & Haji Lane',desc:'Historic Malay quarter. Haji Lane for street art and boutiques. Sultan Mosque is stunning.'},
+      {icon:'🦁',bg:'#F0FFF4',title:'Night Safari',desc:'World-class. Tram tour through nocturnal animals at 7:30pm. Book online. NZ$58.'},
     ],
     food:[
-      {icon:'🍗',bg:'#FFF7ED',type:'Hawker Classic',title:'Tian Tian Chicken Rice (Maxwell)',desc:'Best hainanese chicken rice in SG. Maxwell Food Centre, stall #01-10/11. Arrive before 11:30am or queue 45 min.'},
-      {icon:'🦀',bg:'#FEF2F2',type:'Signature Dish',title:'Chilli Crab at Jumbo Seafood',desc:'Singapore\'s national dish. Order Sri Lankan crab, toss in their famous chilli sauce. Pre-book for Robertson Quay.'},
-      {icon:'🍜',bg:'#ECFDF5',type:'Hawker Classic',title:'Newton Food Centre',desc:'The OG hawker centre. Satay, BBQ stingray, hokkien mee, oyster omelette. Go after 6pm when it heats up.'},
-      {icon:'🥘',bg:'#EFF6FF',type:'Modern Singapore',title:'Burnt Ends (BBQ)',desc:'Wood-fire barbecue temple in Dempsey. Book weeks ahead. Counter seats are first-come. A genuine must-eat.'},
-      {icon:'🍢',bg:'#FDF4FF',type:'Hawker Classic',title:'Lau Pa Sat Satay Street',desc:'After 7pm Boon Tat Street closes to cars. Satay vendors set up 50+ stalls with cold Tiger Beer. Classic SG night.'},
-      {icon:'🍲',bg:'#F0FFF4',type:'Peranakan',title:'True Blue Cuisine',desc:'Authentic Peranakan in Armenian Street. Buah keluak, ayam buah keluak, kueh pie tee. Unique to Singapore.'},
-      {icon:'🥐',bg:'#FFFBEB',type:'Café Culture',title:'Tiong Bahru Bakery',desc:'Flaky croissants, kouign-amann, excellent espresso. The Tiong Bahru neighbourhood itself is worth exploring.'},
-      {icon:'🥂',bg:'#F5F3FF',type:'Cocktail Bar',title:'Atlas Bar (Raffles Hotel)',desc:'1920s art deco gin palace with 1,000+ gins. Singapore Sling at Raffles is tradition; Atlas is actually better.'},
-      {icon:'🍛',bg:'#FEF9EC',type:'Indian',title:'Banana Leaf Apolo (Little India)',desc:'Banana leaf rice done right. Fish head curry poured on your leaf, eat with hands. No utensils needed.'},
+      {icon:'🍗',bg:'#FFF7ED',type:'Hawker Classic',title:'Tian Tian Chicken Rice (Maxwell)',desc:'Best hainanese chicken rice in SG. Maxwell Food Centre stall #01-10. Arrive before 11:30am.',order:'Chicken rice plate (roasted or white poached), add chilli sauce and ginger paste',price:'~NZ$9 pp'},
+      {icon:'🦀',bg:'#FEF2F2',type:'Signature',title:'Chilli Crab at Jumbo Seafood',desc:"Singapore's national dish. Robertson Quay location. Pre-book dinner.",order:'Sri Lankan chilli crab (1kg for two), black pepper crab, fried mantou buns to soak the sauce',price:'~NZ$80–100 pp'},
+      {icon:'🍢',bg:'#ECFDF5',type:'Hawker',title:'Newton Food Centre',desc:'The OG hawker centre. Go after 6pm when it heats up.',order:'Satay (chicken and prawn), BBQ stingray with sambal, oyster omelette, tiger beer',price:'~NZ$29 pp'},
+      {icon:'🥘',bg:'#EFF6FF',type:'BBQ',title:'Burnt Ends',desc:'Wood-fire BBQ temple. Book weeks ahead. Counter seats are walk-in from open.',order:'Burnt ends brisket, ox tongue, bone marrow with onion jam — counter must-orders',price:'~NZ$110–138 pp'},
+      {icon:'🍢',bg:'#FDF4FF',type:'Night',title:'Lau Pa Sat Satay Street',desc:'After 7pm Boon Tat Street closes. Satay vendors set up 50+ stalls. Cold Tiger Beer. Classic.',order:'Chicken, prawn and mutton satay by the stick (10–15 pp), peanut sauce',price:'~NZ$23 pp'},
+      {icon:'🍲',bg:'#F0FFF4',type:'Peranakan',title:'True Blue Cuisine',desc:'Authentic Peranakan in Armenian Street. Unique to Singapore.',order:'Buah keluak chicken, ayam buah keluak, kueh pie tee starters',price:'~NZ$57 pp'},
+      {icon:'🥐',bg:'#FFFBEB',type:'Café',title:'Tiong Bahru Bakery',desc:'Flaky croissants, kouign-amann, excellent espresso. The neighbourhood is worth exploring.',order:'Kouign-amann (the signature), almond croissant, flat white',price:'~NZ$17 pp'},
+      {icon:'🥂',bg:'#F5F3FF',type:'Bar',title:'Atlas Bar',desc:'1920s art deco gin palace. 1,000+ gins. Rafflles Hotel Singapore Sling is tradition — Atlas is better.',order:'G&T with rare aged gin, or ask the bartender to surprise you',price:'~NZ$35–46 pp'},
+      {icon:'🍛',bg:'#FEF9EC',type:'Indian',title:'Banana Leaf Apolo (Little India)',desc:'Banana leaf rice done properly. Fish head curry is the signature.',order:'Fish head curry poured on your banana leaf. Eat with hands. Refill rice and dhal free',price:'~NZ$23 pp'},
     ],
     transport:[
-      {status:'confirmed',method:'✈️ Arrive Changi Airport (SIN)',detail:'MRT from Changi (Jewel) to city. Changi is the world\'s best airport — allow an hour to explore before your gate.'},
+      {status:'confirmed',method:'✈️ Arrive Changi Airport (SIN)',detail:'MRT from Changi to city. Spend 30 min exploring Jewel — the waterfall alone is worth it.'},
       {status:'confirmed',method:'🚇 Getting Around',detail:'MRT is excellent and cheap. EZ-Link card from any station. Grab for after midnight.'},
     ],
     nextstop:{destination:'Bintan 🇮🇩',options:[
-      {status:'tbc',method:'⛴️ Tanah Merah Ferry Terminal',detail:'Ferry to Bandar Bentan Telani ferry terminal, Bintan. ~50 min. Operated by Bintan Resort Ferries.'},
+      {status:'tbc',method:'⛴ Ferry',detail:'Tanah Merah Ferry Terminal → Bintan Lagoon ferry terminal. ~50 min. Bintan Resort Ferries.'},
     ]}
   },
 
-  bintan: {
-    name:'Bintan Island', flag:'🇮🇩', dates:'30 Jul – 1 Aug', badge:'2 nights',
-    color:'#0EA5E9', colorBg:'#F0F9FF', latlng:[1.0634,104.3521],
-    hotel:'TBC — Bintan Resort',
+  bintan:{
+    name:'Bintan Island',flag:'🇮🇩',dates:'30 Jul – 1 Aug',badge:'2 nights',
+    color:'#0EA5E9',latlng:[1.0634,104.3521],
+    hotel:'TBC — Bintan Resort (Lagoi Bay area)',
     explore:[
-      {icon:'🏖️',bg:'#F0F9FF',title:'Bintan Resort Beach Clubs',desc:'Lagoi Bay has multiple beach clubs — Banyu, Mangrove Discovery Tour. Pure relaxation mode. Book ahead.'},
-      {icon:'🐠',bg:'#ECFDF5',title:'Snorkelling & Watersports',desc:'Crystal water around the resort coast. Jet ski, kayaking, windsurfing all available. Organised by resorts.'},
-      {icon:'🌊',bg:'#EFF6FF',title:'Treasure Bay Crystal Lagoon',desc:'2.3-hectare crystal-clear lagoon, largest in SE Asia. Pedal boats, water slides. Day pass available.'},
-      {icon:'🏌️',bg:'#FFF7ED',title:'Jack Nicklaus Golf Course',desc:'World-class golf at Ria Bintan Golf Club. Two 18-hole courses by Jack Nicklaus. Book well in advance.'},
-      {icon:'🌅',bg:'#F5F3FF',title:'Trikora Beach (East Coast)',desc:'Undeveloped village beach on Bintan\'s east coast. Fishing villages, calm water, total escape from resort life.'},
+      {icon:'🏖',bg:'#F0F9FF',title:'Bintan Resort Beach Clubs',desc:'Banyu Beach Club, Surf Beach — pure relaxation mode. Book sunloungers in advance.'},
+      {icon:'🐠',bg:'#ECFDF5',title:'Snorkelling & Watersports',desc:'Jet ski, kayaking, windsurfing all available from the resort beach. Morning is calmest.'},
+      {icon:'🌊',bg:'#EFF6FF',title:'Treasure Bay Crystal Lagoon',desc:'2.3-hectare crystal lagoon — largest in SE Asia. Pedal boats, water slides. Day pass ~NZ$25.'},
+      {icon:'🏌',bg:'#FFF7ED',title:'Ria Bintan Golf Course',desc:'Jack Nicklaus designed. Two world-class 18-hole courses. Book well in advance.'},
+      {icon:'🌅',bg:'#F5F3FF',title:'Trikora Beach (East Coast)',desc:"Undeveloped village beach. Fishing boats, calm water — total escape from resort life."},
     ],
     food:[
-      {icon:'🦞',bg:'#F0F9FF',type:'Fresh Seafood',title:'Seafood at Tanjung Uban',desc:'Local fishing town. Pick fresh catch from the morning market and have it cooked at the adjacent warung.'},
-      {icon:'🍛',bg:'#FEF9EC',type:'Indonesian',title:'Warung Padang (Nasi Padang)',desc:'Indonesian Padang food — pick from 20+ pre-cooked dishes displayed in the window. Rendang is mandatory.'},
-      {icon:'🐟',bg:'#ECFDF5',type:'Grilled Fish',title:'Ikan Bakar (Tanjung Pinang)',desc:'Grilled fish over coconut husk charcoal at beachside warungs. Order sambal, rice, and fresh coconut.'},
-      {icon:'☕',bg:'#EFF6FF',type:'Local Breakfast',title:'Mie Ayam (Chicken Noodles)',desc:'Morning bowl of egg noodles with shredded chicken, sweet soy, crispy shallots. Under Rp15,000.'},
-      {icon:'🍜',bg:'#FFF7ED',type:'Local Noodles',title:'Laksa Bintan',desc:'Slightly different from Singapore laksa. Fishier, spicier broth. Try it at morning markets in Tanjung Pinang.'},
-      {icon:'🥥',bg:'#F0FFF4',type:'Drinks',title:'Fresh Coconut & Fruit Stalls',desc:'Roadside stalls everywhere. Cold coconut water straight from the shell, fresh-cut tropical fruit.'},
-      {icon:'🍗',bg:'#FEF2F2',type:'Warung',title:'Ayam Penyet (Smashed Chicken)',desc:'Fried chicken smashed with sambal and served with rice and tofu. Cheap, filling, genuinely excellent.'},
-      {icon:'🫕',bg:'#FDF4FF',type:'Soto',title:'Soto Ayam',desc:'Indonesian chicken soup with turmeric broth, rice cakes, crispy shallots and a squeeze of lime. Breakfast staple.'},
-      {icon:'🍰',bg:'#FFF7ED',type:'Snack',title:'Kue Tradisional',desc:'Traditional Indonesian rice cakes and sweets from night market vendors in Tanjung Pinang old town.'},
+      {icon:'🦞',bg:'#F0F9FF',type:'Fresh Seafood',title:'Tanjung Uban Seafood Market',desc:'Local fishing town. Pick fresh catch from morning market, have it cooked next door.',order:'Pick your fish/crab by weight. Steamed or grilled with sambal. Rice and veggies',price:'~NZ$10 pp'},
+      {icon:'🍛',bg:'#FEF9EC',type:'Indonesian',title:'Warung Nasi Padang',desc:'Padang food — pick from 20+ pre-cooked dishes in the window. Fill your plate.',order:'Rendang beef (mandatory), gulai ayam (coconut curry chicken), tempe goreng',price:'~NZ$5 pp'},
+      {icon:'🐟',bg:'#ECFDF5',type:'Grilled Fish',title:'Ikan Bakar (Grilled Fish)',desc:'Beachside warungs with charcoal grills. The smell will find you.',order:'Whole grilled fish (snapper or grouper), sambal matah, coconut rice',price:'~NZ$8 pp'},
+      {icon:'☕',bg:'#EFF6FF',type:'Breakfast',title:'Mie Ayam (Chicken Noodles)',desc:'Morning bowl at local warung. Under NZ$2. The most satisfying budget meal.',order:'Mie ayam with extra wonton and a splash of chilli oil',price:'~NZ$2 pp'},
+      {icon:'🍜',bg:'#FFF7ED',type:'Local Noodles',title:'Laksa Bintan',desc:"Fishier, spicier than Singapore laksa. Try it at Tanjung Pinang morning market.",order:'Thick version with extra fish cake and a side of hard-boiled egg',price:'~NZ$3 pp'},
+      {icon:'🥥',bg:'#F0FFF4',type:'Drinks',title:'Roadside Coconut Stalls',desc:'Young coconut water straight from the shell. NZ$1–2. Everywhere on the island.',order:'Young coconut water + fresh-cut papaya and pineapple alongside',price:'~NZ$2 pp'},
+      {icon:'🍗',bg:'#FEF2F2',type:'Warung',title:'Ayam Penyet (Smashed Chicken)',desc:'Fried chicken smashed with sambal. Cheap, filling, genuinely great.',order:'Ayam penyet with sambal, tofu, tempeh, steamed rice',price:'~NZ$4 pp'},
+      {icon:'🫕',bg:'#FDF4FF',type:'Soup',title:'Soto Ayam',desc:"Indonesian chicken soup with turmeric broth. Breakfast staple across the island.",order:'Soto ayam with lontong rice cakes, boiled egg, lime squeeze, sambal on the side',price:'~NZ$2 pp'},
+      {icon:'🍰',bg:'#FFF7ED',type:'Snack',title:'Kue Tradisional (Tanjung Pinang)',desc:'Traditional Indonesian rice cakes from old-town night market vendors.',order:'Klepon (pandan rice balls with palm sugar), onde-onde, dadar gulung',price:'~NZ$3 pp'},
     ],
     transport:[
-      {status:'tbc',method:'⛴️ Ferry from Singapore',detail:'Tanah Merah Ferry Terminal → Bandar Bentan Telani. ~50 min. Book Bintan Resort Ferries in advance.'},
-      {status:'confirmed',method:'🚐 Resort Shuttle',detail:'Most Bintan resorts run shuttle between the ferry terminal and resort. Confirm with hotel at booking.'},
+      {status:'tbc',method:'⛴ Ferry from Singapore',detail:'Tanah Merah Ferry Terminal → Bandar Bentan Telani. ~50 min. Book Bintan Resort Ferries in advance.'},
+      {status:'confirmed',method:'🚐 Resort Shuttle',detail:'Shuttle runs between ferry terminal and resort. Confirm with hotel when booking.'},
     ],
     nextstop:{destination:'Kuala Lumpur 🇲🇾',options:[
-      {status:'tbc',method:'⛴️ + ✈️ Bintan → SIN → KUL',detail:'Ferry back to Singapore, then fly SIN–KUL (~50 min). Or SIN–KUL bus (5 hrs, cheap and scenic).'},
+      {status:'tbc',method:'⛴ + ✈️ Bintan → SIN → KUL',detail:'Ferry to Singapore (~50 min) then fly SIN–KUL (~50 min). Or Singapore–KL coach (5 hrs, very comfortable).'},
     ]}
   },
 
-  kl: {
-    name:'Kuala Lumpur', flag:'🇲🇾', dates:'1–3 Aug', badge:'2 nights',
-    color:'#0F766E', colorBg:'#F0FDFA', latlng:[3.1390,101.6869],
-    hotel:'TBC — Bukit Bintang / KLCC area',
+  kl:{
+    name:'Kuala Lumpur',flag:'🇲🇾',dates:'1–3 Aug',badge:'2 nights',
+    color:'#059669',latlng:[3.1390,101.6869],
+    hotel:'TBC — Bukit Bintang or KLCC area',
     explore:[
-      {icon:'🏙️',bg:'#F0FDFA',title:'Petronas Twin Towers',desc:'Book the observation deck online (SkyBridge + Deck). Best at dusk — tower lights up as sun goes down.'},
-      {icon:'🕌',bg:'#FFF7ED',title:'Batu Caves',desc:'Hindu temple caves with 272 rainbow stairs. Leave early (before 9am) to beat the heat and crowds. 30 min by train.'},
-      {icon:'🛍️',bg:'#EFF6FF',title:'Bukit Bintang Shopping Strip',desc:'Pavilion, Lot 10, Fahrenheit 88 — all connected. Endless food options inside malls too.'},
-      {icon:'🎨',bg:'#FDF4FF',title:'Street Art in Chinatown',desc:'Petaling Street area and Jalan Panggong. Colourful murals + heritage shophouses. Walk at golden hour.'},
-      {icon:'🌿',bg:'#ECFDF5',title:'KLCC Park & Skypark',desc:'Free park around the towers. Jogging path, fountains, great tower views from below. Peaceful morning walk.'},
+      {icon:'🏙',bg:'#F0FDFA',title:'Petronas Twin Towers',desc:'Book observation deck online. Best at dusk — towers light up as sun goes down.'},
+      {icon:'🕌',bg:'#FFF7ED',title:'Batu Caves',desc:'272 rainbow stairs to Hindu temple caves. Leave before 9am. 30 min by commuter train.'},
+      {icon:'🛍',bg:'#EFF6FF',title:'Bukit Bintang Shopping',desc:'Pavilion, Lot 10, Fahrenheit 88 — all connected. Mall food courts are genuinely good here.'},
+      {icon:'🎨',bg:'#FDF4FF',title:'Street Art in Chinatown',desc:'Petaling Street area and Jalan Panggong. Colourful murals + heritage shophouses. Golden hour.'},
+      {icon:'🌿',bg:'#ECFDF5',title:'KLCC Park',desc:'Free park around the Twin Towers. Morning jog path, fountains, great tower views from below.'},
     ],
     food:[
-      {icon:'🌙',bg:'#FFF7ED',type:'Street Food',title:'Jalan Alor Food Street',desc:'KL\'s most famous food street. BBQ chicken wings, char kway teow, durian stalls. Goes all night. Essential.'},
-      {icon:'🍛',bg:'#F0FDFA',type:'Nasi Lemak',title:'Village Park Restaurant',desc:'Best nasi lemak in KL. Fragrant coconut rice, crispy anchovies, hard egg, rendang. Queue from 8am. Worth it.'},
-      {icon:'🥘',bg:'#ECFDF5',type:'Claypot',title:'Kim Lian Kee Hokkien Mee',desc:'Charcoal-fried hokkien mee in clay pot. Original Petaling Street location. Dark, sticky noodles in lard sauce.'},
-      {icon:'🍢',bg:'#EFF6FF',type:'Hawker',title:'Lot 10 Hutong Food Court',desc:'Underground hawker hall. 30+ stalls from across Malaysia. Best of everything under one (air-conditioned) roof.'},
-      {icon:'🫕',bg:'#FDF4FF',type:'Curry',title:'Restoran Yusoof dan Zakhir',desc:'Banana leaf rice in Brickfields. Unlimited refills of dhal, curry, veg on banana leaf. Under RM15.'},
-      {icon:'🍜',bg:'#F5F3FF',type:'Noodles',title:'Old China Café',desc:'Peranakan restaurant in Chinatown. Beef rendang, curry kapitan, acar. Beautiful heritage shophouse setting.'},
-      {icon:'🥐',bg:'#FFFBEB',type:'Kopitiam',title:'Yut Kee (Since 1928)',desc:'Legendary kopitiam. Roti babi (bread with pork and egg), Hainanese chicken chop, home-made kaya.'},
-      {icon:'🦁',bg:'#FEF2F2',type:'Iconic',title:'Madam Kwan\'s KLCC',desc:'Upscale Malaysian comfort food. Nasi bojari, wok-fried rice, ice kacang. Inside Suria KLCC mall.'},
-      {icon:'🍰',bg:'#F0FDFA',type:'Durian',title:'SS2 Durian Stalls',desc:'KL\'s Musang King durian stalls are famous. July is durian season — try the creamy Musang King variety.'},
+      {icon:'🌙',bg:'#FFF7ED',type:'Street Food',title:'Jalan Alor Food Street',desc:"KL's most famous food strip. Goes all night. Essential last night in Malaysia.",order:'BBQ chicken wings (Weng Kee stall), char kway teow, satay on sticks, fresh durian',price:'~NZ$20 pp'},
+      {icon:'🍛',bg:'#F0FDFA',type:'Nasi Lemak',title:'Village Park Restaurant',desc:'Best nasi lemak in KL. Queue from 8am. Worth every minute.',order:'Nasi lemak plate with rendang or fried chicken. Crispy anchovies, hard egg, sambal',price:'~NZ$7 pp'},
+      {icon:'🥘',bg:'#ECFDF5',type:'Noodles',title:'Kim Lian Kee Hokkien Mee',desc:'Charcoal-fried hokkien mee in clay pot. Dark, sticky, lard-glossed noodles.',order:'Claypot hokkien mee (large), add extra lard and chilli paste on the side',price:'~NZ$8 pp'},
+      {icon:'🍢',bg:'#EFF6FF',type:'Hawker',title:'Lot 10 Hutong Food Court',desc:'Underground hawker hall. Air-conditioned. 30+ stalls from across Malaysia.',order:'Wantan mee (egg noodles with BBQ pork), char kway teow, fresh coconut',price:'~NZ$13 pp'},
+      {icon:'🫕',bg:'#FDF4FF',type:'Curry',title:'Restoran Yusoof dan Zakhir',desc:'Banana leaf rice. Unlimited refills of dhal, curry, veg. Under NZ$5.',order:'Fish head curry or mutton curry on banana leaf. Eat with your hands. Pappadum',price:'~NZ$5 pp'},
+      {icon:'🍜',bg:'#F5F3FF',type:'Peranakan',title:'Old China Café',desc:'Beautiful heritage shophouse in Chinatown. Peranakan cuisine.',order:'Beef rendang, curry kapitan chicken, acar (pickled vegetables)',price:'~NZ$16 pp'},
+      {icon:'🥐',bg:'#FFFBEB',type:'Kopitiam',title:'Yut Kee (since 1928)',desc:'Legendary coffee shop. Breakfast only. Go before 10am.',order:'Roti babi (pork-stuffed bread), Hainanese chicken chop, kaya toast, soft-boiled eggs, kopi O',price:'~NZ$8 pp'},
+      {icon:'🦁',bg:'#FEF2F2',type:'Iconic',title:"Madam Kwan's KLCC",desc:'Upscale Malaysian comfort food inside Suria KLCC mall.',order:'Nasi bojari (KL-style nasi lemak with all the sides), ice kacang dessert',price:'~NZ$20 pp'},
+      {icon:'🍈',bg:'#F0FDFA',type:'Seasonal',title:'Musang King Durian (SS2)',desc:"July is durian season. KL's famous Musang King stalls are an experience.",order:'Musang King variety — creamy, bittersweet. One box for two to start. Cold water nearby',price:'~NZ$13–26 pp'},
     ],
     transport:[
-      {status:'tbc',method:'✈️ Arrive KLIA / KLIA2',detail:'KLIA Ekspres train to KL Sentral (~28 min, RM55). KLIA2 is budget terminal — same train link.'},
-      {status:'confirmed',method:'🚇 Getting Around',detail:'LRT and MRT cover key areas. Grab is essential for anywhere off the rail network. Very cheap vs Singapore.'},
+      {status:'tbc',method:'✈️ Arrive KLIA / KLIA2',detail:'KLIA Ekspres to KL Sentral (28 min, NZ$18). KLIA2 is the budget terminal — same train link.'},
+      {status:'confirmed',method:'🚇 Getting Around',detail:'LRT and MRT cover key areas. Grab is essential for anything off the rail network. Very cheap vs SG.'},
     ],
     nextstop:{destination:'Home 🇳🇿',options:[
       {status:'tbc',method:'✈️ KUL → AKL',detail:'KLIA to Auckland. ~10 hrs direct (Malaysia Airlines or Air NZ). Check in 3 hrs before.'},
@@ -675,491 +551,188 @@ const CITIES = {
   }
 };
 
-// ═══════════════════════════════════════════════
-// 21-DAY ITINERARY
-// ═══════════════════════════════════════════════
-
-const DAYS = [
-  {day:1,date:'Mon 14 Jul',city:'Hong Kong',emoji:'🇭🇰',color:'#F97316',
-   morning:{title:'Arrive Hong Kong',desc:'Land at HKG. Airport Express to Hong Kong Station (24 min). Check in and settle in with family.'},
-   afternoon:{title:'Rest + Local Dim Sum',desc:'Tim Ho Wan or a local cha chaan teng near your accommodation. Let the jet lag hit gently.'},
-   evening:{title:'Victoria Peak',desc:'Take the Peak Tram up for the city skyline at golden hour. Symphony of Lights from the waterfront at 8pm.'},
-   tip:'💡 Grab an Octopus card at the airport — use it everywhere including 7-Eleven.'},
-
-  {day:2,date:'Tue 15 Jul',city:'Hong Kong',emoji:'🇭🇰',color:'#F97316',
-   morning:{title:'Tian Tan Buddha (Lantau)',desc:'Ferry or bus to Lantau Island. Ngong Ping cable car to the Giant Buddha. Best in the morning before afternoon cloud.'},
-   afternoon:{title:'Mong Kok Markets',desc:'Ladies Market, Flower Market, Goldfish Market. Dense and chaotic — exactly what you want.'},
-   evening:{title:'Temple Street Night Market',desc:'Dai pai dong street food, fortune tellers, live Cantonese opera. Start at 7pm. End with wonton noodles.'},
-   tip:'💡 Temple Street is best from 7–10pm. Most stalls pack up after 11pm.'},
-
-  {day:3,date:'Wed 16 Jul',city:'Hong Kong → Chengdu',emoji:'🇨🇳',color:'#EF4444',
-   morning:{title:'Last Morning in HK',desc:'Early yum cha before heading to airport. Mak\'s Noodle for a final bowl of wonton soup.'},
-   afternoon:{title:'Fly HKG → CTU (~2.5 hrs)',desc:'Check in early — Chengdu Tianfu International Airport has a new metro link to the city centre.'},
-   evening:{title:'Arrive Chengdu',desc:'Check in, explore Chunxi Road area. First taste of authentic Sichuan food — dan dan mian or mapo tofu.'},
-   tip:'💡 Activate your VPN before landing in China — download Expresss VPN or NordVPN in HK.'},
-
-  {day:4,date:'Thu 17 Jul',city:'Chengdu',emoji:'🇨🇳',color:'#EF4444',
-   morning:{title:'Giant Panda Research Base',desc:'Taxi by 8am sharp. Pandas are active eating bamboo in the morning. After 10am they\'re asleep for hours.'},
-   afternoon:{title:'Wuhou Shrine + Jinli Street',desc:'Han dynasty memorial, then the adjacent old street for snacks — rabbit head, dumplings, sweet tofu.'},
-   evening:{title:'Hot Pot Dinner',desc:'Huangcheng Laoma or Haidilao for your first Sichuan hot pot experience. Order the split broth pot.'},
-   tip:'💡 Panda base gets crowded — go right at 8am opening and head to the nursery area first.'},
-
-  {day:5,date:'Fri 18 Jul',city:'Chengdu → Chongqing',emoji:'🇨🇳',color:'#DC2626',
-   morning:{title:'Kuanzhai Alley',desc:'Wide and Narrow Lanes — Qing dynasty alleyways with tea houses, local breakfast stalls, and crafts. Go before 10am.'},
-   afternoon:{title:'High-Speed Train to Chongqing (~75 min)',desc:'Book G-train from Chengdu East station. Fast, comfortable, punctual. Arrive Chongqing North or Bei.'},
-   evening:{title:'Arrive Chongqing + Hongyadong',desc:'Drop bags at hotel, head straight to Hongyadong cliff dwellings at night. Views are spectacular after dark.'},
-   tip:'💡 Buy train tickets on Trip.com or 12306.cn — book a few days ahead for G-train seats.'},
-
-  {day:6,date:'Sat 19 Jul',city:'Chongqing',emoji:'🇨🇳',color:'#DC2626',
-   morning:{title:'Ciqikou Ancient Town',desc:'Preserved Ming/Qing streets. Morning is quieter — locals buying fresh produce, temple incense. Street food along the walk.'},
-   afternoon:{title:'Yangtze River Views',desc:'Eling Park panoramic viewpoint. Where the two rivers meet. Then the famous monorail Line 2 through a building.'},
-   evening:{title:'Chongqing Hot Pot',desc:'De Zhuang or local hotpot spot. Chongqing-style is oilier and spicier than Chengdu. This is the original.'},
-   tip:'💡 Order "mandarin" (yuanyang) pot — half spicy, half mild. Your stomach will thank you.'},
-
-  {day:7,date:'Sun 20 Jul',city:'Chongqing → Bangkok',emoji:'🇹🇭',color:'#7C3AED',
-   morning:{title:'Morning Walk + Jiefangbei',desc:'CBD area in the morning. Liberation Monument and the glass-floored sky bridge over the intersection.'},
-   afternoon:{title:'Fly CKG → BKK (~3 hrs)',desc:'Chongqing Jiangbei Airport. Flight to Suvarnabhumi (BKK). Time zone changes — Thailand is 1 hr behind China.'},
-   evening:{title:'Arrive Bangkok',desc:'Airport Rail Link to Phaya Thai. Check in, cool off. Khao San Road area or rooftop bar to mark the arrival.'},
-   tip:'💡 Thailand is 1 hour behind China — update your clocks on landing.'},
-
-  {day:8,date:'Mon 21 Jul',city:'Bangkok',emoji:'🇹🇭',color:'#7C3AED',
-   morning:{title:'Grand Palace + Wat Phra Kaew',desc:'Lines open at 8:30am — be there. Dress code enforced (no shorts, no bare shoulders). Borrow wraps at entrance.'},
-   afternoon:{title:'Wat Pho + Wat Arun',desc:'Reclining Buddha at Wat Pho (walk from Grand Palace). Ferry across to Wat Arun. Climb the prang for views.'},
-   evening:{title:'Chao Phraya Night Cruise',desc:'Dinner cruise or just the Chao Phraya Express river taxi. Float past illuminated temples at dusk. Magical.'},
-   tip:'💡 Tuk-tuk drivers near the Grand Palace will offer "temple tours" then take you to gem shops. Decline.'},
-
-  {day:9,date:'Tue 22 Jul',city:'Bangkok',emoji:'🇹🇭',color:'#7C3AED',
-   morning:{title:'Or Tor Kor Fresh Market',desc:'Bangkok\'s finest fresh market near Chatuchak Park. Fresh fruit, prepared foods, mango sticky rice. Early is best.'},
-   afternoon:{title:'Jim Thompson House + MBK',desc:'Silk merchant\'s Thai-style house museum. Then MBK Center for budget shopping, street food court, and chaos.'},
-   evening:{title:'Yaowarat Chinatown Night',desc:'Eat your way through Yaowarat Road after 7pm. Roast duck, dim sum, street seafood, shark fin soup stalls.'},
-   tip:'💡 Grab app works great in Bangkok. Always confirm price on rideshare — never agree to metered taxis at night markets.'},
-
-  {day:10,date:'Wed 23 Jul',city:'Bangkok → Krabi',emoji:'🇹🇭',color:'#0EA5E9',
-   morning:{title:'Boat Noodles at Victory Monument',desc:'One last Bangkok bowl — boat noodle alley near Victory Monument BTS. 10–15 THB per bowl. Order 8.'},
-   afternoon:{title:'Fly DMK → KBV (~1.5 hrs)',desc:'Don Mueang Airport (DMK) for budget flights. Krabi airport is small — minivan to Ao Nang is 30 min.'},
-   evening:{title:'Arrive Ao Nang, Krabi',desc:'Beach walk, cold Chang beer, seafood dinner watching longtail boats bob in front of limestone karsts.'},
-   tip:'💡 Don Mueang (DMK) is the budget terminal — different from Suvarnabhumi (BKK). Allow travel time between airports.'},
-
-  {day:11,date:'Thu 24 Jul',city:'Krabi',emoji:'🇹🇭',color:'#0EA5E9',
-   morning:{title:'4 Islands Boat Tour',desc:'Full-day longtail boat tour to Tup, Chicken, Poda Islands and Emerald Cave. Depart from Ao Nang pier 9am.'},
-   afternoon:{title:'Island Hopping',desc:'Snorkel at Poda Island, eat lunch on the beach, swim in turquoise water. Phone fully offloaded from reality.'},
-   evening:{title:'Krabi Town Night Market',desc:'Tuk-tuk into Krabi Town for the weekly walking street market. Fresh seafood, satay, fresh coconut. Very local.'},
-   tip:'💡 Bring reef-safe sunscreen, cash for boat tours, and waterproof phone case. Islands have no ATMs.'},
-
-  {day:12,date:'Fri 25 Jul',city:'Krabi',emoji:'🇹🇭',color:'#0EA5E9',
-   morning:{title:'Tiger Cave Temple (5:30am)',desc:'1,237 steps. Leave before 6am for sunrise at the top. Hardest hike of the trip; views over mangroves are worth it.'},
-   afternoon:{title:'Railay Beach Day Trip',desc:'Longtail from Ao Nang (~15 min, 100 THB each way). Swim at West Railay, walk to Phra Nang Cave Beach.'},
-   evening:{title:'Seafood Sunset Dinner',desc:'Back in Ao Nang, beachfront seafood restaurant. Grilled whole fish, green papaya salad, cold beer at sunset.'},
-   tip:'💡 Tiger Cave: there are monkeys at the top — keep food hidden and bags zipped.'},
-
-  {day:13,date:'Sat 26 Jul',city:'Krabi → Phuket',emoji:'🇹🇭',color:'#F97316',
-   morning:{title:'Check Out + Transfer',desc:'Minivan or ferry from Ao Nang to Phuket (~2.5 hrs). Book through guesthouse the night before.'},
-   afternoon:{title:'Arrive Phuket + Old Town Walk',desc:'Portuguese-Sino architecture, street art murals, indie cafés. Rassada Road area for local food.'},
-   evening:{title:'Phuket Saturday Walking Street',desc:'Lard Yai Walking Street every Saturday near Thalang Road. Food, crafts, live music in the old town.'},
-   tip:'💡 Phuket Old Town is far from Patong Beach — decide on your base before booking accommodation.'},
-
-  {day:14,date:'Sun 27 Jul',city:'Phuket',emoji:'🇹🇭',color:'#F97316',
-   morning:{title:'Big Buddha + Viewpoint',desc:'Drive up Nakkerd Hill for sunrise over south Phuket. Big Buddha is 45m marble — visually stunning. Free.'},
-   afternoon:{title:'Phang Nga Bay Tour',desc:'James Bond Island + sea canoeing through sea caves. Full day. Best tours depart 8am — book the night before.'},
-   evening:{title:'Sunset at Promthep Cape',desc:'Southernmost point of Phuket. Brings entire island out for sunset. Follow with dinner at Da Maurizio.'},
-   tip:'💡 July is shoulder season — Phang Nga Bay tours run daily and aren\'t too crowded yet.'},
-
-  {day:15,date:'Mon 28 Jul',city:'Phuket → Singapore',emoji:'🇸🇬',color:'#DC2626',
-   morning:{title:'Beach Final Morning',desc:'One last morning on the beach. Karon or Kata for calmer water than Patong. Breakfast at local roti spot.'},
-   afternoon:{title:'Fly HKT → SIN (~1.5 hrs)',desc:'Phuket International. Arrive Changi — spend 30 minutes in Terminal 3\'s Jewel before heading to city.'},
-   evening:{title:'Arrive Singapore',desc:'MRT into city. Marina Bay waterfront walk at night. First hawker centre — Newton or Lau Pa Sat.'},
-   tip:'💡 Changi Airport is extraordinary — arrive 2 hours early and explore it properly. The waterfall alone is worth it.'},
-
-  {day:16,date:'Tue 29 Jul',city:'Singapore',emoji:'🇸🇬',color:'#DC2626',
-   morning:{title:'Gardens by the Bay',desc:'Cloud Forest dome opens at 9am. Then walk the Supertree Grove. OCBC Skyway bridge costs $8 and is worth it.'},
-   afternoon:{title:'Maxwell Food Centre + Chinatown',desc:'Tian Tian Chicken Rice for lunch (arrive before 11:30am). Heritage Museum, Ann Siang Hill for bars.'},
-   evening:{title:'Lau Pa Sat Satay Street',desc:'Boon Tat Street closes at 7pm — satay vendors set up. Order by the skewer, cold Tiger Beer mandatory.'},
-   tip:'💡 Maxwell Food Centre for Tian Tian — queue starts by 11am. Don\'t miss it.'},
-
-  {day:17,date:'Wed 30 Jul',city:'Singapore → Bintan',emoji:'🇮🇩',color:'#0EA5E9',
-   morning:{title:'Sentosa or Little India',desc:'Sentosa beach clubs or wander Little India (Serangoon Road) for a colourful, fragrant morning before ferry.'},
-   afternoon:{title:'Ferry to Bintan (~50 min)',desc:'Tanah Merah Ferry Terminal. Bintan Resort Ferries run multiple times daily. Book in advance.'},
-   evening:{title:'Arrive Bintan Resort',desc:'Resort transfer from ferry terminal. Beach walk, sunset cocktails. Let the island do its thing.'},
-   tip:'💡 Book the ferry in advance — it fills up on weekends with Singapore day-trippers.'},
-
-  {day:18,date:'Thu 31 Jul',city:'Bintan',emoji:'🇮🇩',color:'#0EA5E9',
-   morning:{title:'Beach Morning + Watersports',desc:'Jet ski, kayaking, or just a lounger with a coconut. This is the planned rest day — surrender to it.'},
-   afternoon:{title:'Treasure Bay or Spa',desc:'Treasure Bay Crystal Lagoon for pedal boats and water slides. Or book a couples massage at the resort spa.'},
-   evening:{title:'Ikan Bakar Dinner',desc:'Resort restaurant or ask staff to take you to the local ikan bakar (grilled fish) warung near Lagoi Bay.'},
-   tip:'💡 Bring Indonesian Rupiah — local warungs outside the resort don\'t always take cards or SGD.'},
-
-  {day:19,date:'Fri 1 Aug',city:'Bintan → Kuala Lumpur',emoji:'🇲🇾',color:'#0F766E',
-   morning:{title:'Last Bintan Morning',desc:'Walk the beach at sunrise, breakfast at the resort. Pack and head to the ferry terminal.'},
-   afternoon:{title:'Ferry to Singapore + Fly to KL',desc:'Ferry back to Tanah Merah, connect to Changi for SIN–KUL flight (~50 min). Or consider the luxury coach.'},
-   evening:{title:'Arrive KL + Jalan Alor',desc:'Drop bags near KLCC or Bukit Bintang. Head straight to Jalan Alor food street for the iconic night market meal.'},
-   tip:'💡 KLIA Ekspres from KLIA to KL Sentral is 28 min. Grab from KL Sentral to hotel is a few minutes.'},
-
-  {day:20,date:'Sat 2 Aug',city:'Kuala Lumpur',emoji:'🇲🇾',color:'#0F766E',
-   morning:{title:'Petronas Twin Towers',desc:'Book SkyBridge + observation deck online. Morning is clearest for views. KLCC Park below is free.'},
-   afternoon:{title:'Batu Caves',desc:'KTM Komuter from KL Sentral to Batu Caves station (30 min, RM1). 272 rainbow stairs. Colourful and dramatic.'},
-   evening:{title:'Bukit Bintang + Pavillion',desc:'Window shop or buy. Dinner at Jalan Alor again (or try different stall). Night ends at a rooftop bar in Bukit Bintang.'},
-   tip:'💡 July is durian season in Malaysia — try Musang King durian from a proper stall before you leave.'},
-
-  {day:21,date:'Sun 3 Aug',city:'Depart Kuala Lumpur',emoji:'🇳🇿',color:'#059669',
-   morning:{title:'Final KL Breakfast',desc:'Old kopitiam breakfast — kaya toast, soft-boiled eggs with kecap manis, Hainanese coffee. Yut Kee or any old coffeehouse.'},
-   afternoon:{title:'Head to KLIA',desc:'KLIA Ekspres from KL Sentral. Check in 3 hours before. Malaysia Airlines or Air NZ back to Auckland.'},
-   evening:{title:'Fly Home 🇳🇿',desc:'Long-haul back to AKL. Arrive home with suitcases full, stomachs still processing, and plans for next time.'},
-   tip:'💡 Malaysian Duty Free at KLIA is genuinely good — last chance for mango juice, local coffee, chocolates.'},
+// ─── 21-DAY ITINERARY ───
+const DAYS=[
+  {day:1,date:'Mon 14 Jul',city:'Hong Kong',emoji:'🇭🇰',color:'#FF6B35',morning:{title:'Arrive Hong Kong',desc:'Land at HKG. Airport Express to Hong Kong Station (24 min). Check in with family.'},afternoon:{title:'Rest + Tim Ho Wan',desc:'Dim sum lunch nearby. Let the jet lag hit gently. Wander the local neighbourhood.'},evening:{title:'Victoria Peak',desc:'Take the Peak Tram up for the city skyline at golden hour. Symphony of Lights from the waterfront at 8pm.'},tip:'💡 Grab an Octopus card at the airport — works everywhere including 7-Eleven.'},
+  {day:2,date:'Tue 15 Jul',city:'Hong Kong',emoji:'🇭🇰',color:'#FF6B35',morning:{title:'Tian Tan Buddha (Lantau)',desc:'Ferry or bus to Lantau Island. Ngong Ping cable car to the Giant Buddha. Morning before the afternoon cloud rolls in.'},afternoon:{title:'Mong Kok Markets',desc:"Ladies Market, Flower Market, Goldfish Market. Dense and chaotic — exactly what you want."},evening:{title:'Temple Street Night Market',desc:'Street food, fortune tellers, live Cantonese opera. Start at 7pm. End with wonton noodles.'},tip:'💡 Temple Street is best 7–10pm. Most stalls pack up after 11pm.'},
+  {day:3,date:'Wed 16 Jul',city:'Hong Kong → Chengdu',emoji:'🇨🇳',color:'#FF3B30',morning:{title:"Last HK Morning",desc:"Early yum cha before heading to airport. Mak's Noodle for a final bowl of wonton soup."},afternoon:{title:'Fly HKG → CTU (~2.5 hrs)',desc:'Arrive Chengdu Tianfu. Metro Line 18 to city centre (~45 min).'},evening:{title:'Arrive Chengdu',desc:"Check in, explore Chunxi Road. First taste of Sichuan — dan dan mian or mapo tofu."},tip:'💡 Activate your VPN before landing — download ExpressVPN while still in HK.'},
+  {day:4,date:'Thu 17 Jul',city:'Chengdu',emoji:'🇨🇳',color:'#FF3B30',morning:{title:'Giant Panda Research Base',desc:'Taxi at 8am sharp. Pandas are active feeding in the morning. After 10am they sleep.'},afternoon:{title:'Wuhou Shrine + Jinli Street',desc:'Han dynasty memorial, then the adjacent old street for snacks — rabbit head, dumplings, sweet tofu.'},evening:{title:'Hot Pot Dinner',desc:'Huangcheng Laoma or Haidilao. Order the split broth pot. First Sichuan hotpot experience.'},tip:'💡 Panda base: get there right at 8am and head to the nursery area first.'},
+  {day:5,date:'Fri 18 Jul',city:'Chengdu → Chongqing',emoji:'🇨🇳',color:'#DC2626',morning:{title:'Kuanzhai Alley',desc:'Wide and Narrow Lanes — Qing dynasty alleyways. Go before 10am for a quiet walkthrough.'},afternoon:{title:'High-Speed Train to Chongqing (~75 min)',desc:'G-train from Chengdu East. Fast, comfortable, punctual.'},evening:{title:'Arrive Chongqing + Hongyadong',desc:'Drop bags, head straight to the cliff dwellings at night. Views are spectacular after dark.'},tip:'💡 Book G-train on Trip.com a few days ahead. Seats sell out at peak hours.'},
+  {day:6,date:'Sat 19 Jul',city:'Chongqing',emoji:'🇨🇳',color:'#DC2626',morning:{title:'Ciqikou Ancient Town',desc:'Morning is quieter — locals buying fresh produce, temple incense burning. Street food walk.'},afternoon:{title:'Yangtze River + Monorail',desc:'Eling Park panoramic viewpoint. Then the famous monorail Line 2 that runs through a building.'},evening:{title:'Chongqing Hot Pot',desc:'De Zhuang or a local spot. Chongqing-style is oilier and spicier than Chengdu. The original.'},tip:'💡 Order the mandarin (yuanyang) split pot — half spicy, half mild. Your stomach will thank you.'},
+  {day:7,date:'Sun 20 Jul',city:'Chongqing → Bangkok',emoji:'🇹🇭',color:'#7C3AED',morning:{title:'Jiefangbei CBD',desc:'Liberation Monument area in the morning. Glass-floored sky bridge over the intersection.'},afternoon:{title:'Fly CKG → BKK (~3 hrs)',desc:'Chongqing Jiangbei Airport. Thailand is 1 hour behind China — update your clocks on landing.'},evening:{title:'Arrive Bangkok',desc:'Airport Rail Link to Phaya Thai. Check in, cool down. Street food nearby or rooftop bar.'},tip:'💡 Thailand is GMT+7, China is GMT+8. You gain an hour on this flight.'},
+  {day:8,date:'Mon 21 Jul',city:'Bangkok',emoji:'🇹🇭',color:'#7C3AED',morning:{title:'Grand Palace + Wat Phra Kaew',desc:"Lines open at 8:30am — be there. Shoulders and knees covered (borrow wraps at entrance)."},afternoon:{title:'Wat Pho + Wat Arun',desc:'Reclining Buddha at Wat Pho (walk from Grand Palace). Ferry 4 THB across to Wat Arun.'},evening:{title:'Chao Phraya Night',desc:'Dinner cruise or Chao Phraya Express river taxi. Temples lit up at dusk. Magical.'},tip:"💡 Tuk-tuk drivers near the Grand Palace will offer 'temple tours' — all go to gem shops. Decline."},
+  {day:9,date:'Tue 22 Jul',city:'Bangkok',emoji:'🇹🇭',color:'#7C3AED',morning:{title:'Or Tor Kor Market',desc:"Bangkok's finest fresh market. Near Chatuchak Park. Mango sticky rice, prepared foods."},afternoon:{title:'Jim Thompson House + MBK',desc:'Silk merchant museum, then MBK Center for budget shopping, street food court, and chaos.'},evening:{title:'Yaowarat Chinatown Night',desc:'Eat through Yaowarat Road after 7pm. Roast duck, dim sum, street seafood.'},tip:'💡 Grab works great in Bangkok. Always book rides — never agree to price with metered taxis.'},
+  {day:10,date:'Wed 23 Jul',city:'Bangkok → Krabi',emoji:'🇹🇭',color:'#0EA5E9',morning:{title:'Boat Noodles (Victory Monument)',desc:'One last Bangkok bowl at the boat noodle alley near Victory Monument BTS.'},afternoon:{title:'Fly DMK → KBV (~1.5 hrs)',desc:"Don Mueang (DMK) for budget flights — different airport to Suvarnabhumi (BKK). Allow travel time."},evening:{title:'Arrive Ao Nang, Krabi',desc:'Beach walk, cold Chang beer, seafood dinner watching longtail boats bob in front of karsts.'},tip:'💡 DMK is the budget airport. It is NOT Suvarnabhumi (BKK). They are 30km apart.'},
+  {day:11,date:'Thu 24 Jul',city:'Krabi',emoji:'🇹🇭',color:'#0EA5E9',morning:{title:'4 Islands Boat Tour',desc:'Full-day longtail boat. Depart from Ao Nang pier 9am. Book the night before.'},afternoon:{title:'Island Hopping',desc:'Snorkel at Poda Island, lunch on the beach, swim in turquoise water.'},evening:{title:'Krabi Town Night Market',desc:'Tuk-tuk into Krabi Town for the walking street market. Very local, very good.'},tip:'💡 Bring reef-safe sunscreen, cash (no ATMs on islands), waterproof phone case.'},
+  {day:12,date:'Fri 25 Jul',city:'Krabi',emoji:'🇹🇭',color:'#0EA5E9',morning:{title:'Tiger Cave Temple (5:30am)',desc:'1,237 steps. Sunrise at the top. Hardest physical thing on the trip — completely worth it.'},afternoon:{title:'Railay Beach Day Trip',desc:'Longtail from Ao Nang (15 min, 100 THB). West Railay, Phra Nang Cave Beach.'},evening:{title:'Seafood Sunset Dinner',desc:'Beachfront restaurant in Ao Nang. Grilled whole fish at sunset. Cold beer.'},tip:'💡 Tiger Cave: there are monkeys at the top. Keep food hidden and bags zipped.'},
+  {day:13,date:'Sat 26 Jul',city:'Krabi → Phuket',emoji:'🇹🇭',color:'#FF6B35',morning:{title:'Check Out + Transfer',desc:'Minivan or ferry from Ao Nang to Phuket (~2.5 hrs). Book through guesthouse night before.'},afternoon:{title:'Arrive Phuket + Old Town Walk',desc:'Sino-Portuguese architecture, street art murals, indie cafés. Rassada Road for food.'},evening:{title:'Saturday Walking Street',desc:'Lard Yai Walking Street near Thalang Road. Food, crafts, live music in the old town.'},tip:'💡 Phuket Old Town is far from Patong Beach — decide your base before booking accommodation.'},
+  {day:14,date:'Sun 27 Jul',city:'Phuket',emoji:'🇹🇭',color:'#FF6B35',morning:{title:'Big Buddha + Viewpoint',desc:'Drive up Nakkerd Hill for sunrise over south Phuket. Free. Visually stunning.'},afternoon:{title:'Phang Nga Bay Tour',desc:'James Bond Island + sea canoeing. Book the night before, depart 8am.'},evening:{title:'Sunset at Promthep Cape',desc:'Southernmost point. Whole island turns out for sunset. Then Da Maurizio for dinner.'},tip:'💡 July is shoulder season — Phang Nga Bay tours run daily and are not too crowded.'},
+  {day:15,date:'Mon 28 Jul',city:'Phuket → Singapore',emoji:'🇸🇬',color:'#DC2626',morning:{title:'Last Beach Morning',desc:'Karon or Kata Beach. Calmer than Patong. Roti and Thai iced tea for breakfast.'},afternoon:{title:'Fly HKT → SIN (~1.5 hrs)',desc:'Phuket International. Arrive Changi — 30 min in Jewel Terminal before heading to city.'},evening:{title:'Arrive Singapore',desc:'MRT into city. Marina Bay waterfront walk at night. First hawker centre — Newton or Lau Pa Sat.'},tip:'💡 Changi Airport is extraordinary — arrive 2 hours early and explore it. The waterfall alone.'},
+  {day:16,date:'Tue 29 Jul',city:'Singapore',emoji:'🇸🇬',color:'#DC2626',morning:{title:'Gardens by the Bay',desc:'Cloud Forest opens 9am. Walk the Supertree Grove. OCBC Skyway bridge ($8) is worth it.'},afternoon:{title:'Maxwell Food Centre + Chinatown',desc:'Tian Tian Chicken Rice for lunch (arrive before 11:30am). Ann Siang Hill for afternoon.'},evening:{title:'Lau Pa Sat Satay Street',desc:'Boon Tat Street closes at 7pm — satay vendors set up. Cold Tiger Beer mandatory.'},tip:'💡 Maxwell Food Centre: Tian Tian queue starts by 11am. Do not miss this.'},
+  {day:17,date:'Wed 30 Jul',city:'Singapore → Bintan',emoji:'🇮🇩',color:'#0EA5E9',morning:{title:'Sentosa or Little India',desc:'Beach clubs on Sentosa or wander Little India (Serangoon Road) before ferry.'},afternoon:{title:'Ferry to Bintan (~50 min)',desc:'Tanah Merah Ferry Terminal. Multiple sailings daily. Book in advance — fills up.'},evening:{title:'Arrive Bintan Resort',desc:'Resort transfer from ferry terminal. Sunset cocktails on the beach. Island mode: on.'},tip:'💡 Book the ferry well in advance — weekends fill up with Singapore day-trippers.'},
+  {day:18,date:'Thu 31 Jul',city:'Bintan',emoji:'🇮🇩',color:'#0EA5E9',morning:{title:'Beach + Watersports',desc:'Jet ski, kayak, or just a sunlounger with a coconut. This is the planned rest day.'},afternoon:{title:'Treasure Bay or Spa',desc:'Crystal Lagoon pedal boats and water slides, or couples massage at the resort spa.'},evening:{title:'Ikan Bakar Dinner',desc:'Ask staff to take you to the local grilled fish warung near Lagoi Bay.'},tip:'💡 Bring Indonesian Rupiah — local warungs outside the resort do not always take cards.'},
+  {day:19,date:'Fri 1 Aug',city:'Bintan → Kuala Lumpur',emoji:'🇲🇾',color:'#059669',morning:{title:'Last Bintan Morning',desc:'Walk the beach at sunrise, resort breakfast. Pack and head to the ferry terminal.'},afternoon:{title:'Ferry to Singapore + Fly to KL',desc:'Ferry back to Tanah Merah (~50 min), connect to Changi for SIN–KUL (~50 min flight).'},evening:{title:'Arrive KL + Jalan Alor',desc:"Drop bags near KLCC or Bukit Bintang. Straight to Jalan Alor food street."},tip:'💡 KLIA Ekspres from KLIA to KL Sentral is 28 min, NZ$18. Very comfortable.'},
+  {day:20,date:'Sat 2 Aug',city:'Kuala Lumpur',emoji:'🇲🇾',color:'#059669',morning:{title:'Petronas Twin Towers',desc:'Morning is clearest for views. Book SkyBridge + observation deck online. KLCC Park is free.'},afternoon:{title:'Batu Caves',desc:'KTM Komuter from KL Sentral to Batu Caves station (30 min, NZ$0.50). 272 rainbow stairs.'},evening:{title:'Bukit Bintang + Jalan Alor',desc:'Window shop or buy. Dinner at Jalan Alor. Night ends at a rooftop bar in Bukit Bintang.'},tip:'💡 July is durian season — try Musang King from a proper stall before you leave Malaysia.'},
+  {day:21,date:'Sun 3 Aug',city:'Depart Kuala Lumpur',emoji:'🇳🇿',color:'#059669',morning:{title:'Final KL Breakfast',desc:"Old kopitiam: kaya toast, soft-boiled eggs, Hainanese coffee. Yut Kee or any old coffeehouse."},afternoon:{title:'Head to KLIA',desc:'KLIA Ekspres from KL Sentral. Check in 3 hours before. Duty-free for kaya jam and local coffee.'},evening:{title:'Fly Home 🇳🇿',desc:'Long-haul back to Auckland. Arrive home with full stomachs and plans for next time.'},tip:'💡 Malaysian Duty Free at KLIA is genuinely good — mango juice, local coffee, Beryl\'s chocolates.'},
 ];
 
-// ═══════════════════════════════════════════════
-// BOOKINGS
-// ═══════════════════════════════════════════════
-
-const BOOKINGS = {
+// ─── BOOKINGS ───
+const BOOKINGS={
   flights:[
-    {status:'confirmed',title:'NZ → Hong Kong (Outbound)',detail:'14 Jul 2026 · Check booking confirmation for flight details',ref:''},
-    {status:'tbc',title:'HKG → CTU (Chengdu)',detail:'16 Jul 2026 · Book with Cathay Pacific or Air China',ref:'TBC'},
-    {status:'confirmed',title:'CTU → CKG (Train)',detail:'18 Jul · G-train Chengdu East → Chongqing ~75 min',ref:''},
-    {status:'confirmed',title:'CKG → BKK (Bangkok)',detail:'20 Jul 2026 · Check booking confirmation',ref:''},
-    {status:'confirmed',title:'BKK → KBV (Krabi)',detail:'23 Jul 2026 · Don Mueang Airport (DMK) → Krabi (KBV)',ref:''},
-    {status:'tbc',title:'Krabi → Phuket',detail:'26 Jul · Ferry or minivan — book locally',ref:'TBC'},
-    {status:'confirmed',title:'HKT → SIN (Singapore)',detail:'28 Jul 2026 · Phuket → Singapore Changi',ref:''},
-    {status:'tbc',title:'Bintan Ferry (Both Ways)',detail:'30 Jul (outbound) + 1 Aug (return) · Bintan Resort Ferries',ref:'TBC'},
-    {status:'tbc',title:'SIN → KUL (Kuala Lumpur)',detail:'1 Aug 2026 · Changi → KLIA',ref:'TBC'},
-    {status:'tbc',title:'KUL → AKL (Home)',detail:'3 Aug 2026 · KLIA → Auckland · Book Malaysia Airlines',ref:'TBC'},
+    {status:'confirmed',title:'NZ → Hong Kong (Outbound)',detail:'14 Jul 2026 · Outbound flight details in your email'},
+    {status:'tbc',title:'HKG → CTU (Chengdu)',detail:'16 Jul 2026 · Book Cathay Pacific or Air China direct'},
+    {status:'confirmed',title:'Chengdu → Chongqing (Train)',detail:'18 Jul · G-train CTU East → CQB ~75 min'},
+    {status:'confirmed',title:'CKG → BKK (Bangkok)',detail:'20 Jul 2026 · Chongqing to Suvarnabhumi'},
+    {status:'confirmed',title:'DMK → KBV (Krabi)',detail:'23 Jul 2026 · Don Mueang to Krabi'},
+    {status:'tbc',title:'Krabi → Phuket Transfer',detail:'26 Jul · Minivan or ferry — book locally in Ao Nang'},
+    {status:'confirmed',title:'HKT → SIN (Singapore)',detail:'28 Jul 2026 · Phuket to Changi'},
+    {status:'tbc',title:'Bintan Ferry (Both Ways)',detail:'30 Jul outbound + 1 Aug return · Bintan Resort Ferries'},
+    {status:'tbc',title:'SIN → KUL (Kuala Lumpur)',detail:'1 Aug 2026 · Changi to KLIA'},
+    {status:'tbc',title:'KUL → AKL (Home)',detail:'3 Aug 2026 · KLIA to Auckland'},
   ],
   hotels:[
-    {status:'confirmed',title:'Hong Kong',detail:'14–16 Jul · Staying with family',ref:''},
-    {status:'tbc',title:'Chengdu Hotel',detail:'16–18 Jul · 2 nights · TBC',ref:'TBC'},
-    {status:'tbc',title:'Chongqing Hotel',detail:'18–20 Jul · 2 nights · TBC',ref:'TBC'},
-    {status:'tbc',title:'Bangkok Hotel',detail:'20–23 Jul · 3 nights · TBC',ref:'TBC'},
-    {status:'tbc',title:'Krabi/Ao Nang Hotel',detail:'23–26 Jul · 3 nights · TBC',ref:'TBC'},
-    {status:'tbc',title:'Phuket Hotel',detail:'26–28 Jul · 2 nights · TBC',ref:'TBC'},
-    {status:'tbc',title:'Singapore Hotel',detail:'28–30 Jul · 2 nights · TBC',ref:'TBC'},
-    {status:'tbc',title:'Bintan Resort',detail:'30 Jul – 1 Aug · 2 nights · Book Bintan Resort Hotels',ref:'TBC'},
-    {status:'tbc',title:'Kuala Lumpur Hotel',detail:'1–3 Aug · 2 nights · KLCC or Bukit Bintang area',ref:'TBC'},
+    {status:'confirmed',title:'Hong Kong',detail:'14–16 Jul · Staying with family'},
+    {status:'tbc',title:'Chengdu Hotel',detail:'16–18 Jul · 2 nights · TBC'},
+    {status:'tbc',title:'Chongqing Hotel',detail:'18–20 Jul · 2 nights · TBC'},
+    {status:'tbc',title:'Bangkok Hotel',detail:'20–23 Jul · 3 nights · TBC'},
+    {status:'tbc',title:'Krabi / Ao Nang Hotel',detail:'23–26 Jul · 3 nights · TBC'},
+    {status:'tbc',title:'Phuket Hotel',detail:'26–28 Jul · 2 nights · TBC'},
+    {status:'tbc',title:'Singapore Hotel',detail:'28–30 Jul · 2 nights · TBC'},
+    {status:'tbc',title:'Bintan Resort',detail:'30 Jul – 1 Aug · 2 nights · TBC'},
+    {status:'tbc',title:'Kuala Lumpur Hotel',detail:'1–3 Aug · 2 nights · Bukit Bintang area'},
   ]
 };
 
-// ═══════════════════════════════════════════════
-// EMERGENCY CONTACTS
-// ═══════════════════════════════════════════════
-
-const EMERGENCY = [
-  {country:'🇭🇰 Hong Kong',items:[
-    {label:'Police / Fire / Ambulance',num:'999'},
-    {label:'NZ Consulate General HK',num:'+852 2525 5044'},
-  ]},
-  {country:'🇨🇳 China (Chengdu & Chongqing)',items:[
-    {label:'Police',num:'110'},
-    {label:'Ambulance',num:'120'},
-    {label:'Fire',num:'119'},
-    {label:'NZ Embassy Beijing',num:'+86 10 8531 2700'},
-    {label:'NZ Consulate Chengdu',num:'+86 28 8526 0222'},
-  ]},
-  {country:'🇹🇭 Thailand (Bangkok, Krabi, Phuket)',items:[
-    {label:'Emergency',num:'191'},
-    {label:'Tourist Police',num:'1155'},
-    {label:'Ambulance',num:'1669'},
-    {label:'NZ Embassy Bangkok',num:'+66 2 254 2530'},
-  ]},
-  {country:'🇸🇬 Singapore',items:[
-    {label:'Police',num:'999'},
-    {label:'Ambulance / Fire',num:'995'},
-    {label:'NZ High Commission Singapore',num:'+65 6235 9966'},
-  ]},
-  {country:'🇮🇩 Indonesia (Bintan)',items:[
-    {label:'Police',num:'110'},
-    {label:'Ambulance',num:'118'},
-    {label:'NZ Embassy Jakarta',num:'+62 21 2995 5800'},
-  ]},
-  {country:'🇲🇾 Malaysia (KL)',items:[
-    {label:'Police / Ambulance',num:'999'},
-    {label:'Tourist Hotline',num:'1800-88-5050'},
-    {label:'NZ High Commission KL',num:'+60 3 2078 2533'},
-  ]},
+// ─── EMERGENCY ───
+const EMERGENCY=[
+  {country:'🇭🇰 Hong Kong',items:[{l:'Police / Fire / Ambulance',n:'999'},{l:'NZ Consulate General HK',n:'+852 2525 5044'}]},
+  {country:'🇨🇳 China (Chengdu & Chongqing)',items:[{l:'Police',n:'110'},{l:'Ambulance',n:'120'},{l:'Fire',n:'119'},{l:'NZ Embassy Beijing',n:'+86 10 8531 2700'},{l:'NZ Consulate Chengdu',n:'+86 28 8526 0222'}]},
+  {country:'🇹🇭 Thailand (Bangkok, Krabi, Phuket)',items:[{l:'Emergency',n:'191'},{l:'Tourist Police',n:'1155'},{l:'Ambulance',n:'1669'},{l:'NZ Embassy Bangkok',n:'+66 2 254 2530'}]},
+  {country:'🇸🇬 Singapore',items:[{l:'Police',n:'999'},{l:'Ambulance / Fire',n:'995'},{l:'NZ High Commission SG',n:'+65 6235 9966'}]},
+  {country:'🇮🇩 Indonesia (Bintan)',items:[{l:'Police',n:'110'},{l:'Ambulance',n:'118'},{l:'NZ Embassy Jakarta',n:'+62 21 2995 5800'}]},
+  {country:'🇲🇾 Malaysia (KL)',items:[{l:'Police / Ambulance',n:'999'},{l:'Tourist Hotline',n:'1800-88-5050'},{l:'NZ High Commission KL',n:'+60 3 2078 2533'}]},
 ];
 
-// ═══════════════════════════════════════════════
-// SIM CARDS
-// ═══════════════════════════════════════════════
-
-const SIM_CARDS = [
-  {country:'🇭🇰 Hong Kong',color:'#EFF6FF',headColor:'#1E3A8A',items:[
-    {text:'<strong>Buy at airport:</strong> Three HK, CMHK, SmarTone all have airport kiosks.'},
-    {text:'<strong>Tourist SIM (~HK$80):</strong> 7-day unlimited data. Very fast 5G coverage.'},
-    {text:'<strong>Tip:</strong> HK SIM works as international roaming in Macau. Keep it active for China border crossing.'},
-  ]},
-  {country:'🇨🇳 China (Chengdu & Chongqing)',color:'#FEF2F2',headColor:'#7F1D1D',items:[
-    {text:'<strong>VPN first:</strong> Activate your VPN (ExpressVPN/NordVPN) before crossing the border into China.'},
-    {text:'<strong>SIM options:</strong> China Mobile or China Unicom tourist SIM. Buy at border or major airports.'},
-    {text:'<strong>Data roaming:</strong> Your HK SIM may offer China roaming — check with your HK carrier.'},
-    {text:'<strong>Apps to download before arrival:</strong> WeChat Pay, Alipay, DiDi, Baidu Maps (offline maps).'},
-    {text:'<strong>Blocked:</strong> Google, WhatsApp, Instagram, Facebook all blocked without VPN.'},
-  ]},
-  {country:'🇹🇭 Thailand (3 cities)',color:'#ECFDF5',headColor:'#065F46',items:[
-    {text:'<strong>Buy at Suvarnabhumi Airport:</strong> AIS, DTAC, or TrueMove H kiosks in arrivals.'},
-    {text:'<strong>Tourist SIM (~299–399 THB):</strong> 15–30 days, unlimited data, may include calls.'},
-    {text:'<strong>AIS recommended:</strong> Best rural coverage for Krabi/island areas. DTAC also good.'},
-    {text:'<strong>eSIM option:</strong> Airalo app has Thailand eSIM from ~NZ$15 for 15 days.'},
-  ]},
-  {country:'🇸🇬 Singapore',color:'#F0F9FF',headColor:'#0C4A6E',items:[
-    {text:'<strong>Buy at Changi Airport:</strong> Singtel, StarHub, M1 — all have kiosks in arrivals.'},
-    {text:'<strong>Tourist SIM (~S$15–20):</strong> 7-day unlimited data. Excellent 5G everywhere.'},
-    {text:'<strong>eSIM option:</strong> Singtel Prepaid eSIM activates immediately on landing.'},
-  ]},
-  {country:'🇮🇩 Indonesia (Bintan)',color:'#FFFBEB',headColor:'#78350F',items:[
-    {text:'<strong>Buy at ferry terminal or resort:</strong> Telkomsel or XL Axiata for best coverage.'},
-    {text:'<strong>Resort coverage:</strong> Most Bintan resorts have strong WiFi — SIM may not be needed.'},
-    {text:'<strong>Tip:</strong> Singapore SIM may offer Indonesia roaming — check rates before the ferry.'},
-  ]},
-  {country:'🇲🇾 Malaysia (KL)',color:'#F0FDFA',headColor:'#134E4A',items:[
-    {text:'<strong>Buy at KLIA airport:</strong> Maxis, Celcom, Digi all have counters in arrivals.'},
-    {text:'<strong>Tourist SIM (~RM30–50):</strong> 7-day unlimited data. Maxis has best KL city coverage.'},
-    {text:'<strong>eSIM option:</strong> Airalo Malaysia eSIM is very affordable (~NZ$8 for 3 days).'},
-  ]},
+// ─── SIM CARDS ───
+const SIMS=[
+  {country:'🇭🇰 Hong Kong',items:['<strong>Buy at airport:</strong> Three HK, CMHK, SmarTone kiosks in arrivals.','<strong>Cost:</strong> ~NZ$18 for 7-day unlimited data. Excellent 5G coverage.','<strong>Tip:</strong> HK SIM may offer China roaming — check with the carrier.']},
+  {country:'🇨🇳 China',items:['<strong>VPN first:</strong> Activate ExpressVPN/NordVPN before crossing the border.','<strong>SIM:</strong> China Mobile or China Unicom tourist SIM at airport or border.','<strong>Apps to download in HK:</strong> WeChat Pay, Alipay, DiDi, Baidu Maps (offline).','<strong>Blocked without VPN:</strong> Google, WhatsApp, Instagram, Facebook.']},
+  {country:'🇹🇭 Thailand',items:['<strong>Buy at Suvarnabhumi Airport:</strong> AIS, DTAC, or TrueMove H kiosks.','<strong>Cost:</strong> ~NZ$14–18 for 15–30 day unlimited data. AIS has best island coverage.','<strong>eSIM option:</strong> Airalo app ~NZ$12 for 15 days — activate before you land.']},
+  {country:'🇸🇬 Singapore',items:['<strong>Buy at Changi Airport:</strong> Singtel, StarHub, M1 — all in arrivals.','<strong>Cost:</strong> ~NZ$17–23 for 7-day unlimited data. Excellent 5G everywhere.','<strong>eSIM option:</strong> Singtel Prepaid eSIM activates immediately on landing.']},
+  {country:'🇮🇩 Indonesia (Bintan)',items:['<strong>Resort WiFi:</strong> Most Bintan resorts have strong WiFi — SIM may not be needed.','<strong>If needed:</strong> Telkomsel or XL Axiata at ferry terminal or resort reception.','<strong>Tip:</strong> Check if your Singapore SIM includes Indonesia roaming.']},
+  {country:'🇲🇾 Malaysia (KL)',items:['<strong>Buy at KLIA:</strong> Maxis, Celcom, Digi counters in arrivals.','<strong>Cost:</strong> ~NZ$10–16 for 7-day unlimited data. Maxis has best KL coverage.','<strong>eSIM option:</strong> Airalo Malaysia ~NZ$8 for 3 days.']},
 ];
 
-// ═══════════════════════════════════════════════
-// PHRASES
-// ═══════════════════════════════════════════════
-
-const PHRASES = [
-  {lang:'🇭🇰 Cantonese (Hong Kong)',color:'#F5F3FF',headColor:'#4C1D95',phrases:[
-    {eng:'Thank you (for service)',local:'唔該 · M̀h gōi',pron:'mm-goy'},
-    {eng:'Thank you (for gift/favour)',local:'多謝 · Dō jeh',pron:'daw-jeh'},
-    {eng:'Hello',local:'你好 · Néih hóu',pron:'nay-ho'},
-    {eng:'How much is this?',local:'幾多錢 · Géi dō chín?',pron:'gay-daw-chin'},
-    {eng:'Delicious!',local:'好食 · Hóu sihk',pron:'ho-sik'},
-    {eng:'Can I have the bill?',local:'買單 · Màaih daan',pron:'my-dan'},
-    {eng:'Where is...?',local:'...喺邊度? · Hái bīndouh?',pron:'hai bin-doh'},
-    {eng:'No spicy please',local:'唔辣 · M̀h laaht',pron:'mm-laat'},
-  ]},
-  {lang:'🇨🇳 Mandarin (Chengdu & Chongqing)',color:'#FEF2F2',headColor:'#7F1D1D',phrases:[
-    {eng:'Thank you',local:'谢谢 · Xièxiè',pron:'syeh-syeh'},
-    {eng:'Hello',local:'你好 · Nǐ hǎo',pron:'knee-how'},
-    {eng:'How much?',local:'多少钱 · Duōshǎo qián?',pron:'dwaw-shao chyen'},
-    {eng:'Delicious!',local:'好吃 · Hǎochī',pron:'how-chur'},
-    {eng:'Too spicy!',local:'太辣了 · Tài là le',pron:'tie-lah-luh'},
-    {eng:'Not spicy please',local:'不辣 · Bù là',pron:'boo-lah'},
-    {eng:'Where is...?',local:'...在哪里? · Zài nǎlǐ?',pron:'dzai-na-lee'},
-    {eng:'The bill please',local:'买单 · Mǎi dān',pron:'my-dan'},
-  ]},
-  {lang:'🇹🇭 Thai (Bangkok, Krabi, Phuket)',color:'#ECFDF5',headColor:'#065F46',phrases:[
-    {eng:'Thank you (male/female)',local:'ขอบคุณ · Khob khun + krap/ka',pron:'kop-koon-krap/ka'},
-    {eng:'Hello',local:'สวัสดี · Sawasdee + krap/ka',pron:'sa-wat-dee'},
-    {eng:'How much?',local:'เท่าไหร่ · Tao rai?',pron:'tao-rai'},
-    {eng:'Delicious!',local:'อร่อย · Aroi!',pron:'ah-roi'},
-    {eng:'Not spicy please',local:'ไม่เผ็ด · Mai phet na krap/ka',pron:'my-pet'},
-    {eng:'Where is...?',local:'...อยู่ที่ไหน · Yoo tee nai?',pron:'yoo-tee-nai'},
-    {eng:'Too expensive',local:'แพงเกินไป · Paeng gern pai',pron:'peng-gern-pie'},
-    {eng:'Can you reduce price?',local:'ลดได้ไหม · Lot dai mai?',pron:'lot-die-my'},
-  ]},
-  {lang:'🇸🇬 Singlish (Singapore)',color:'#F0F9FF',headColor:'#0C4A6E',phrases:[
-    {eng:'OK / Understood / Can do',local:'"Can" / "Can lah"',pron:'Just say it'},
-    {eng:'Delicious / Amazing',local:'"Shiok!"',pron:'shee-ok'},
-    {eng:'Very good',local:'"Steady lah" / "Solid"',pron:'steady-lah'},
-    {eng:'How much?',local:'"How much ah?"',pron:'natural tone'},
-    {eng:'No need / Don\'t want',local:'"No need lah" / "Dun wan"',pron:'casual'},
-    {eng:'Let\'s go eat',local:'"Jiak liao" / "Makan?"',pron:'jee-ak / mah-kan'},
-    {eng:'Hurry up',local:'"Faster lah" / "Chop chop"',pron:'chop-chop'},
-    {eng:'The food here is amazing',local:'"This one very shiok one!"',pron:'classic Singlish'},
-  ]},
-  {lang:'🇮🇩 Indonesian (Bintan)',color:'#FFFBEB',headColor:'#78350F',phrases:[
-    {eng:'Thank you',local:'Terima kasih',pron:'teh-ree-mah-kah-see'},
-    {eng:'You\'re welcome',local:'Sama-sama',pron:'sah-mah-sah-mah'},
-    {eng:'Hello',local:'Halo / Selamat pagi (morning)',pron:'hah-lo / seh-lah-mat-pah-gee'},
-    {eng:'How much?',local:'Berapa harganya?',pron:'beh-rah-pah-har-gah-nyah'},
-    {eng:'Delicious!',local:'Enak!',pron:'eh-nak'},
-    {eng:'Where is...?',local:'Di mana...?',pron:'dee-mah-nah'},
-    {eng:'Help!',local:'Tolong!',pron:'toh-long'},
-    {eng:'No thank you',local:'Tidak, terima kasih',pron:'tee-dak-teh-ree-mah-kah-see'},
-  ]},
-  {lang:'🇲🇾 Malay (Kuala Lumpur)',color:'#F0FDFA',headColor:'#134E4A',phrases:[
-    {eng:'Thank you',local:'Terima kasih',pron:'teh-ree-mah-kah-see'},
-    {eng:'You\'re welcome',local:'Sama-sama',pron:'sah-mah-sah-mah'},
-    {eng:'Hello',local:'Hai / Selamat datang',pron:'hi / seh-lah-mat-dah-tahng'},
-    {eng:'How much?',local:'Berapa harga?',pron:'beh-rah-pah-har-gah'},
-    {eng:'Delicious!',local:'Sedap!',pron:'seh-dap'},
-    {eng:'Where is...?',local:'Di mana...?',pron:'dee-mah-nah'},
-    {eng:'Too expensive',local:'Mahal sangat',pron:'mah-hal-sah-ngat'},
-    {eng:'Beautiful',local:'Cantik',pron:'chan-tick'},
-  ]},
+// ─── PHRASES ───
+const PHRASES=[
+  {lang:'🇭🇰 Cantonese (Hong Kong)',phrases:[{e:'Thank you (for service)',l:'唔該 M̀h gōi',p:'mm-goy'},{e:'Thank you (for a gift)',l:'多謝 Dō jeh',p:'daw-jeh'},{e:'Hello',l:'你好 Néih hóu',p:'nay-ho'},{e:'How much?',l:'幾多錢? Géi dō chín?',p:'gay-daw-chin'},{e:'Delicious!',l:'好食 Hóu sihk',p:'ho-sik'},{e:'Bill please',l:'買單 Màaih daan',p:'my-dan'},{e:'No spicy',l:'唔辣 M̀h laaht',p:'mm-laat'},{e:'Where is...?',l:'喺邊度? Bīndouh?',p:'bin-doh'}]},
+  {lang:'🇨🇳 Mandarin (Chengdu & Chongqing)',phrases:[{e:'Thank you',l:'谢谢 Xièxiè',p:'syeh-syeh'},{e:'Hello',l:'你好 Nǐ hǎo',p:'knee-how'},{e:'How much?',l:'多少钱? Duōshǎo qián?',p:'dwaw-shao chyen'},{e:'Delicious!',l:'好吃 Hǎochī',p:'how-chur'},{e:'Too spicy!',l:'太辣了 Tài là le',p:'tie-lah-luh'},{e:'Not spicy please',l:'不辣 Bù là',p:'boo-lah'},{e:'Bill please',l:'买单 Mǎi dān',p:'my-dan'},{e:'Where is...?',l:'在哪里? Zài nǎlǐ?',p:'dzai-na-lee'}]},
+  {lang:'🇹🇭 Thai (Bangkok, Krabi, Phuket)',phrases:[{e:'Thank you (male/female)',l:'ขอบคุณ Khob khun krap/ka',p:'kop-koon-krap/ka'},{e:'Hello',l:'สวัสดี Sawasdee krap/ka',p:'sa-wat-dee'},{e:'How much?',l:'เท่าไหร่ Tao rai?',p:'tao-rai'},{e:'Delicious!',l:'อร่อย Aroi!',p:'ah-roi'},{e:'Not spicy',l:'ไม่เผ็ด Mai phet',p:'my-pet'},{e:'Too expensive',l:'แพงเกินไป Paeng gern pai',p:'peng-gern-pie'},{e:'Reduce price?',l:'ลดได้ไหม Lot dai mai?',p:'lot-die-my'},{e:'Where is...?',l:'อยู่ที่ไหน Yoo tee nai?',p:'yoo-tee-nai'}]},
+  {lang:'🇸🇬 Singlish (Singapore)',phrases:[{e:'OK / Can do',l:'"Can" or "Can lah"',p:'natural'},{e:'Delicious / Amazing',l:'"Shiok!"',p:'shee-ok'},{e:'Very good',l:'"Steady lah"',p:'steady-lah'},{e:'How much?',l:'"How much ah?"',p:'natural'},{e:"Don't want",l:'"No need lah"',p:'casual'},{e:"Let's eat",l:'"Makan?"',p:'mah-kan'},{e:'Hurry up',l:'"Chop chop"',p:'chop-chop'},{e:'Amazing food',l:'"This one very shiok one!"',p:'classic'}]},
+  {lang:'🇮🇩 Indonesian (Bintan)',phrases:[{e:'Thank you',l:'Terima kasih',p:'teh-ree-mah kah-see'},{e:"You're welcome",l:'Sama-sama',p:'sah-mah-sah-mah'},{e:'Hello',l:'Halo / Selamat pagi',p:'hah-lo / seh-lah-mat pah-gee'},{e:'How much?',l:'Berapa harganya?',p:'beh-rah-pah har-gah-nyah'},{e:'Delicious!',l:'Enak!',p:'eh-nak'},{e:'Where is...?',l:'Di mana...?',p:'dee mah-nah'},{e:'Help!',l:'Tolong!',p:'toh-long'},{e:'No thank you',l:'Tidak, terima kasih',p:'tee-dak'}]},
+  {lang:'🇲🇾 Malay (Kuala Lumpur)',phrases:[{e:'Thank you',l:'Terima kasih',p:'teh-ree-mah kah-see'},{e:"You're welcome",l:'Sama-sama',p:'sah-mah-sah-mah'},{e:'Hello',l:'Hai / Selamat datang',p:'hi / seh-lah-mat dah-tahng'},{e:'How much?',l:'Berapa harga?',p:'beh-rah-pah har-gah'},{e:'Delicious!',l:'Sedap!',p:'seh-dap'},{e:'Too expensive',l:'Mahal sangat',p:'mah-hal sah-ngat'},{e:'Beautiful',l:'Cantik',p:'chan-tick'},{e:'Where is...?',l:'Di mana...?',p:'dee mah-nah'}]},
 ];
 
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════
 // MAP INIT
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════
+const map=L.map('map',{center:[12,107],zoom:4,zoomControl:false,attributionControl:false});
+L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{subdomains:'abcd',maxZoom:19}).addTo(map);
+L.control.attribution({position:'bottomright',prefix:''}).addAttribution('© CartoDB').addTo(map);
 
-const map = L.map('map', {
-  center:[12,107], zoom:4,
-  zoomControl:false, attributionControl:false
-});
+const COORDS={
+  hk:[22.3193,114.1694],chengdu:[30.5728,104.0668],chongqing:[29.5630,106.5516],
+  bangkok:[13.7563,100.5018],krabi:[8.0863,98.9063],phuket:[7.8804,98.3923],
+  singapore:[1.3521,103.8198],bintan:[1.0634,104.3521],kl:[3.1390,101.6869]
+};
+const ROUTE=[['hk','chengdu',false],['chengdu','chongqing',false],['chongqing','bangkok',false],['bangkok','krabi',false],['krabi','phuket',true],['phuket','singapore',false],['singapore','bintan',true],['bintan','kl',true]];
 
-L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{
-  subdomains:'abcd', maxZoom:19
-}).addTo(map);
-
-L.control.attribution({position:'bottomright',prefix:''})
-  .addAttribution('© <a href="https://carto.com">CartoDB</a>')
-  .addTo(map);
-
-// Arcs
-function arcPoints(p1, p2, n=80) {
-  const dLat=p2[0]-p1[0], dLng=p2[1]-p1[1];
-  const dist=Math.sqrt(dLat*dLat+dLng*dLng);
-  const off=dist*0.28;
-  const cpLat=(p1[0]+p2[0])/2-(dLng/dist)*off;
-  const cpLng=(p1[1]+p2[1])/2+(dLat/dist)*off;
-  const pts=[];
-  for(let i=0;i<=n;i++){
-    const t=i/n;
-    pts.push([
-      (1-t)*(1-t)*p1[0]+2*(1-t)*t*cpLat+t*t*p2[0],
-      (1-t)*(1-t)*p1[1]+2*(1-t)*t*cpLng+t*t*p2[1]
-    ]);
-  }
-  return pts;
+function arcPts(p1,p2,n=80){
+  const dLat=p2[0]-p1[0],dLng=p2[1]-p1[1],dist=Math.sqrt(dLat*dLat+dLng*dLng),off=dist*.28;
+  const cpLat=(p1[0]+p2[0])/2-(dLng/dist)*off,cpLng=(p1[1]+p2[1])/2+(dLat/dist)*off;
+  return Array.from({length:n+1},(_,i)=>{const t=i/n;return[(1-t)*(1-t)*p1[0]+2*(1-t)*t*cpLat+t*t*p2[0],(1-t)*(1-t)*p1[1]+2*(1-t)*t*cpLng+t*t*p2[1]]});
 }
 
 function drawArc(pts,color,dashed,delay){
-  const line=L.polyline([],{color,weight:2.5,opacity:.85,dashArray:dashed?'6,5':null}).addTo(map);
+  // Static faded arc
+  L.polyline(pts,{color,weight:1.5,opacity:.25,dashArray:dashed?'5,4':null}).addTo(map);
+  // Animated draw
+  const line=L.polyline([],{color,weight:2.5,opacity:.9,dashArray:dashed?'5,4':null}).addTo(map);
   let i=1;
   setTimeout(()=>{
-    const t=setInterval(()=>{
-      if(i>pts.length){clearInterval(t);return;}
-      line.setLatLngs(pts.slice(0,i)); i+=3;
-    },16);
+    const t=setInterval(()=>{if(i>pts.length){clearInterval(t);animateDot(pts,color);return;}line.setLatLngs(pts.slice(0,i));i+=3;},16);
   },delay);
 }
 
-const COORDS={
-  hk:[22.3193,114.1694], chengdu:[30.5728,104.0668], chongqing:[29.5630,106.5516],
-  bangkok:[13.7563,100.5018], krabi:[8.0863,98.9063], phuket:[7.8804,98.3923],
-  singapore:[1.3521,103.8198], bintan:[1.0634,104.3521], kl:[3.1390,101.6869]
-};
+function animateDot(pts,color){
+  const dot=L.circleMarker(pts[0],{radius:4,color:'#fff',fillColor:color,fillOpacity:1,weight:2,interactive:false}).addTo(map);
+  let i=0,dir=1;
+  setInterval(()=>{
+    dot.setLatLng(pts[Math.max(0,Math.min(pts.length-1,i))]);
+    i+=dir;
+    if(i>=pts.length-1||i<=0)dir*=-1;
+  },40);
+}
 
-const ROUTE=[
-  ['hk','chengdu',false],['chengdu','chongqing',false],['chongqing','bangkok',false],
-  ['bangkok','krabi',false],['krabi','phuket',true],['phuket','singapore',false],
-  ['singapore','bintan',true],['bintan','kl',true]
-];
-
-ROUTE.forEach(([a,b,tbc],i)=>{
-  const pts=arcPoints(COORDS[a],COORDS[b]);
-  drawArc(pts, tbc?'#F59E0B':'#10B981', tbc, 300+i*180);
-});
+ROUTE.forEach(([a,b,tbc],i)=>drawArc(arcPts(COORDS[a],COORDS[b]),tbc?'#FF9500':'#34C759',tbc,400+i*200));
 
 // City markers
 Object.entries(CITIES).forEach(([key,c])=>{
   const icon=L.divIcon({
     className:'',
-    html:`<div class="city-marker" style="background:${c.color};color:${c.color}" data-city="${key}" onclick="openCity('${key}')"><span style="font-size:14px">${c.flag}</span></div>`,
-    iconSize:[26,26], iconAnchor:[13,13]
+    html:`<div class="cmarker" style="background:${c.color}" onclick="openCity('${key}')">${c.flag}</div>`,
+    iconSize:[32,32],iconAnchor:[16,16]
   });
   L.marker(COORDS[key],{icon}).addTo(map);
 });
 
-// ═══════════════════════════════════════════════
-// VIEW TOGGLE
-// ═══════════════════════════════════════════════
-
-function setView(v){
-  const isMap=v==='map';
-  document.getElementById('map-wrap').style.display=isMap?'':'none';
-  document.getElementById('timeline-wrap').style.display=isMap?'none':'block';
-  document.getElementById('btn-map').classList.toggle('active',isMap);
-  document.getElementById('btn-days').classList.toggle('active',!isMap);
-  if(!isMap && !document.getElementById('timeline-content').hasChildNodes()) renderTimeline();
+// ═══════════════════════════════════
+// BOTTOM NAV TABS
+// ═══════════════════════════════════
+let activeTab='map';
+function setTab(id){
+  activeTab=id;
+  ['map','days','info','bookings'].forEach(t=>{
+    document.getElementById('nb-'+t).classList.toggle('active',t===id);
+    const p=document.getElementById('panel-'+t);
+    if(p)p.classList.toggle('open',t===id);
+  });
+  if(id==='days'&&!document.getElementById('days-content').hasChildNodes())renderDays();
+  if(id==='info')renderInfo();
+  if(id==='bookings')renderBookings();
+  if(id==='map')closeSheet();
 }
 
-// ═══════════════════════════════════════════════
-// TIMELINE RENDER
-// ═══════════════════════════════════════════════
-
-function renderTimeline(){
-  const el=document.getElementById('timeline-content');
-  el.innerHTML=DAYS.map((d,i)=>`
-    <div class="tl-day">
-      <div class="tl-day-head" onclick="toggleDay(${i})">
-        <div class="tl-day-num" style="background:${d.color}">${d.day}</div>
-        <div class="tl-day-info">
-          <div class="tl-day-title">${d.emoji} ${d.city}</div>
-          <div class="tl-day-sub">${d.date}</div>
-        </div>
-        <span style="color:#94A3B8;font-size:16px" id="tl-arr-${i}">›</span>
-      </div>
-      <div class="tl-day-body" id="tl-body-${i}">
-        <div class="tl-slot">
-          <div class="tl-time">🌅 Morning</div>
-          <div class="tl-slot-body">
-            <div class="tl-slot-title">${d.morning.title}</div>
-            <div class="tl-slot-desc">${d.morning.desc}</div>
-          </div>
-        </div>
-        <div class="tl-slot">
-          <div class="tl-time">☀️ Afternoon</div>
-          <div class="tl-slot-body">
-            <div class="tl-slot-title">${d.afternoon.title}</div>
-            <div class="tl-slot-desc">${d.afternoon.desc}</div>
-          </div>
-        </div>
-        <div class="tl-slot">
-          <div class="tl-time">🌙 Evening</div>
-          <div class="tl-slot-body">
-            <div class="tl-slot-title">${d.evening.title}</div>
-            <div class="tl-slot-desc">${d.evening.desc}</div>
-          </div>
-        </div>
-        <div class="tl-tip">${d.tip}</div>
-      </div>
-    </div>
-  `).join('');
-}
-
-function toggleDay(i){
-  const body=document.getElementById(`tl-body-${i}`);
-  const arr=document.getElementById(`tl-arr-${i}`);
-  const open=body.classList.toggle('open');
-  arr.style.transform=open?'rotate(90deg)':'';
-}
-
-// ═══════════════════════════════════════════════
-// CITY PANEL
-// ═══════════════════════════════════════════════
-
-let currentCity=null;
-
+// ═══════════════════════════════════
+// CITY SHEET
+// ═══════════════════════════════════
+let sheetTouchY=0;
 function openCity(key){
   const c=CITIES[key];
-  currentCity=key;
-  // Header
-  document.getElementById('p-head').innerHTML=`
-    <div class="p-flag">${c.flag}</div>
-    <div class="p-info">
-      <div class="p-name">${c.name}</div>
-      <div class="p-dates">📅 ${c.dates}</div>
+  document.getElementById('sheet-head').innerHTML=`
+    <div class="sh-top">
+      <div class="sh-flag">${c.flag}</div>
+      <div class="sh-info"><div class="sh-name">${c.name}</div><div class="sh-dates">📅 ${c.dates}</div></div>
+      <div class="sh-badge" style="background:${c.color}">${c.badge}</div>
+      <button class="sh-close" onclick="closeSheet()">✕</button>
     </div>
-    <div class="p-badge" style="background:${c.color}">${c.badge}</div>
-    <button class="p-close" onclick="closePanel()">✕</button>
+    <div class="sh-hotel"><div class="sh-hotel-icon">🏨</div><div class="sh-hotel-text">${c.hotel}</div></div>
   `;
-  // Tabs
-  document.getElementById('p-tabs').innerHTML=`
-    <button class="ptab on" onclick="setTab('explore',this)">🗺 Explore</button>
-    <button class="ptab" onclick="setTab('food',this)">🍜 Food</button>
-    <button class="ptab" onclick="setTab('transport',this)">✈️ Transport</button>
-    <button class="ptab" onclick="setTab('nextstop',this)">➡️ Next Stop</button>
+  document.getElementById('sheet-tabs').innerHTML=`
+    <button class="stab on" onclick="setSTab('explore',this)">Explore</button>
+    <button class="stab" onclick="setSTab('food',this)">🍜 Food & Cost</button>
+    <button class="stab" onclick="setSTab('transport',this)">Transport</button>
+    <button class="stab" onclick="setSTab('nextstop',this)">Next Stop</button>
   `;
-  // Body
-  const hotelHtml=`<div class="hotel-card"><div class="hotel-icon">🏨</div><div><div class="hotel-name">${c.hotel}</div><div class="hotel-sub">Accommodation</div></div></div>`;
-
   const exploreHtml=c.explore.map(e=>`
     <div class="card">
       <div class="card-icon" style="background:${e.bg}">${e.icon}</div>
       <div class="card-body">
         <div class="card-title">${e.title}</div>
         <div class="card-desc">${e.desc}</div>
-        <a class="map-link" href="${mapsLink(e.title, c.name)}" target="_blank">Open in Maps</a>
+        <a class="map-link" href="${mapsLink(e.title,c.name)}" target="_blank">📍 Maps</a>
       </div>
-    </div>
-  `).join('');
-
+    </div>`).join('');
   const foodHtml=c.food.map(f=>`
     <div class="card">
       <div class="card-icon" style="background:${f.bg}">${f.icon}</div>
@@ -1167,86 +740,103 @@ function openCity(key){
         <div class="card-type">${f.type}</div>
         <div class="card-title">${f.title}</div>
         <div class="card-desc">${f.desc}</div>
-        <a class="map-link" href="${mapsLink(f.title, c.name)}" target="_blank">Open in Maps</a>
+        <div class="order-box">
+          <span class="order-label">What to order</span>
+          <span class="order-text">${f.order}</span>
+        </div>
+        <div class="card-footer">
+          <span class="price-badge">💰 ${f.price}</span>
+          <a class="map-link" href="${mapsLink(f.title,c.name)}" target="_blank">📍 Maps</a>
+        </div>
       </div>
-    </div>
-  `).join('');
-
+    </div>`).join('');
   const transportHtml=c.transport.map(t=>`
     <div class="tc">
       <div class="tc-dot ${t.status}"></div>
-      <div class="tc-body">
-        <div class="tc-method">${t.method}</div>
-        <div class="tc-detail">${t.detail}</div>
-        ${t.ref?`<div class="tc-ref">Ref: ${t.ref}</div>`:''}
-      </div>
-      <div class="tc-badge ${t.status}">${t.status==='confirmed'?'✓ Confirmed':t.status==='tbc'?'TBC':'Alt'}</div>
-    </div>
-  `).join('');
-
+      <div class="tc-body"><div class="tc-method">${t.method}</div><div class="tc-detail">${t.detail}</div></div>
+      <div class="tc-badge ${t.status}">${t.status==='confirmed'?'✓ Done':'TBC'}</div>
+    </div>`).join('');
   const nextHtml=`
-    <div class="sec-head">Next Destination</div>
-    <div class="hotel-card" style="background:linear-gradient(135deg,#EFF6FF,#DBEAFE);border-color:#93C5FD">
-      <div class="hotel-icon">✈️</div>
-      <div><div class="hotel-name" style="color:#1E3A8A">→ ${c.nextstop.destination}</div></div>
-    </div>
-    <div class="sec-head">Options</div>
+    <div class="next-dest"><div class="next-icon">✈️</div><div class="next-name">→ ${c.nextstop.destination}</div></div>
     ${c.nextstop.options.map(o=>`
-      <div class="tc">
-        <div class="tc-dot ${o.status}"></div>
-        <div class="tc-body">
-          <div class="tc-method">${o.method}</div>
-          <div class="tc-detail">${o.detail}</div>
-          ${o.ref?`<div class="tc-ref">Ref: ${o.ref}</div>`:''}
-        </div>
-        <div class="tc-badge ${o.status}">${o.status==='confirmed'?'✓ Confirmed':'TBC'}</div>
-      </div>
-    `).join('')}
+    <div class="tc">
+      <div class="tc-dot ${o.status}"></div>
+      <div class="tc-body"><div class="tc-method">${o.method}</div><div class="tc-detail">${o.detail}</div></div>
+      <div class="tc-badge ${o.status}">${o.status==='confirmed'?'✓ Done':'TBC'}</div>
+    </div>`).join('')}`;
+  document.getElementById('sheet-body').innerHTML=`
+    <div class="t-content on" id="st-explore">${exploreHtml}</div>
+    <div class="t-content" id="st-food">${foodHtml}</div>
+    <div class="t-content" id="st-transport">${transportHtml}</div>
+    <div class="t-content" id="st-nextstop">${nextHtml}</div>
   `;
-
-  document.getElementById('p-body').innerHTML=`
-    <div class="t-content on" id="t-explore">${hotelHtml}${exploreHtml}</div>
-    <div class="t-content" id="t-food">${foodHtml}</div>
-    <div class="t-content" id="t-transport">${transportHtml}</div>
-    <div class="t-content" id="t-nextstop">${nextHtml}</div>
-  `;
-
-  document.getElementById('overlay').classList.add('vis');
-  document.getElementById('panel').classList.add('open');
+  document.getElementById('sheet').classList.add('open');
+  document.getElementById('sheet-body').scrollTop=0;
 }
-
-function setTab(id,btn){
-  document.querySelectorAll('.ptab').forEach(b=>b.classList.remove('on'));
+function setSTab(id,btn){
+  document.querySelectorAll('.stab').forEach(b=>b.classList.remove('on'));
   document.querySelectorAll('.t-content').forEach(c=>c.classList.remove('on'));
   btn.classList.add('on');
-  document.getElementById('t-'+id).classList.add('on');
-  document.getElementById('p-body').scrollTop=0;
+  document.getElementById('st-'+id).classList.add('on');
+  document.getElementById('sheet-body').scrollTop=0;
+}
+function closeSheet(){document.getElementById('sheet').classList.remove('open')}
+const sh=document.getElementById('sheet');
+sh.addEventListener('touchstart',e=>{sheetTouchY=e.touches[0].clientY},{passive:true});
+sh.addEventListener('touchend',e=>{if(e.changedTouches[0].clientY-sheetTouchY>80)closeSheet()},{passive:true});
+
+// ═══════════════════════════════════
+// RENDER DAYS
+// ═══════════════════════════════════
+function renderDays(){
+  document.getElementById('days-content').innerHTML=DAYS.map((d,i)=>`
+    <div class="tl-item">
+      <div class="tl-head" onclick="toggleDay(${i})">
+        <div class="tl-num" style="background:${d.color}">${d.day}</div>
+        <div class="tl-meta">
+          <div class="tl-city">${d.emoji} ${d.city}</div>
+          <div class="tl-date">${d.date}</div>
+        </div>
+        <span class="tl-chevron" id="tl-ch-${i}">›</span>
+      </div>
+      <div class="tl-body" id="tl-b-${i}">
+        <div class="tl-slot"><div class="tl-time">🌅 Morning</div><div><div class="tl-slot-title">${d.morning.title}</div><div class="tl-slot-desc">${d.morning.desc}</div></div></div>
+        <div class="tl-slot"><div class="tl-time">☀️ Afternoon</div><div><div class="tl-slot-title">${d.afternoon.title}</div><div class="tl-slot-desc">${d.afternoon.desc}</div></div></div>
+        <div class="tl-slot"><div class="tl-time">🌙 Evening</div><div><div class="tl-slot-title">${d.evening.title}</div><div class="tl-slot-desc">${d.evening.desc}</div></div></div>
+        <div class="tl-tip">${d.tip}</div>
+      </div>
+    </div>`).join('');
+}
+function toggleDay(i){
+  const b=document.getElementById('tl-b-'+i),c=document.getElementById('tl-ch-'+i);
+  const open=b.classList.toggle('open');
+  c.classList.toggle('open',open);
 }
 
-function closePanel(){
-  document.getElementById('panel').classList.remove('open');
-  document.getElementById('overlay').classList.remove('vis');
-}
-
-// Swipe to close
-let touchStartY=0;
-document.getElementById('panel').addEventListener('touchstart',e=>{ touchStartY=e.touches[0].clientY; });
-document.getElementById('panel').addEventListener('touchend',e=>{
-  if(e.changedTouches[0].clientY-touchStartY>80) closePanel();
-});
-
-// ═══════════════════════════════════════════════
-// INFO PANEL
-// ═══════════════════════════════════════════════
-
-function toggleInfo(){
-  const open=document.getElementById('info-panel').classList.toggle('open');
-  document.getElementById('info-overlay').classList.toggle('vis',open);
-  if(open) renderInfo();
-}
-function closeInfo(){
-  document.getElementById('info-panel').classList.remove('open');
-  document.getElementById('info-overlay').classList.remove('vis');
+// ═══════════════════════════════════
+// RENDER INFO
+// ═══════════════════════════════════
+function renderInfo(){
+  if(document.getElementById('it-emergency').hasChildNodes())return;
+  document.getElementById('it-emergency').innerHTML=EMERGENCY.map(e=>`
+    <div class="em-card">
+      <div class="em-head"><h4>${e.country}</h4></div>
+      ${e.items.map(i=>`<div class="em-row"><span class="em-label">${i.l}</span><a class="em-num" href="tel:${i.n}">${i.n}</a></div>`).join('')}
+    </div>`).join('');
+  document.getElementById('it-sim').innerHTML=SIMS.map(s=>`
+    <div class="sim-card">
+      <div class="sim-head"><h4>${s.country}</h4></div>
+      ${s.items.map(i=>`<div class="sim-row">${i}</div>`).join('')}
+    </div>`).join('');
+  document.getElementById('it-phrases').innerHTML=PHRASES.map(p=>`
+    <div class="phrase-card">
+      <div class="phrase-head"><h4>${p.lang}</h4></div>
+      ${p.phrases.map(ph=>`
+        <div class="phrase-row">
+          <span class="phrase-eng">${ph.e}</span>
+          <div class="phrase-right"><div class="phrase-local">${ph.l}</div><div class="phrase-pron">${ph.p}</div></div>
+        </div>`).join('')}
+    </div>`).join('');
 }
 function setInfoTab(id,btn){
   document.querySelectorAll('.itab').forEach(b=>b.classList.remove('on'));
@@ -1255,75 +845,17 @@ function setInfoTab(id,btn){
   document.getElementById('it-'+id).classList.add('on');
 }
 
-function renderInfo(){
-  // Bookings
-  const bkEl=document.getElementById('it-bookings');
-  if(!bkEl.hasChildNodes()){
-    bkEl.innerHTML=`
-      <div class="sec-head">✈️ Flights</div>
-      ${BOOKINGS.flights.map(b=>`
-        <div class="bk-card">
-          <div class="bk-head"><div class="bk-dot ${b.status}"></div><div class="bk-title">${b.title}</div></div>
-          <div class="bk-detail">${b.detail}</div>
-          ${b.ref?`<div class="bk-ref">Ref: ${b.ref}</div>`:''}
-        </div>
-      `).join('')}
-      <div class="sec-head">🏨 Hotels</div>
-      ${BOOKINGS.hotels.map(b=>`
-        <div class="bk-card">
-          <div class="bk-head"><div class="bk-dot ${b.status}"></div><div class="bk-title">${b.title}</div></div>
-          <div class="bk-detail">${b.detail}</div>
-          ${b.ref?`<div class="bk-ref">Ref: ${b.ref}</div>`:''}
-        </div>
-      `).join('')}
-    `;
-  }
-
-  // Emergency
-  const emEl=document.getElementById('it-emergency');
-  if(!emEl.hasChildNodes()){
-    emEl.innerHTML=EMERGENCY.map(e=>`
-      <div class="em-country">
-        <div class="em-country-head"><span>${e.country.split(' ')[0]}</span><h4>${e.country.substring(e.country.indexOf(' ')+1)}</h4></div>
-        ${e.items.map(i=>`
-          <div class="em-item">
-            <span class="em-label">${i.label}</span>
-            <a class="em-num" href="tel:${i.num}">${i.num}</a>
-          </div>
-        `).join('')}
-      </div>
-    `).join('');
-  }
-
-  // SIM
-  const simEl=document.getElementById('it-sim');
-  if(!simEl.hasChildNodes()){
-    simEl.innerHTML=SIM_CARDS.map(s=>`
-      <div class="sim-country">
-        <div class="sim-head" style="background:${s.color}"><span>${s.country.split(' ')[0]}</span><h4 style="color:${s.headColor}">${s.country.substring(s.country.indexOf(' ')+1)}</h4></div>
-        ${s.items.map(i=>`<div class="sim-item">${i.text}</div>`).join('')}
-      </div>
-    `).join('');
-  }
-
-  // Phrases
-  const phEl=document.getElementById('it-phrases');
-  if(!phEl.hasChildNodes()){
-    phEl.innerHTML=PHRASES.map(p=>`
-      <div class="phrase-lang">
-        <div class="phrase-head" style="background:${p.color}"><span>${p.lang.split(' ')[0]}</span><h4 style="color:${p.headColor}">${p.lang.substring(p.lang.indexOf(' ')+1)}</h4></div>
-        ${p.phrases.map(ph=>`
-          <div class="phrase-item">
-            <div class="phrase-eng">${ph.eng}</div>
-            <div class="phrase-local-wrap" style="text-align:right">
-              <div class="phrase-local">${ph.local}</div>
-              <div class="phrase-pron">${ph.pron}</div>
-            </div>
-          </div>
-        `).join('')}
-      </div>
-    `).join('');
-  }
+// ═══════════════════════════════════
+// RENDER BOOKINGS
+// ═══════════════════════════════════
+function renderBookings(){
+  if(document.getElementById('bookings-content').hasChildNodes())return;
+  document.getElementById('bookings-content').innerHTML=`
+    <div class="sec-label" style="margin-top:0">✈️ Flights</div>
+    ${BOOKINGS.flights.map(b=>`<div class="bk-card"><div class="bk-row"><div class="bk-dot ${b.status}"></div><div class="bk-title">${b.title}</div></div><div class="bk-detail">${b.detail}</div></div>`).join('')}
+    <div class="sec-label">🏨 Hotels</div>
+    ${BOOKINGS.hotels.map(b=>`<div class="bk-card"><div class="bk-row"><div class="bk-dot ${b.status}"></div><div class="bk-title">${b.title}</div></div><div class="bk-detail">${b.detail}</div></div>`).join('')}
+  `;
 }
 </script>
 </body>
