@@ -164,12 +164,72 @@ html,body{height:100%;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-
 .phrase-pron{font-size:11px;color:#6D28D9;margin-top:1px}
 
 /* ─── BOOKINGS ─── */
-.bk-card{background:var(--card);border-radius:var(--r);margin-bottom:8px;box-shadow:var(--shadow);padding:12px 14px}
-.bk-row{display:flex;align-items:center;gap:8px;margin-bottom:4px}
-.bk-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-.bk-dot.confirmed{background:var(--green)}.bk-dot.tbc{background:var(--amber)}
-.bk-title{font-size:13px;font-weight:700}
-.bk-detail{font-size:12px;color:var(--text2);line-height:1.5}
+.bk-section{margin-bottom:18px}
+.bk-section-head{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.bk-section-icon{font-size:16px}
+.bk-section-title{font-size:12px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--text3)}
+.bk-section-count{margin-left:auto;font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px}
+.bk-section-count.confirmed{background:var(--green-bg);color:#166534}
+.bk-section-count.tbc{background:var(--amber-bg);color:#7A4000}
+.bk-section-count.mixed{background:var(--bg);color:var(--text2)}
+
+/* Flight card */
+.fk-card{background:var(--card);border-radius:var(--r);margin-bottom:10px;box-shadow:var(--shadow);overflow:hidden}
+.fk-header{display:flex;align-items:center;justify-content:space-between;padding:10px 14px 0}
+.fk-airline{font-size:12px;font-weight:600;color:var(--text2)}
+.fk-pill{font-size:10px;font-weight:700;padding:3px 9px;border-radius:20px;letter-spacing:.3px}
+.fk-pill.confirmed{background:var(--green-bg);color:#166534}
+.fk-pill.tbc{background:var(--amber-bg);color:#92400E}
+.fk-route{display:flex;align-items:center;padding:10px 14px 4px;gap:0}
+.fk-city{flex:1}
+.fk-code{font-size:26px;font-weight:800;color:var(--text);letter-spacing:-1px;line-height:1}
+.fk-city-name{font-size:11px;color:var(--text2);margin-top:2px}
+.fk-terminal{font-size:10px;font-weight:600;color:var(--blue);background:var(--blue-bg);padding:2px 5px;border-radius:5px;display:inline-block;margin-top:3px}
+.fk-mid{flex:0 0 auto;text-align:center;padding:0 10px}
+.fk-dur{font-size:10px;color:var(--text3);font-weight:600;margin-bottom:3px}
+.fk-arrow{display:flex;align-items:center;gap:3px}
+.fk-line{height:1.5px;width:32px;background:var(--border)}
+.fk-arrowhead{color:var(--text3);font-size:12px;line-height:1}
+.fk-nonstop{font-size:9px;color:var(--text3);margin-top:3px;font-weight:600;letter-spacing:.3px;text-transform:uppercase}
+.fk-times{display:flex;justify-content:space-between;padding:6px 14px 0}
+.fk-time-block{text-align:left}
+.fk-time-block:last-child{text-align:right}
+.fk-time{font-size:18px;font-weight:800;color:var(--text);letter-spacing:-0.5px}
+.fk-date{font-size:11px;color:var(--text2);margin-top:1px}
+.fk-divider{height:1px;background:var(--border);margin:10px 14px 0}
+.fk-details{padding:10px 14px 12px;display:grid;grid-template-columns:1fr 1fr;gap:6px 14px}
+.fk-detail-item{}
+.fk-detail-label{font-size:10px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--text3);margin-bottom:2px}
+.fk-detail-val{font-size:12px;font-weight:600;color:var(--text);line-height:1.45}
+.fk-ref{background:var(--bg);border-radius:var(--r-sm);padding:8px 14px;margin:0 14px 12px;display:flex;align-items:center;justify-content:space-between}
+.fk-ref-label{font-size:10px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--text3)}
+.fk-ref-val{font-size:15px;font-weight:800;color:var(--text);letter-spacing:1.5px}
+
+/* Train / ferry card */
+.tk-card{background:var(--card);border-radius:var(--r);margin-bottom:10px;box-shadow:var(--shadow);padding:12px 14px}
+.tk-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.tk-type{display:flex;align-items:center;gap:7px}
+.tk-icon{font-size:18px}
+.tk-name{font-size:13px;font-weight:700}
+
+/* Hotel card */
+.hk-card{background:var(--card);border-radius:var(--r);margin-bottom:8px;box-shadow:var(--shadow);padding:12px 14px;display:flex;gap:12px;align-items:flex-start}
+.hk-icon{width:38px;height:38px;border-radius:10px;background:var(--blue-bg);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.hk-body{flex:1}
+.hk-city{font-size:14px;font-weight:700}
+.hk-dates{font-size:12px;color:var(--text2);margin-top:2px}
+.hk-detail{font-size:12px;color:var(--text2);margin-top:4px;line-height:1.5}
+.hk-ref{font-size:11px;font-weight:600;color:var(--text3);margin-top:4px}
+.hk-pill{font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;flex-shrink:0}
+.hk-pill.confirmed{background:var(--green-bg);color:#166534}
+.hk-pill.tbc{background:var(--amber-bg);color:#92400E}
+
+/* Summary bar */
+.bk-summary{background:var(--card);border-radius:var(--r);padding:12px 14px;margin-bottom:18px;box-shadow:var(--shadow);display:flex;gap:0}
+.bk-sum-item{flex:1;text-align:center;border-right:1px solid var(--border)}
+.bk-sum-item:last-child{border-right:none}
+.bk-sum-num{font-size:22px;font-weight:800}
+.bk-sum-label{font-size:10px;font-weight:600;letter-spacing:.4px;text-transform:uppercase;color:var(--text3);margin-top:2px}
 
 /* ─── MAP LEGEND ─── */
 #legend{position:absolute;top:16px;right:12px;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);border-radius:12px;padding:9px 12px;box-shadow:var(--shadow)}
@@ -297,7 +357,7 @@ const CITIES={
       {status:'confirmed',method:'🚇 Getting Around',detail:'MTR covers everything. Get an Octopus card at the airport — use it on metro, buses, even 7-Eleven.'},
     ],
     nextstop:{destination:'Chengdu 🇨🇳',options:[
-      {status:'tbc',method:'✈️ HKG → CTU',detail:'Cathay or Air China direct ~2.5 hrs. Book via airline site.'},
+      {status:'confirmed',method:'✈️ HKG → CTU — Cathay Pacific',detail:'Ref: FZ6FEC · Direct ~2.5 hrs. Lucas + Caitlin. Check e-ticket for times.'},
     ]}
   },
 
@@ -324,7 +384,7 @@ const CITIES={
       {icon:'🔥',bg:'#FEF2F2',type:'Skewer Hot Pot',title:'Chuanchuan Xiang (串串香)',desc:'Pick skewers, dip in boiling spiced broth. Budget street food at its best.',order:'Beef, mushroom, tofu skin, lotus root skewers — minimum 20 sticks each',price:'~NZ$10 pp'},
     ],
     transport:[
-      {status:'tbc',method:'✈️ HKG → CTU',detail:'~2.5 hr flight. Arrive Chengdu Tianfu Airport. Metro Line 18 to city centre (~45 min).'},
+      {status:'confirmed',method:'✈️ HKG → CTU — Cathay Pacific',detail:'Ref: FZ6FEC · ~2.5 hr flight. Arrive Chengdu Tianfu Airport. Metro Line 18 to city centre (~45 min).'},
       {status:'confirmed',method:'🚇 Getting Around',detail:'Metro covers main sights. DiDi (Chinese Uber) for everything else. Download before arriving.'},
     ],
     nextstop:{destination:'Chongqing 🇨🇳',options:[
@@ -359,7 +419,7 @@ const CITIES={
       {status:'confirmed',method:'🚇 Getting Around',detail:'Metro + famous monorail Line 2 (runs through a residential building — take photos). DiDi for late nights.'},
     ],
     nextstop:{destination:'Bangkok 🇹🇭',options:[
-      {status:'confirmed',method:'✈️ CKG → BKK',detail:'Chongqing Jiangbei Airport to Suvarnabhumi. ~3 hrs.'},
+      {status:'confirmed',method:'✈️ CKG → DMK — Thai AirAsia FD557',detail:'Ref: CELCFD · Depart 11:10 T3 → Arrive 13:20 DMK T1 · 3h 10m · Lucas Seat 20D, Caitlin Seat 20E'},
     ]}
   },
 
@@ -559,7 +619,7 @@ const DAYS=[
   {day:4,date:'Thu 17 Jul',city:'Chengdu',emoji:'🇨🇳',color:'#FF3B30',morning:{title:'Giant Panda Research Base',desc:'Taxi at 8am sharp. Pandas are active feeding in the morning. After 10am they sleep.'},afternoon:{title:'Wuhou Shrine + Jinli Street',desc:'Han dynasty memorial, then the adjacent old street for snacks — rabbit head, dumplings, sweet tofu.'},evening:{title:'Hot Pot Dinner',desc:'Huangcheng Laoma or Haidilao. Order the split broth pot. First Sichuan hotpot experience.'},tip:'💡 Panda base: get there right at 8am and head to the nursery area first.'},
   {day:5,date:'Fri 18 Jul',city:'Chengdu → Chongqing',emoji:'🇨🇳',color:'#DC2626',morning:{title:'Kuanzhai Alley',desc:'Wide and Narrow Lanes — Qing dynasty alleyways. Go before 10am for a quiet walkthrough.'},afternoon:{title:'High-Speed Train to Chongqing (~75 min)',desc:'G-train from Chengdu East. Fast, comfortable, punctual.'},evening:{title:'Arrive Chongqing + Hongyadong',desc:'Drop bags, head straight to the cliff dwellings at night. Views are spectacular after dark.'},tip:'💡 Book G-train on Trip.com a few days ahead. Seats sell out at peak hours.'},
   {day:6,date:'Sat 19 Jul',city:'Chongqing',emoji:'🇨🇳',color:'#DC2626',morning:{title:'Ciqikou Ancient Town',desc:'Morning is quieter — locals buying fresh produce, temple incense burning. Street food walk.'},afternoon:{title:'Yangtze River + Monorail',desc:'Eling Park panoramic viewpoint. Then the famous monorail Line 2 that runs through a building.'},evening:{title:'Chongqing Hot Pot',desc:'De Zhuang or a local spot. Chongqing-style is oilier and spicier than Chengdu. The original.'},tip:'💡 Order the mandarin (yuanyang) split pot — half spicy, half mild. Your stomach will thank you.'},
-  {day:7,date:'Sun 20 Jul',city:'Chongqing → Bangkok',emoji:'🇹🇭',color:'#7C3AED',morning:{title:'Jiefangbei CBD',desc:'Liberation Monument area in the morning. Glass-floored sky bridge over the intersection.'},afternoon:{title:'Fly CKG → BKK (~3 hrs)',desc:'Chongqing Jiangbei Airport. Thailand is 1 hour behind China — update your clocks on landing.'},evening:{title:'Arrive Bangkok',desc:'Airport Rail Link to Phaya Thai. Check in, cool down. Street food nearby or rooftop bar.'},tip:'💡 Thailand is GMT+7, China is GMT+8. You gain an hour on this flight.'},
+  {day:7,date:'Sun 20 Jul',city:'Chongqing → Bangkok',emoji:'🇹🇭',color:'#7C3AED',morning:{title:'Jiefangbei CBD',desc:'Liberation Monument area in the morning. Glass-floored sky bridge over the intersection.'},afternoon:{title:'Fly CKG → DMK — FD557 dep 11:10',desc:'Chongqing Jiangbei T3 → Bangkok Don Mueang T1. 3h 10m. Land 13:20 local time. (Ref: CELCFD)'},evening:{title:'Arrive Bangkok Don Mueang',desc:'A1 bus or taxi into the city. Check in, cool down. Street food nearby or first Thai iced tea.'},tip:'💡 Thailand is GMT+7, China is GMT+8. You gain an hour. DMK is 25km north of central Bangkok.'},
   {day:8,date:'Mon 21 Jul',city:'Bangkok',emoji:'🇹🇭',color:'#7C3AED',morning:{title:'Grand Palace + Wat Phra Kaew',desc:"Lines open at 8:30am — be there. Shoulders and knees covered (borrow wraps at entrance)."},afternoon:{title:'Wat Pho + Wat Arun',desc:'Reclining Buddha at Wat Pho (walk from Grand Palace). Ferry 4 THB across to Wat Arun.'},evening:{title:'Chao Phraya Night',desc:'Dinner cruise or Chao Phraya Express river taxi. Temples lit up at dusk. Magical.'},tip:"💡 Tuk-tuk drivers near the Grand Palace will offer 'temple tours' — all go to gem shops. Decline."},
   {day:9,date:'Tue 22 Jul',city:'Bangkok',emoji:'🇹🇭',color:'#7C3AED',morning:{title:'Or Tor Kor Market',desc:"Bangkok's finest fresh market. Near Chatuchak Park. Mango sticky rice, prepared foods."},afternoon:{title:'Jim Thompson House + MBK',desc:'Silk merchant museum, then MBK Center for budget shopping, street food court, and chaos.'},evening:{title:'Yaowarat Chinatown Night',desc:'Eat through Yaowarat Road after 7pm. Roast duck, dim sum, street seafood.'},tip:'💡 Grab works great in Bangkok. Always book rides — never agree to price with metered taxis.'},
   {day:10,date:'Wed 23 Jul',city:'Bangkok → Krabi',emoji:'🇹🇭',color:'#0EA5E9',morning:{title:'Boat Noodles (Victory Monument)',desc:'One last Bangkok bowl at the boat noodle alley near Victory Monument BTS.'},afternoon:{title:'Fly DMK → KBV (~1.5 hrs)',desc:"Don Mueang (DMK) for budget flights — different airport to Suvarnabhumi (BKK). Allow travel time."},evening:{title:'Arrive Ao Nang, Krabi',desc:'Beach walk, cold Chang beer, seafood dinner watching longtail boats bob in front of karsts.'},tip:'💡 DMK is the budget airport. It is NOT Suvarnabhumi (BKK). They are 30km apart.'},
@@ -579,27 +639,115 @@ const DAYS=[
 // ─── BOOKINGS ───
 const BOOKINGS={
   flights:[
-    {status:'confirmed',title:'NZ → Hong Kong (Outbound)',detail:'14 Jul 2026 · Outbound flight details in your email'},
-    {status:'tbc',title:'HKG → CTU (Chengdu)',detail:'16 Jul 2026 · Book Cathay Pacific or Air China direct'},
-    {status:'confirmed',title:'Chengdu → Chongqing (Train)',detail:'18 Jul · G-train CTU East → CQB ~75 min'},
-    {status:'confirmed',title:'CKG → BKK (Bangkok)',detail:'20 Jul 2026 · Chongqing to Suvarnabhumi'},
-    {status:'confirmed',title:'DMK → KBV (Krabi)',detail:'23 Jul 2026 · Don Mueang to Krabi'},
-    {status:'tbc',title:'Krabi → Phuket Transfer',detail:'26 Jul · Minivan or ferry — book locally in Ao Nang'},
-    {status:'confirmed',title:'HKT → SIN (Singapore)',detail:'28 Jul 2026 · Phuket to Changi'},
-    {status:'tbc',title:'Bintan Ferry (Both Ways)',detail:'30 Jul outbound + 1 Aug return · Bintan Resort Ferries'},
-    {status:'tbc',title:'SIN → KUL (Kuala Lumpur)',detail:'1 Aug 2026 · Changi to KLIA'},
-    {status:'tbc',title:'KUL → AKL (Home)',detail:'3 Aug 2026 · KLIA to Auckland'},
+    {
+      status:'confirmed',ref:'FXRU3U',
+      airline:'Cathay Pacific',airlineEmoji:'🇭🇰',
+      flight:'CX — see e-ticket',
+      from:'Auckland',fromCode:'AKL',fromTerminal:'',
+      to:'Hong Kong',toCode:'HKG',toTerminal:'',
+      date:'Mon 14 Jul 2026',dep:'See e-ticket',arr:'See e-ticket',
+      duration:'~10h 30m',nonstop:true,
+      pax:['Lucas Yeung (solo)'],
+      bags:'See e-ticket attachment',seats:'See e-ticket',
+      cabin:'Economy',
+    },
+    {
+      status:'confirmed',ref:'FZ6FEC',
+      airline:'Cathay Pacific',airlineEmoji:'🇨🇳',
+      flight:'CX — see e-ticket',
+      from:'Hong Kong',fromCode:'HKG',fromTerminal:'',
+      to:'Chengdu',toCode:'CTU',toTerminal:'',
+      date:'Wed 16 Jul 2026',dep:'See e-ticket',arr:'See e-ticket',
+      duration:'~2h 30m',nonstop:true,
+      pax:['Lucas Yeung','Caitlin McKinnon'],
+      bags:'See e-ticket attachment',seats:'See e-ticket',
+      cabin:'Economy',
+    },
+    {
+      status:'confirmed',ref:'CELCFD',
+      airline:'Thai AirAsia',airlineEmoji:'🇹🇭',
+      flight:'FD 557',
+      from:'Chongqing',fromCode:'CKG',fromTerminal:'T3',
+      to:'Bangkok Don Mueang',toCode:'DMK',toTerminal:'T1',
+      date:'Tue 21 Jul 2026',dep:'11:10',arr:'13:20',
+      duration:'3h 10m',nonstop:true,
+      pax:['Lucas — Seat 20D','Caitlin — Seat 20E'],
+      bags:'20kg checked + 7kg carry-on (each)',seats:'20D / 20E',
+      cabin:'Economy Promo',
+    },
+    {
+      status:'tbc',ref:'Not yet booked',
+      airline:'AirAsia or Thai Lion Air',airlineEmoji:'🇹🇭',
+      flight:'DMK → KBV',
+      from:'Bangkok Don Mueang',fromCode:'DMK',fromTerminal:'T2',
+      to:'Krabi',toCode:'KBV',toTerminal:'',
+      date:'Thu 23 Jul 2026',dep:'TBC',arr:'TBC',
+      duration:'~1h 25m',nonstop:true,
+      pax:['Lucas Yeung','Caitlin McKinnon'],
+      bags:'TBC',seats:'TBC',cabin:'Economy',
+    },
+    {
+      status:'tbc',ref:'Not yet booked',
+      airline:'AirAsia, Scoot or Jetstar',airlineEmoji:'🇸🇬',
+      flight:'HKT → SIN',
+      from:'Phuket',fromCode:'HKT',fromTerminal:'',
+      to:'Singapore Changi',toCode:'SIN',toTerminal:'',
+      date:'Mon 28 Jul 2026',dep:'TBC',arr:'TBC',
+      duration:'~1h 30m',nonstop:true,
+      pax:['Lucas Yeung','Caitlin McKinnon'],
+      bags:'TBC',seats:'TBC',cabin:'Economy',
+    },
+    {
+      status:'tbc',ref:'Not yet booked',
+      airline:'Scoot, AirAsia or Malaysia Airlines',airlineEmoji:'🇲🇾',
+      flight:'SIN → KUL',
+      from:'Singapore Changi',fromCode:'SIN',fromTerminal:'',
+      to:'Kuala Lumpur',toCode:'KUL',toTerminal:'',
+      date:'Fri 1 Aug 2026',dep:'TBC',arr:'TBC',
+      duration:'~50m',nonstop:true,
+      pax:['Lucas Yeung','Caitlin McKinnon'],
+      bags:'TBC',seats:'TBC',cabin:'Economy',
+    },
+    {
+      status:'tbc',ref:'Not yet booked',
+      airline:'Malaysia Airlines / AirAsia',airlineEmoji:'🇳🇿',
+      flight:'KUL → AKL',
+      from:'Kuala Lumpur KLIA',fromCode:'KUL',fromTerminal:'',
+      to:'Auckland',toCode:'AKL',toTerminal:'',
+      date:'Sun 3 Aug 2026',dep:'TBC',arr:'TBC',
+      duration:'~11h',nonstop:false,
+      pax:['Lucas Yeung','Caitlin McKinnon'],
+      bags:'TBC',seats:'TBC',cabin:'Economy',
+    },
+  ],
+  trains:[
+    {
+      status:'tbc',ref:'Book on Trip.com',
+      operator:'China Rail (G-Train)',icon:'🚄',
+      from:'Chengdu East (成都东)',to:'Chongqing North (重庆北)',
+      date:'Sat 18 Jul 2026',dep:'TBC',arr:'TBC',duration:'~75 min',
+      note:'Under NZ$30 pp. Book G-series train. Seats sell fast.',
+    },
+  ],
+  ferries:[
+    {
+      status:'tbc',ref:'Book in advance',
+      operator:'Bintan Resort Ferries / Majestic Fast Ferry',icon:'⛴️',
+      from:'Singapore — Tanah Merah Ferry Terminal',to:'Bintan Lagoi',
+      outbound:'Wed 30 Jul',ret:'Fri 1 Aug',duration:'~50 min each way',
+      note:'Fills up on weekends. Book both legs as soon as accommodation is confirmed.',
+    },
   ],
   hotels:[
-    {status:'confirmed',title:'Hong Kong',detail:'14–16 Jul · Staying with family'},
-    {status:'tbc',title:'Chengdu Hotel',detail:'16–18 Jul · 2 nights · TBC'},
-    {status:'tbc',title:'Chongqing Hotel',detail:'18–20 Jul · 2 nights · TBC'},
-    {status:'tbc',title:'Bangkok Hotel',detail:'20–23 Jul · 3 nights · TBC'},
-    {status:'tbc',title:'Krabi / Ao Nang Hotel',detail:'23–26 Jul · 3 nights · TBC'},
-    {status:'tbc',title:'Phuket Hotel',detail:'26–28 Jul · 2 nights · TBC'},
-    {status:'tbc',title:'Singapore Hotel',detail:'28–30 Jul · 2 nights · TBC'},
-    {status:'tbc',title:'Bintan Resort',detail:'30 Jul – 1 Aug · 2 nights · TBC'},
-    {status:'tbc',title:'Kuala Lumpur Hotel',detail:'1–3 Aug · 2 nights · Bukit Bintang area'},
+    {status:'confirmed',city:'🇭🇰 Hong Kong',dates:'14–16 Jul',nights:'2 nights',detail:'Staying with family',ref:'N/A — family stay'},
+    {status:'tbc',city:'🇨🇳 Chengdu',dates:'16–18 Jul',nights:'2 nights',detail:'City centre area recommended',ref:'Not yet booked'},
+    {status:'tbc',city:'🇨🇳 Chongqing',dates:'18–20 Jul',nights:'2 nights',detail:'Near Hongyadong / Jiefangbei area',ref:'Not yet booked'},
+    {status:'tbc',city:'🇹🇭 Bangkok',dates:'20–23 Jul',nights:'3 nights',detail:'Sukhumvit or Silom area',ref:'Not yet booked'},
+    {status:'tbc',city:'🇹🇭 Krabi / Ao Nang',dates:'23–26 Jul',nights:'3 nights',detail:'Ao Nang Beach area — walking distance to pier',ref:'Not yet booked'},
+    {status:'tbc',city:'🇹🇭 Phuket',dates:'26–28 Jul',nights:'2 nights',detail:'Old Town or Karon Beach',ref:'Not yet booked'},
+    {status:'tbc',city:'🇸🇬 Singapore',dates:'28–30 Jul',nights:'2 nights',detail:'Marina Bay / Bugis / Orchard area',ref:'Not yet booked'},
+    {status:'tbc',city:'🇮🇩 Bintan',dates:'30 Jul – 1 Aug',nights:'2 nights',detail:'Bintan Lagoon Resort or Nirwana Gardens',ref:'Not yet booked'},
+    {status:'tbc',city:'🇲🇾 Kuala Lumpur',dates:'1–3 Aug',nights:'2 nights',detail:'Bukit Bintang area — walking to Jalan Alor',ref:'Not yet booked'},
   ]
 };
 
@@ -850,11 +998,159 @@ function setInfoTab(id,btn){
 // ═══════════════════════════════════
 function renderBookings(){
   if(document.getElementById('bookings-content').hasChildNodes())return;
+
+  const confirmedFlights=BOOKINGS.flights.filter(f=>f.status==='confirmed').length;
+  const totalFlights=BOOKINGS.flights.length;
+  const confirmedHotels=BOOKINGS.hotels.filter(h=>h.status==='confirmed').length;
+  const totalHotels=BOOKINGS.hotels.length;
+
+  function flightCard(f){
+    const isConf=f.status==='confirmed';
+    const hasTimes=f.dep!=='TBC'&&f.dep!=='See e-ticket';
+    return`
+    <div class="fk-card">
+      <div class="fk-header">
+        <span class="fk-airline">${f.airlineEmoji} ${f.airline}${f.flight&&f.flight.includes('→')?'':' · '+f.flight}</span>
+        <span class="fk-pill ${f.status}">${isConf?'✓ Confirmed':'To Book'}</span>
+      </div>
+      <div class="fk-route">
+        <div class="fk-city">
+          <div class="fk-code">${f.fromCode}</div>
+          <div class="fk-city-name">${f.from}</div>
+          ${f.fromTerminal?`<span class="fk-terminal">Terminal ${f.fromTerminal}</span>`:''}
+        </div>
+        <div class="fk-mid">
+          <div class="fk-dur">${f.duration}</div>
+          <div class="fk-arrow">
+            <div class="fk-line"></div>
+            <div class="fk-arrowhead">›</div>
+          </div>
+          <div class="fk-nonstop">${f.nonstop?'Non-stop':'Via stop'}</div>
+        </div>
+        <div class="fk-city" style="text-align:right">
+          <div class="fk-code">${f.toCode}</div>
+          <div class="fk-city-name">${f.to}</div>
+          ${f.toTerminal?`<span class="fk-terminal">Terminal ${f.toTerminal}</span>`:''}
+        </div>
+      </div>
+      ${hasTimes?`
+      <div class="fk-times">
+        <div class="fk-time-block"><div class="fk-time">${f.dep}</div><div class="fk-date">${f.date}</div></div>
+        <div class="fk-time-block"><div class="fk-time">${f.arr}</div><div class="fk-date">${f.date}</div></div>
+      </div>`:`
+      <div style="padding:6px 14px 0"><span style="font-size:12px;color:var(--text2)">📅 ${f.date}</span></div>`}
+      <div class="fk-divider"></div>
+      <div class="fk-ref">
+        <span class="fk-ref-label">Booking Ref</span>
+        <span class="fk-ref-val">${f.ref}</span>
+      </div>
+      <div class="fk-details">
+        <div class="fk-detail-item"><div class="fk-detail-label">Passengers</div><div class="fk-detail-val">${f.pax.join('<br>')}</div></div>
+        <div class="fk-detail-item"><div class="fk-detail-label">Cabin</div><div class="fk-detail-val">${f.cabin}</div></div>
+        <div class="fk-detail-item"><div class="fk-detail-label">Baggage</div><div class="fk-detail-val">${f.bags}</div></div>
+        ${f.seats&&!f.seats.includes('TBC')&&!f.seats.includes('e-ticket')?`<div class="fk-detail-item"><div class="fk-detail-label">Seats</div><div class="fk-detail-val">${f.seats}</div></div>`:''}
+      </div>
+    </div>`;
+  }
+
+  function trainCard(t){
+    return`
+    <div class="tk-card">
+      <div class="tk-header">
+        <div class="tk-type"><div class="tk-icon">${t.icon}</div><div class="tk-name">${t.operator}</div></div>
+        <span class="fk-pill ${t.status}">${t.status==='confirmed'?'✓ Confirmed':'To Book'}</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+        <div><div style="font-size:15px;font-weight:800">${t.from.split('(')[0].trim()}</div><div style="font-size:11px;color:var(--text2)">${t.from.includes('(')?t.from.match(/\(([^)]+)\)/)[1]:''}</div></div>
+        <div style="flex:1;height:1px;background:var(--border);position:relative"><div style="position:absolute;right:-4px;top:-5px;color:var(--text3)">›</div></div>
+        <div style="text-align:right"><div style="font-size:15px;font-weight:800">${t.to.split('(')[0].trim()}</div><div style="font-size:11px;color:var(--text2)">${t.to.includes('(')?t.to.match(/\(([^)]+)\)/)[1]:''}</div></div>
+      </div>
+      <div style="display:flex;gap:14px;flex-wrap:wrap">
+        <div><div class="fk-detail-label">Date</div><div class="fk-detail-val">${t.date}</div></div>
+        <div><div class="fk-detail-label">Duration</div><div class="fk-detail-val">${t.duration}</div></div>
+        <div><div class="fk-detail-label">Ref / How to Book</div><div class="fk-detail-val">${t.ref}</div></div>
+      </div>
+      ${t.note?`<div style="margin-top:8px;padding:7px 9px;background:var(--amber-bg);border-radius:8px;font-size:12px;color:#7A4000">💡 ${t.note}</div>`:''}
+    </div>`;
+  }
+
+  function ferryCard(f){
+    return`
+    <div class="tk-card">
+      <div class="tk-header">
+        <div class="tk-type"><div class="tk-icon">${f.icon}</div><div class="tk-name">${f.operator}</div></div>
+        <span class="fk-pill ${f.status}">${f.status==='confirmed'?'✓ Confirmed':'To Book'}</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+        <div style="flex:1"><div style="font-size:13px;font-weight:700">${f.from}</div></div>
+        <div style="color:var(--text3);font-size:16px">⇄</div>
+        <div style="flex:1;text-align:right"><div style="font-size:13px;font-weight:700">${f.to}</div></div>
+      </div>
+      <div style="display:flex;gap:14px;flex-wrap:wrap;margin-bottom:6px">
+        <div><div class="fk-detail-label">Outbound</div><div class="fk-detail-val">${f.outbound}</div></div>
+        <div><div class="fk-detail-label">Return</div><div class="fk-detail-val">${f.ret}</div></div>
+        <div><div class="fk-detail-label">Duration</div><div class="fk-detail-val">${f.duration}</div></div>
+      </div>
+      ${f.note?`<div style="padding:7px 9px;background:var(--amber-bg);border-radius:8px;font-size:12px;color:#7A4000">💡 ${f.note}</div>`:''}
+    </div>`;
+  }
+
+  function hotelCard(h){
+    return`
+    <div class="hk-card">
+      <div class="hk-icon">🏨</div>
+      <div class="hk-body">
+        <div class="hk-city">${h.city}</div>
+        <div class="hk-dates">${h.dates} · ${h.nights}</div>
+        <div class="hk-detail">${h.detail}</div>
+        <div class="hk-ref">Ref: ${h.ref}</div>
+      </div>
+      <span class="hk-pill ${h.status}">${h.status==='confirmed'?'✓ Done':'TBC'}</span>
+    </div>`;
+  }
+
   document.getElementById('bookings-content').innerHTML=`
-    <div class="sec-label" style="margin-top:0">✈️ Flights</div>
-    ${BOOKINGS.flights.map(b=>`<div class="bk-card"><div class="bk-row"><div class="bk-dot ${b.status}"></div><div class="bk-title">${b.title}</div></div><div class="bk-detail">${b.detail}</div></div>`).join('')}
-    <div class="sec-label">🏨 Hotels</div>
-    ${BOOKINGS.hotels.map(b=>`<div class="bk-card"><div class="bk-row"><div class="bk-dot ${b.status}"></div><div class="bk-title">${b.title}</div></div><div class="bk-detail">${b.detail}</div></div>`).join('')}
+    <div class="bk-summary">
+      <div class="bk-sum-item"><div class="bk-sum-num" style="color:var(--green)">${confirmedFlights}</div><div class="bk-sum-label">Confirmed</div></div>
+      <div class="bk-sum-item"><div class="bk-sum-num" style="color:var(--amber)">${totalFlights-confirmedFlights}</div><div class="bk-sum-label">To Book</div></div>
+      <div class="bk-sum-item"><div class="bk-sum-num" style="color:var(--text)">${totalFlights}</div><div class="bk-sum-label">Total Legs</div></div>
+    </div>
+
+    <div class="bk-section">
+      <div class="bk-section-head">
+        <span class="bk-section-icon">✈️</span>
+        <span class="bk-section-title">Flights</span>
+        <span class="bk-section-count mixed">${confirmedFlights}/${totalFlights} confirmed</span>
+      </div>
+      ${BOOKINGS.flights.map(flightCard).join('')}
+    </div>
+
+    <div class="bk-section">
+      <div class="bk-section-head">
+        <span class="bk-section-icon">🚄</span>
+        <span class="bk-section-title">Train</span>
+        <span class="bk-section-count tbc">To Book</span>
+      </div>
+      ${BOOKINGS.trains.map(trainCard).join('')}
+    </div>
+
+    <div class="bk-section">
+      <div class="bk-section-head">
+        <span class="bk-section-icon">⛴️</span>
+        <span class="bk-section-title">Ferry</span>
+        <span class="bk-section-count tbc">To Book</span>
+      </div>
+      ${BOOKINGS.ferries.map(ferryCard).join('')}
+    </div>
+
+    <div class="bk-section">
+      <div class="bk-section-head">
+        <span class="bk-section-icon">🏨</span>
+        <span class="bk-section-title">Hotels</span>
+        <span class="bk-section-count mixed">${confirmedHotels}/${totalHotels} confirmed</span>
+      </div>
+      ${BOOKINGS.hotels.map(hotelCard).join('')}
+    </div>
   `;
 }
 </script>
