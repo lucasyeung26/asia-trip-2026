@@ -368,7 +368,7 @@ function mapsLink(name,city){return`https://www.google.com/maps/search/?api=1&qu
 const CITIES={
   hk:{
     name:'Hong Kong',flag:'🇭🇰',dates:'14–16 Jul',badge:'2 nights',
-    color:'#FF6B35',latlng:[22.3193,114.1694],
+    color:'#FF6B35',latlng:[22.3193,114.1694],hotelll:[22.2808,114.1551],
     hotel:'Staying with family',
     explore:[
       {icon:'🌅',bg:'#FFF7ED',title:'Victoria Peak',desc:'Best city skyline on earth. Take the Peak Tram up — go at dusk for the full magic.'},
@@ -393,6 +393,9 @@ const CITIES={
       {icon:'🍗',bg:'#ECFDF5',area:'Sham Shui Po',ll:[22.3281,114.1607],type:'Roast Goose',title:'Yat Lok Restaurant',desc:'Michelin-starred roast goose in Central. Queues daily. One of HK\'s genuinely great birds.',order:'Roast goose rice plate — crispy skin, just-fatty enough. Request the drumstick',price:'~NZ$22 pp'},
       {icon:'🦪',bg:'#EFF6FF',area:'Wan Chai',ll:[22.2771,114.1719],type:'Wonton Noodles',title:'Ho Hung Kee',desc:'Michelin-starred wonton noodles in Wan Chai. The wontons are plump, the noodles al dente.',order:'Mixed wonton noodle (shrimp + pork) in clear soup — small bowl first, add more',price:'~NZ$18 pp'},
       {icon:'🫓',bg:'#F0FFF4',area:'Yau Ma Tei',ll:[22.3122,114.1707],type:'Street Breakfast',title:'Mong Kok Street Breakfast',desc:'Breakfast carts near Prince Edward MTR. Street-side dai pai dong at its best.',order:'Condensed milk toast, curry fishball skewers, rice noodle rolls with sweet soy',price:'~NZ$7 pp'},
+      {icon:'⭐',bg:'#FFFBEB',area:'Sham Shui Po',ll:[22.3302,114.1623],type:'Michelin Dim Sum',title:'Tim Ho Wan (Sham Shui Po)',desc:"World's cheapest Michelin star. The original branch. Go early — queues form fast.",order:'Baked BBQ pork buns (the signature), rice noodle rolls, turnip cake',price:'~NZ$20 pp'},
+      {icon:'🍜',bg:'#FEF2F2',area:'Jordan',ll:[22.3181,114.1664],type:'Ramen',title:'Butao Ramen (Jordan)',desc:'HK-style tonkotsu ramen. Thick broth, chewy noodles. Excellent for a quick dinner.',order:'Butao black (rich pork broth), extra cha shu, seasoned egg',price:'~NZ$20 pp'},
+      {icon:'🫕',bg:'#ECFDF5',area:'Wan Chai',ll:[22.2780,114.1731],type:'Street Food',title:'Dai Pai Dong (Wan Chai)',desc:'Open-air cooked food stalls. Best at night. Order beer and watch the woks fly.',order:'Stir-fried clams in black bean sauce, typhoon shelter crab, beef ho fun',price:'~NZ$34 pp'},
     ],
     transport:[
       {status:'confirmed',method:'✈️ Arrive Hong Kong (HKG)',detail:'Airport Express to Hong Kong Station in 24 min. HK$115 one way.'},
@@ -405,7 +408,7 @@ const CITIES={
 
   chengdu:{
     name:'Chengdu',flag:'🇨🇳',dates:'16–18 Jul',badge:'2 nights',
-    color:'#FF3B30',latlng:[30.5728,104.0668],
+    color:'#FF3B30',latlng:[30.5728,104.0668],hotelll:[30.6697,104.0544],
     hotel:'WEZO Hotel Chengdu – Kuanzhai Alley',
     explore:[
       {icon:'🐼',bg:'#ECFDF5',title:'Giant Panda Research Base',desc:'Go at 8am sharp — pandas are active and feeding. Book tickets online. Take a taxi (30 min).'},
@@ -430,6 +433,9 @@ const CITIES={
       {icon:'🌶',bg:'#FEF9EC',area:'Wenshu Monastery',ll:[30.6710,104.0581],type:'Buddhist Veg',title:'Wenshu Monastery Vegetarian',desc:'Stunning monastery complex with attached vegetarian restaurant. No meat, all flavour.',order:'Vegetarian kung pao, braised tofu with chilli, spring rolls. Quiet and beautiful.',price:'~NZ$11 pp'},
       {icon:'🍢',bg:'#EFF6FF',area:'City Centre',ll:[30.6532,104.0733],type:'Mala Tang',title:'Mala Tang (麻辣烫)',desc:'Pick raw ingredients from a cabinet, cook them in spiced broth. The Chengdu version is oilier and better than everywhere else.',order:'Lotus root, tofu skin, quail eggs, enoki mushrooms, beef slices — 15+ skewers between two',price:'~NZ$9 pp'},
       {icon:'🍰',bg:'#FFF7ED',area:'Chunxi Road',ll:[30.6593,104.0811],type:'Snack',title:'Sanjie Tang Yuan (三姐汤圆)',desc:'The best glutinous rice ball shop in Chengdu. Inside the Chunxi Road shopping area.',order:'Sesame and peanut tang yuan in osmanthus syrup. Order a bowl of each flavour',price:'~NZ$5 pp'},
+      {icon:'🌶',bg:'#FEF2F2',area:'Jinli Street',ll:[30.6444,104.0655],type:'Street Food',title:'Jinli Street Snacks',desc:'Ancient street next to Wuhou Shrine. Rows of vendors selling classic Sichuan street food.',order:'Rabbit head (classic local), sugar-coated hawthorn, sesame balls, mango ice cream',price:'~NZ$17 pp'},
+      {icon:'🫕',bg:'#FFF7ED',area:'Chunxi Road',ll:[30.6568,104.0802],type:'Hot Pot',title:'Haidilao Hot Pot (Chunxi Rd)',desc:'The famous chain but better here — theatre service (noodle dance, face mask, birthday song).',order:'Spicy + clear broth split pot, beef, tripe, lotus root, sesame dipping sauce',price:'~NZ$46 pp'},
+      {icon:'🍢',bg:'#ECFDF5',area:'Kuanzhai Alley',ll:[30.6711,104.0559],type:'Skewers',title:'Kuanzhai Alley Chuanr Sticks',desc:"Street skewers right near your hotel. Order by the stick. Eat standing. Sichuan pepper everything.",order:'Beef tendon, potato, mushroom, lotus root skewers — all coated in chilli oil',price:'~NZ$11 pp'},
     ],
     transport:[
       {status:'confirmed',method:'✈️ HKG → CTU — Cathay Pacific',detail:'Ref: FZ6FEC · ~2.5 hr flight. Arrive Chengdu Tianfu Airport. Metro Line 18 to city centre (~45 min).'},
@@ -442,7 +448,7 @@ const CITIES={
 
   chongqing:{
     name:'Chongqing',flag:'🇨🇳',dates:'18–21 Jul',badge:'3 nights',
-    color:'#DC2626',latlng:[29.5630,106.5516],
+    color:'#DC2626',latlng:[29.5630,106.5516],hotelll:[29.5592,106.5805],
     hotel:'SSAW Hotel Chongqing',
     explore:[
       {icon:'🏔',bg:'#EFF6FF',title:'Hongyadong Cliff Dwellings',desc:'18-storey stilt houses built into a cliff. Breathtaking at night. Free to enter.'},
@@ -467,6 +473,9 @@ const CITIES={
       {icon:'🫕',bg:'#FEF2F2',area:'Jiefangbei CBD',ll:[29.5641,106.5712],type:'Premium Hot Pot',title:'Liuyishou Hot Pot (刘一手)',desc:'The most famous Chongqing hotpot chain. Better than it sounds — the buttery red broth is the real thing.',order:'Mandarin duck split pot, sliced fatty beef, tripe, enoki mushrooms, tofu',price:'~NZ$28 pp'},
       {icon:'🥗',bg:'#ECFDF5',area:'Ciqikou Ancient Town',ll:[29.5572,106.4843],type:'Cold Noodles',title:'Shan Cheng Liang Mian (山城凉面)',desc:'Cold sesame noodles — a Chongqing version with more chilli oil and vinegar than you expect. Eaten year-round.',order:'Cold noodles with sesame paste, chilli oil, spring onion, roasted peanuts. Eat standing up.',price:'~NZ$3 pp'},
       {icon:'🍲',bg:'#FFF7ED',area:'Jiangbei District',ll:[29.5755,106.5322],type:'Braised Offal',title:'Mao Du Xian (毛肚鲜)',desc:'Chongqing\'s famous beef tripe, blanched in hot tallow oil and served with dipping sauces. A local ritual.',order:'Order the premium beef tripe (毛肚), blanch 10–15 seconds only. Sesame-garlic dip',price:'~NZ$16 pp'},
+      {icon:'🐟',bg:'#EFF6FF',area:'Ciqikou',ll:[29.5710,106.4693],type:'Street Food',title:'Ciqikou Old Town Snacks',desc:'Ancient town by the river. Perfect afternoon snack stop before evening hot pot.',order:'Mao blood curd (blood tofu), fried dumplings, Ciqikou sesame candy',price:'~NZ$11 pp'},
+      {icon:'🥘',bg:'#FFF7ED',area:'Jiefangbei',ll:[29.5580,106.5773],type:'Traditional CQ',title:'Dongyuan Restaurant',desc:'Traditional Chongqing cuisine in the CBD. Good for a proper sit-down non-hot-pot meal.',order:'Steamed pork belly with preserved vegetables, red-braised pork, stir-fried greens',price:'~NZ$29 pp'},
+      {icon:'🍺',bg:'#FFFBEB',area:'Hongyadong',ll:[29.5661,106.5811],type:'Night View',title:'Hongyadong Rooftop Bar',desc:'Stilted building complex over the river. Have a beer watching the neon cityscape. Iconic CQ view.',order:'Local Chongqing beer, any snack, come at sunset and stay till dark',price:'~NZ$17 pp'},
     ],
     transport:[
       {status:'confirmed',method:'🚄 Arrive from Chengdu',detail:'G-train ~75 min. Chongqing North or Bei station — both have metro connections.'},
@@ -1008,6 +1017,7 @@ function openCity(key){
         </div>
       </div>
     </div>`).join('');
+  const hotelStrip=`<div class="hotel-strip"><span class="hs-icon">🏨</span><span class="hs-name">${c.hotel}</span><a class="hs-map" href="${mapsLink(c.hotel,c.name)}" target="_blank">📍 Map</a></div>`;
   const foodHtml=`
   <div class="food-header">
     <span class="food-count">${c.food.length} spots in ${c.name}</span>
@@ -1016,14 +1026,14 @@ function openCity(key){
       <button class="ftab" onclick="setFoodView('map',this,'${key}')">🗺 Map</button>
     </div>
   </div>
-  <div id="food-list-view">${foodListHtml}</div>
+  ${hotelStrip}<div id="food-list-view">${foodListHtml}</div>
   <div id="food-map-view" style="display:none">
     <div class="food-map-outer">
       <div class="food-map-el" id="food-map-el"></div>
       <div class="food-map-detail" id="food-map-detail"></div>
     </div>
   </div>`;
-  const transportHtml=c.transport.map(t=>`
+  const transportHtml=hotelStrip+c.transport.map(t=>`
     <div class="tc">
       <div class="tc-dot ${t.status}"></div>
       <div class="tc-body"><div class="tc-method">${t.method}</div><div class="tc-detail">${t.detail}</div></div>
@@ -1063,26 +1073,39 @@ function setFoodView(view,btn,key){
   if(view==='map'){if(lv)lv.style.display='none';if(mv)mv.style.display='';initFoodMap(key);}
   else{if(mv)mv.style.display='none';if(lv)lv.style.display='';}
 }
+function haversineKm(a,b){
+  const R=6371,dLat=(b[0]-a[0])*Math.PI/180,dLon=(b[1]-a[1])*Math.PI/180;
+  const x=Math.sin(dLat/2)**2+Math.cos(a[0]*Math.PI/180)*Math.cos(b[0]*Math.PI/180)*Math.sin(dLon/2)**2;
+  return R*2*Math.atan2(Math.sqrt(x),Math.sqrt(1-x));
+}
 function initFoodMap(key){
   const c=CITIES[key];if(!c||!c.food)return;
   const mapEl=document.getElementById('food-map-el');if(!mapEl)return;
   if(_foodMap){_foodMap.remove();_foodMap=null;}
   const items=c.food.filter(f=>f.ll&&f.ll.length===2);
   if(!items.length){mapEl.innerHTML='<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--text2);font-size:13px;background:var(--bg2)">📍 Map data coming soon</div>';return;}
-  const lat=items.reduce((s,f)=>s+f.ll[0],0)/items.length;
-  const lng=items.reduce((s,f)=>s+f.ll[1],0)/items.length;
+  const hll=c.hotelll||null;
+  const allPts=[...items.map(f=>f.ll),...(hll?[hll]:[])];
+  const lat=allPts.reduce((s,p)=>s+p[0],0)/allPts.length;
+  const lng=allPts.reduce((s,p)=>s+p[1],0)/allPts.length;
   _foodMap=L.map(mapEl,{zoomControl:false}).setView([lat,lng],14);
   L.control.zoom({position:'topright'}).addTo(_foodMap);
   L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',{maxZoom:19,attribution:'© CartoDB'}).addTo(_foodMap);
+  if(hll){
+    const hotelIc=L.divIcon({className:'',html:`<div style="width:32px;height:32px;border-radius:8px;background:#1e3a5f;border:2px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;font-size:16px">🏨</div>`,iconSize:[32,32],iconAnchor:[16,16]});
+    L.marker(hll,{icon:hotelIc}).addTo(_foodMap).bindPopup(`<b>Your Hotel</b><br><small>${c.hotel}</small>`);
+  }
   const detailEl=document.getElementById('food-map-detail');detailEl.innerHTML='';
   items.forEach((f,i)=>{
     const n=i+1;
     const bg=f.bg||'#EFF6FF';
     const ic=L.divIcon({className:'',html:`<div style="width:26px;height:26px;border-radius:50%;background:${bg};border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#1a1a1a">${n}</div>`,iconSize:[26,26],iconAnchor:[13,13]});
     L.marker(f.ll,{icon:ic}).addTo(_foodMap).bindPopup(`<b>${f.title}</b><br><small>${f.type} · 💰 ${f.price}</small>`);
-    detailEl.innerHTML+=`<div class="fmd-card"><div class="fmd-num">${n}</div><div style="flex:1"><div class="fmd-type">${f.icon} ${f.type}${f.area?' · '+f.area:''}</div><div class="fmd-title">${f.title}</div><div class="fmd-row"><span class="fmd-price">💰 ${f.price}</span><a class="map-link" href="${mapsLink(f.title,c.name)}" target="_blank">📍 Maps</a></div></div></div>`;
+    const dist=hll?haversineKm(hll,f.ll):null;
+    const distHtml=dist!=null?`<span class="fmd-dist">${dist<1?(dist*1000).toFixed(0)+'m':(dist).toFixed(1)+'km'}</span>`:'';
+    detailEl.innerHTML+=`<div class="fmd-card"><div class="fmd-num">${n}</div><div style="flex:1"><div class="fmd-type">${f.icon} ${f.type}${f.area?' · '+f.area:''}</div><div class="fmd-title">${f.title}</div><div class="fmd-row"><span class="fmd-price">💰 ${f.price}</span>${distHtml}<a class="map-link" href="${mapsLink(f.title,c.name)}" target="_blank">📍 Maps</a></div></div></div>`;
   });
-  setTimeout(()=>_foodMap&&_foodMap.invalidateSize(),120);
+  setTimeout(()=>{if(_foodMap){_foodMap.invalidateSize();if(hll){const bounds=L.latLngBounds([hll,...items.map(f=>f.ll)]);_foodMap.fitBounds(bounds,{padding:[28,28]});}}},150);
 }
 function closeSheet(){
   const s=document.getElementById('sheet');
