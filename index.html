@@ -266,6 +266,23 @@ html,body{height:100%;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-
 #sheet-backdrop.show{pointer-events:auto;opacity:1}
 /* Trip chip pill */
 .chip-pill{display:inline-flex;margin-top:5px;padding:2px 9px;background:var(--blue-bg);color:var(--blue);font-size:10px;font-weight:700;border-radius:20px;letter-spacing:0.04em}
+
+/* ── FOOD MAP FEATURE ── */
+.food-header{display:flex;align-items:center;justify-content:space-between;padding:10px 14px 8px;border-bottom:1px solid var(--border);margin-bottom:4px}
+.food-count{font-size:12px;font-weight:600;color:var(--text2)}
+.food-toggle{display:flex;gap:4px}
+.ftab{padding:5px 12px;border-radius:100px;border:1px solid var(--border);background:var(--bg2);font-size:12px;font-weight:600;cursor:pointer;color:var(--text2)}
+.ftab.on{background:var(--blue);color:#fff;border-color:transparent}
+.card-area{font-size:11px;color:var(--blue);font-weight:600;margin-bottom:2px}
+.food-map-outer{padding:12px}
+.food-map-el{height:290px;border-radius:12px;overflow:hidden;border:1px solid var(--border)}
+.food-map-detail{margin-top:8px;display:flex;flex-direction:column;gap:8px}
+.fmd-card{display:flex;gap:10px;padding:10px 12px;background:var(--card);border-radius:12px;box-shadow:var(--shadow);align-items:flex-start}
+.fmd-num{width:28px;height:28px;border-radius:50%;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;flex-shrink:0;margin-top:1px}
+.fmd-type{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--text3)}
+.fmd-title{font-size:13px;font-weight:700;margin-top:1px}
+.fmd-row{display:flex;align-items:center;gap:8px;margin-top:5px;flex-wrap:wrap}
+.fmd-price{font-size:11px;color:var(--text2)}
 ::-webkit-scrollbar{width:3px}
 ::-webkit-scrollbar-thumb{background:#D1D1D6;border-radius:2px}
 </style>
@@ -361,15 +378,21 @@ const CITIES={
       {icon:'🛍',bg:'#ECFDF5',title:'Mong Kok Markets',desc:'Ladies Market, Flower Market, Goldfish Market. Dense, chaotic, totally Hong Kong.'},
     ],
     food:[
-      {icon:'🥟',bg:'#FFF7ED',type:'Dim Sum',title:'Tim Ho Wan',desc:'World\'s cheapest Michelin-star. Queue expected — usually 30–45 min.',order:'Baked BBQ pork buns (必點), shrimp dumplings (har gao), steamed egg cake',price:'~NZ$33 pp'},
-      {icon:'🦢',bg:'#ECFDF5',type:'Cantonese Classic',title:'Yung Kee Restaurant',desc:'Roast goose institution since 1942. No reservation needed for lunch.',order:'Roast goose rice set, century egg & pickled ginger side',price:'~NZ$55 pp'},
-      {icon:'🍜',bg:'#EFF6FF',type:'Wonton Noodles',title:"Mak's Noodle",desc:'The definitive HK wonton noodle. Springy noodles, delicate wontons in clear broth.',order:'Classic wonton noodle (small bowl) + wonton soup — order both',price:'~NZ$18 pp'},
-      {icon:'☕',bg:'#FDF4FF',type:'Cha Chaan Teng',title:'Tsui Wah Restaurant',desc:'24hr Hong Kong diner. Go for breakfast or late night — both are correct.',order:'Pineapple bun with butter, Hong Kong milk tea, scrambled eggs on toast',price:'~NZ$16 pp'},
-      {icon:'🍚',bg:'#F0FFF4',type:'Congee',title:'Law Fu Kee Congee',desc:'Hidden in Sheung Wan. Silky congee, old-school HK at its best.',order:'Preserved egg & pork congee, youtiao (fried dough) for dipping',price:'~NZ$13 pp'},
-      {icon:'🍖',bg:'#FEF2F2',type:'Roast Meat',title:'Joy Hing Roasted Meat',desc:'Wan Chai institution. Small, packed, cash only. Go before noon.',order:'Char siu rice, roast pork belly rice — get both on one plate',price:'~NZ$16 pp'},
-      {icon:'🧇',bg:'#FFFBEB',type:'Street Food',title:'Lee Keung Kee Egg Waffles',desc:'Original North Point egg waffles (雞蛋仔). Crispy outside, pillow inside.',order:'Original plain waffles — eat hot, straight from the griddle',price:'~NZ$5 pp'},
-      {icon:'🦐',bg:'#F0F9FF',type:'Seafood',title:'Lei Yue Mun Seafood Village',desc:'Pick live seafood from tanks, have it cooked your way. Unique HK experience.',order:'Steamed tiger prawns with garlic, stir-fried crab with ginger & spring onion',price:'~NZ$66–88 pp'},
-      {icon:'🫖',bg:'#F5F3FF',type:'Private Kitchen',title:'Da Ping Huo',desc:'Theatrical private-kitchen Sichuan. Intimate and excellent. Book ahead.',order:'Chef\'s set menu only — trust the kitchen, every dish is a surprise',price:'~NZ$100 pp'},
+      {icon:'🥟',bg:'#FFF7ED',area:'Sham Shui Po',ll:[22.3311,114.1622],type:'Dim Sum',title:'Tim Ho Wan',desc:'World\'s cheapest Michelin-star. Queue expected — usually 30–45 min.',order:'Baked BBQ pork buns (必點), shrimp dumplings (har gao), steamed egg cake',price:'~NZ$33 pp'},
+      {icon:'🦢',bg:'#ECFDF5',area:'Central',ll:[22.2824,114.1543],type:'Cantonese Classic',title:'Yung Kee Restaurant',desc:'Roast goose institution since 1942. No reservation needed for lunch.',order:'Roast goose rice set, century egg & pickled ginger side',price:'~NZ$55 pp'},
+      {icon:'🍜',bg:'#EFF6FF',area:'Central',ll:[22.2815,114.1566],type:'Wonton Noodles',title:"Mak's Noodle",desc:'The definitive HK wonton noodle. Springy noodles, delicate wontons in clear broth.',order:'Classic wonton noodle (small bowl) + wonton soup — order both',price:'~NZ$18 pp'},
+      {icon:'☕',bg:'#FDF4FF',area:'Central',ll:[22.2811,114.1573],type:'Cha Chaan Teng',title:'Tsui Wah Restaurant',desc:'24hr Hong Kong diner. Go for breakfast or late night — both are correct.',order:'Pineapple bun with butter, Hong Kong milk tea, scrambled eggs on toast',price:'~NZ$16 pp'},
+      {icon:'🍚',bg:'#F0FFF4',area:'Sheung Wan',ll:[22.2866,114.1497],type:'Congee',title:'Law Fu Kee Congee',desc:'Hidden in Sheung Wan. Silky congee, old-school HK at its best.',order:'Preserved egg & pork congee, youtiao (fried dough) for dipping',price:'~NZ$13 pp'},
+      {icon:'🍖',bg:'#FEF2F2',area:'Wan Chai',ll:[22.2776,114.1746],type:'Roast Meat',title:'Joy Hing Roasted Meat',desc:'Wan Chai institution. Small, packed, cash only. Go before noon.',order:'Char siu rice, roast pork belly rice — get both on one plate',price:'~NZ$16 pp'},
+      {icon:'🧇',bg:'#FFFBEB',area:'North Point',ll:[22.2916,114.2004],type:'Street Food',title:'Lee Keung Kee Egg Waffles',desc:'Original North Point egg waffles (雞蛋仔). Crispy outside, pillow inside.',order:'Original plain waffles — eat hot, straight from the griddle',price:'~NZ$5 pp'},
+      {icon:'🦐',bg:'#F0F9FF',area:'Kowloon East',ll:[22.3094,114.2374],type:'Seafood',title:'Lei Yue Mun Seafood Village',desc:'Pick live seafood from tanks, have it cooked your way. Unique HK experience.',order:'Steamed tiger prawns with garlic, stir-fried crab with ginger & spring onion',price:'~NZ$66–88 pp'},
+      {icon:'🫖',bg:'#F5F3FF',area:'Sheung Wan',ll:[22.2875,114.1512],type:'Private Kitchen',title:'Da Ping Huo',desc:'Theatrical private-kitchen Sichuan. Intimate and excellent. Book ahead.',order:'Chef\'s set menu only — trust the kitchen, every dish is a surprise',price:'~NZ$100 pp'},
+      {icon:'🥩',bg:'#FEF9EC',area:'Central',ll:[22.2820,114.1556],type:'Beef Brisket',title:'Kau Kee Restaurant',desc:'Central institution since 1920s. The curry brisket noodle is one of HK\'s great bowls.',order:'Beef brisket curry noodle — brisket must be tender. Order the clear broth version too',price:'~NZ$13 pp'},
+      {icon:'🍯',bg:'#FFFBEB',area:'Central',ll:[22.2821,114.1540],type:'Bakery',title:'Tai Cheong Bakery',desc:'HK\'s most famous egg tart shop. Butter pastry, silky egg custard filling.',order:'Egg tarts fresh from the oven — eat while warm. Take a box of six',price:'~NZ$5 pp'},
+      {icon:'🏮',bg:'#FDF4FF',area:'Jordan',ll:[22.3102,114.1716],type:'Cha Chaan Teng',title:'Mido Café (1950)',desc:'The most photogenic cha chaan teng in HK. Temple Street, retro tiled walls, old menu boards.',order:'French toast with butter and syrup, Hong Kong milk tea, pineapple bun',price:'~NZ$11 pp'},
+      {icon:'🍗',bg:'#ECFDF5',area:'Sham Shui Po',ll:[22.3281,114.1607],type:'Roast Goose',title:'Yat Lok Restaurant',desc:'Michelin-starred roast goose in Central. Queues daily. One of HK\'s genuinely great birds.',order:'Roast goose rice plate — crispy skin, just-fatty enough. Request the drumstick',price:'~NZ$22 pp'},
+      {icon:'🦪',bg:'#EFF6FF',area:'Wan Chai',ll:[22.2771,114.1719],type:'Wonton Noodles',title:'Ho Hung Kee',desc:'Michelin-starred wonton noodles in Wan Chai. The wontons are plump, the noodles al dente.',order:'Mixed wonton noodle (shrimp + pork) in clear soup — small bowl first, add more',price:'~NZ$18 pp'},
+      {icon:'🫓',bg:'#F0FFF4',area:'Yau Ma Tei',ll:[22.3122,114.1707],type:'Street Breakfast',title:'Mong Kok Street Breakfast',desc:'Breakfast carts near Prince Edward MTR. Street-side dai pai dong at its best.',order:'Condensed milk toast, curry fishball skewers, rice noodle rolls with sweet soy',price:'~NZ$7 pp'},
     ],
     transport:[
       {status:'confirmed',method:'✈️ Arrive Hong Kong (HKG)',detail:'Airport Express to Hong Kong Station in 24 min. HK$115 one way.'},
@@ -383,7 +406,7 @@ const CITIES={
   chengdu:{
     name:'Chengdu',flag:'🇨🇳',dates:'16–18 Jul',badge:'2 nights',
     color:'#FF3B30',latlng:[30.5728,104.0668],
-    hotel:'TBC — Chengdu city centre',
+    hotel:'WEZO Hotel Chengdu – Kuanzhai Alley',
     explore:[
       {icon:'🐼',bg:'#ECFDF5',title:'Giant Panda Research Base',desc:'Go at 8am sharp — pandas are active and feeding. Book tickets online. Take a taxi (30 min).'},
       {icon:'🏛',bg:'#EFF6FF',title:'Wuhou Shrine & Jinli Street',desc:'Han dynasty memorial + adjacent old street with street food, tea houses, craftwork.'},
@@ -392,29 +415,35 @@ const CITIES={
       {icon:'🌙',bg:'#F0FFF4',title:'Chunxi Road Night Scene',desc:'Chengdu\'s glittering main street. Great for street food and people-watching at night.'},
     ],
     food:[
-      {icon:'🌶',bg:'#FEF2F2',type:'Sichuan Classic',title:'Chen Mapo Tofu (陈麻婆豆腐)',desc:'The original mapo tofu restaurant since 1862. Non-negotiable first meal in Chengdu.',order:'Mapo tofu (the signature), dan dan mian on the side — both mandatory',price:'~NZ$13 pp'},
-      {icon:'🥟',bg:'#FFF7ED',type:'Dumplings',title:'Long Chaoshou (龙抄手)',desc:'Famous dumpling house. Simple, cheap, delicious. Local institution since 1941.',order:'Red oil dumplings, wonton noodle soup — order both, total bill will shock you',price:'~NZ$8 pp'},
-      {icon:'🫕',bg:'#FEF9EC',type:'Hot Pot',title:'Huangcheng Laoma (皇城老妈)',desc:'Top-tier Chengdu hot pot. The broth alone is worth the visit.',order:'Split broth pot, prime beef slices, lotus root, pork intestine (adventurous but worth it)',price:'~NZ$30 pp'},
-      {icon:'🍜',bg:'#FDF4FF',type:'Noodles',title:'Dan Dan Noodles',desc:'Chengdu street staple. Try them everywhere — every stall has a different version.',order:'Classic dan dan mian with sesame paste and chilli oil — get extra chilli on the side',price:'~NZ$4 pp'},
-      {icon:'🐰',bg:'#ECFDF5',type:'Local Specialty',title:'Rabbit Head (兔头)',desc:"Chengdu's bizarre obsession. Braised, spiced rabbit head — more addictive than it sounds.",order:'Get the spicy version (麻辣), eat with cold beer',price:'~NZ$6 pp'},
-      {icon:'🌮',bg:'#EFF6FF',type:'Street Food',title:'Jinli Street Snacks',desc:'Walk the whole strip and eat everything. Budget NZ$15–20 for a full snack crawl.',order:'Skewers, sweet rice cakes, glutinous dumplings, fried tofu — just point and eat',price:'~NZ$13 pp'},
-      {icon:'🥘',bg:'#F0FFF4',type:'Traditional',title:'Baguanguan Restaurant',desc:'Old-school Sichuan cooking, no frills, big flavours.',order:'Kung pao chicken, twice-cooked pork, fish-fragrant eggplant — all three',price:'~NZ$21 pp'},
-      {icon:'🍡',bg:'#FFF7ED',type:'Dessert',title:'Three Cannons (三炮台)',desc:'Traditional glutinous rice dessert rolled in soybean powder. Jinli Street.',order:'Original glutinous rice dessert — watch the street performance when they serve it',price:'~NZ$4 pp'},
-      {icon:'🔥',bg:'#FEF2F2',type:'Skewer Hot Pot',title:'Chuanchuan Xiang (串串香)',desc:'Pick skewers, dip in boiling spiced broth. Budget street food at its best.',order:'Beef, mushroom, tofu skin, lotus root skewers — minimum 20 sticks each',price:'~NZ$10 pp'},
+      {icon:'🌶',bg:'#FEF2F2',area:'Qingyang District',ll:[30.6723,104.0629],type:'Sichuan Classic',title:'Chen Mapo Tofu (陈麻婆豆腐)',desc:'The original mapo tofu restaurant since 1862. Non-negotiable first meal in Chengdu.',order:'Mapo tofu (the signature), dan dan mian on the side — both mandatory',price:'~NZ$13 pp'},
+      {icon:'🥟',bg:'#FFF7ED',area:'City Centre',ll:[30.6591,104.0648],type:'Dumplings',title:'Long Chaoshou (龙抄手)',desc:'Famous dumpling house. Simple, cheap, delicious. Local institution since 1941.',order:'Red oil dumplings, wonton noodle soup — order both, total bill will shock you',price:'~NZ$8 pp'},
+      {icon:'🫕',bg:'#FEF9EC',area:'Shahe District',ll:[30.6541,104.0761],type:'Hot Pot',title:'Huangcheng Laoma (皇城老妈)',desc:'Top-tier Chengdu hot pot. The broth alone is worth the visit.',order:'Split broth pot, prime beef slices, lotus root, pork intestine (adventurous but worth it)',price:'~NZ$30 pp'},
+      {icon:'🍜',bg:'#FDF4FF',area:'Chunxi Road',ll:[30.6570,104.0690],type:'Noodles',title:'Dan Dan Noodles',desc:'Chengdu street staple. Try them everywhere — every stall has a different version.',order:'Classic dan dan mian with sesame paste and chilli oil — get extra chilli on the side',price:'~NZ$4 pp'},
+      {icon:'🐰',bg:'#ECFDF5',area:'Chunxi Road',ll:[30.6617,104.0643],type:'Local Specialty',title:'Rabbit Head (兔头)',desc:"Chengdu's bizarre obsession. Braised, spiced rabbit head — more addictive than it sounds.",order:'Get the spicy version (麻辣), eat with cold beer',price:'~NZ$6 pp'},
+      {icon:'🌮',bg:'#EFF6FF',area:'Wuhou District',ll:[30.6529,104.0474],type:'Street Food',title:'Jinli Street Snacks',desc:'Walk the whole strip and eat everything. Budget NZ$15–20 for a full snack crawl.',order:'Skewers, sweet rice cakes, glutinous dumplings, fried tofu — just point and eat',price:'~NZ$13 pp'},
+      {icon:'🥘',bg:'#F0FFF4',area:'City Centre',ll:[30.6578,104.0615],type:'Traditional',title:'Baguanguan Restaurant',desc:'Old-school Sichuan cooking, no frills, big flavours.',order:'Kung pao chicken, twice-cooked pork, fish-fragrant eggplant — all three',price:'~NZ$21 pp'},
+      {icon:'🍡',bg:'#FFF7ED',area:'Wuhou District',ll:[30.6529,104.0475],type:'Dessert',title:'Three Cannons (三炮台)',desc:'Traditional glutinous rice dessert rolled in soybean powder. Jinli Street.',order:'Original glutinous rice dessert — watch the street performance when they serve it',price:'~NZ$4 pp'},
+      {icon:'🔥',bg:'#FEF2F2',area:'City Centre',ll:[30.6555,104.0680],type:'Skewer Hot Pot',title:'Chuanchuan Xiang (串串香)',desc:'Pick skewers, dip in boiling spiced broth. Budget street food at its best.',order:'Beef, mushroom, tofu skin, lotus root skewers — minimum 20 sticks each',price:'~NZ$10 pp'},
+      {icon:'🫖',bg:'#F5F3FF',area:"People's Park",ll:[30.6625,104.0603],type:'Teahouse',title:'Heming Teahouse (鹤鸣茶社)',desc:"Chengdu's most famous teahouse inside People's Park. Locals playing mahjong, sipping tea — the city in microcosm.",order:"A pot of jasmine or green tea, melon seeds and peanuts on the side. Sit for 2 hours minimum.",price:'~NZ$7 pp'},
+      {icon:'🥙',bg:'#FFF7ED',area:'Kuanzhai Alley',ll:[30.6580,104.0660],type:'Street Breakfast',title:'Guokui (锅盔)',desc:'Crispy flatbread stuffed with spiced beef and chilli, pressed against clay oven walls. Street corners everywhere in Chengdu.',order:'Spicy beef guokui (辣牛肉锅盔) from any street vendor. Eat immediately, standing up. Piping hot.',price:'~NZ$2 pp'},
+      {icon:'🥗',bg:'#ECFDF5',area:'City Centre',ll:[30.6602,104.0685],type:'Cold Dish',title:'Fuqi Feipian (夫妻肺片)',desc:'Chilled sliced beef and offal in numbing red oil. Sounds scary, tastes incredible. One of Chengdu\'s essential cold dishes.',order:'Half portion fuqi feipian — the sauce is everything. Order steamed rice to go with it',price:'~NZ$8 pp'},
+      {icon:'🌶',bg:'#FEF9EC',area:'Wenshu Monastery',ll:[30.6710,104.0581],type:'Buddhist Veg',title:'Wenshu Monastery Vegetarian',desc:'Stunning monastery complex with attached vegetarian restaurant. No meat, all flavour.',order:'Vegetarian kung pao, braised tofu with chilli, spring rolls. Quiet and beautiful.',price:'~NZ$11 pp'},
+      {icon:'🍢',bg:'#EFF6FF',area:'City Centre',ll:[30.6532,104.0733],type:'Mala Tang',title:'Mala Tang (麻辣烫)',desc:'Pick raw ingredients from a cabinet, cook them in spiced broth. The Chengdu version is oilier and better than everywhere else.',order:'Lotus root, tofu skin, quail eggs, enoki mushrooms, beef slices — 15+ skewers between two',price:'~NZ$9 pp'},
+      {icon:'🍰',bg:'#FFF7ED',area:'Chunxi Road',ll:[30.6593,104.0811],type:'Snack',title:'Sanjie Tang Yuan (三姐汤圆)',desc:'The best glutinous rice ball shop in Chengdu. Inside the Chunxi Road shopping area.',order:'Sesame and peanut tang yuan in osmanthus syrup. Order a bowl of each flavour',price:'~NZ$5 pp'},
     ],
     transport:[
       {status:'confirmed',method:'✈️ HKG → CTU — Cathay Pacific',detail:'Ref: FZ6FEC · ~2.5 hr flight. Arrive Chengdu Tianfu Airport. Metro Line 18 to city centre (~45 min).'},
       {status:'confirmed',method:'🚇 Getting Around',detail:'Metro covers main sights. DiDi (Chinese Uber) for everything else. Download before arriving.'},
     ],
     nextstop:{destination:'Chongqing 🇨🇳',options:[
-      {status:'confirmed',method:'🚄 High-Speed Train',detail:'G-train from Chengdu East station, ~75 min. Book on Trip.com. Under NZ$30.'},
+      {status:'confirmed',method:'🚄 High-Speed Train',detail:'G-train from Chengdu East (成都东) → Chongqing North (重庆北). Booked ✅ ~75 min, under NZ$30.'},
     ]}
   },
 
   chongqing:{
     name:'Chongqing',flag:'🇨🇳',dates:'18–21 Jul',badge:'3 nights',
     color:'#DC2626',latlng:[29.5630,106.5516],
-    hotel:'TBC — Chongqing city centre',
+    hotel:'SSAW Hotel Chongqing',
     explore:[
       {icon:'🏔',bg:'#EFF6FF',title:'Hongyadong Cliff Dwellings',desc:'18-storey stilt houses built into a cliff. Breathtaking at night. Free to enter.'},
       {icon:'🚠',bg:'#FDF4FF',title:'Yangtze River Cableway',desc:'Last cross-river cableway in China. Views over both rivers meeting. Old school and iconic.'},
@@ -423,15 +452,21 @@ const CITIES={
       {icon:'🏗',bg:'#F0FFF4',title:'Jiefangbei CBD at Night',desc:'Liberation Monument neon district. Watch the light show — entire CBD glows.'},
     ],
     food:[
-      {icon:'🍜',bg:'#FFF7ED',type:'Chongqing Classic',title:'Xiaomian Noodles (小面)',desc:'The breakfast of Chongqing. Every local has their favourite stall.',order:'Pork mince noodles, add extra chilli paste. Ask for "la" (spicy)',price:'~NZ$3 pp'},
-      {icon:'🫕',bg:'#FEF2F2',type:'Hot Pot',title:'De Zhuang Hot Pot (德庄)',desc:'Chongqing-style hotpot — oilier and spicier than Chengdu. The original.',order:'Split pot (mandarin), duck blood, beef tripe, pork brain if you\'re feeling bold',price:'~NZ$25 pp'},
-      {icon:'🔥',bg:'#FFF7ED',type:'Spicy Chicken',title:'Chongqing La Zi Ji',desc:'Spicy fried chicken buried in dried chillies. More chilli than chicken — dig for it.',order:'Half portion la zi ji + cold cucumber salad to balance it out',price:'~NZ$13 pp'},
-      {icon:'🍢',bg:'#ECFDF5',type:'Street Food',title:'Ciqikou Street Snacks',desc:'Ancient town snack crawl. Budget NZ$8–12 for a solid hour of eating.',order:'Mao blood tofu, fried rice cakes, sesame candy, sticky rice in bamboo',price:'~NZ$8 pp'},
-      {icon:'🥣',bg:'#EFF6FF',type:'Noodles',title:'Suanla Fen (酸辣粉)',desc:'Hot and sour glass noodle soup. Chongqing specialty — sour, spicy, rich broth.',order:'Original suanla fen, add pork crackling (脆哨) topping — non-negotiable',price:'~NZ$3 pp'},
-      {icon:'🫙',bg:'#FDF4FF',type:'Riverside Skewers',title:'Chuanchuan at Hongyadong',desc:'Riverside skewer stalls below the cliff dwellings. View + food = perfect evening.',order:'Beef, mushroom, pork belly, fishball, lotus root sticks. Cold Chongqing beer',price:'~NZ$13 pp'},
-      {icon:'🍡',bg:'#F5F3FF',type:'Dessert',title:'Tangyuan (汤圆)',desc:'Glutinous rice balls in sweet broth. Perfect after a round of spicy hotpot.',order:'Black sesame tangyuan in osmanthus sweet broth',price:'~NZ$4 pp'},
-      {icon:'🥩',bg:'#FEF9EC',type:'Local',title:'Local Chongqing Family Restaurant',desc:'Ask your hotel for a neighbourhood spot. No English menu. Point at what others have.',order:'Steamed fish, braised pork ribs, stir-fried greens, cold beers',price:'~NZ$17 pp'},
-      {icon:'🍺',bg:'#F0FFF4',type:'Night Eats',title:'Jiefangbei Night Stalls',desc:'CBD comes alive after 9pm. Grills, skewers, cold beer.',order:'BBQ lamb skewers, grilled corn, cold Chongqing Lager beer',price:'~NZ$10 pp'},
+      {icon:'🍜',bg:'#FFF7ED',area:'City Centre',ll:[29.5568,106.5609],type:'Chongqing Classic',title:'Xiaomian Noodles (小面)',desc:'The breakfast of Chongqing. Every local has their favourite stall.',order:'Pork mince noodles, add extra chilli paste. Ask for "la" (spicy)',price:'~NZ$3 pp'},
+      {icon:'🫕',bg:'#FEF2F2',area:'Jiangbei District',ll:[29.5629,106.5578],type:'Hot Pot',title:'De Zhuang Hot Pot (德庄)',desc:'Chongqing-style hotpot — oilier and spicier than Chengdu. The original.',order:'Split pot (mandarin), duck blood, beef tripe, pork brain if you\'re feeling bold',price:'~NZ$25 pp'},
+      {icon:'🔥',bg:'#FFF7ED',area:'Jiangbei District',ll:[29.5750,106.5304],type:'Spicy Chicken',title:'Chongqing La Zi Ji',desc:'Spicy fried chicken buried in dried chillies. More chilli than chicken — dig for it.',order:'Half portion la zi ji + cold cucumber salad to balance it out',price:'~NZ$13 pp'},
+      {icon:'🍢',bg:'#ECFDF5',area:'Ciqikou Ancient Town',ll:[29.5571,106.4839],type:'Street Food',title:'Ciqikou Street Snacks',desc:'Ancient town snack crawl. Budget NZ$8–12 for a solid hour of eating.',order:'Mao blood tofu, fried rice cakes, sesame candy, sticky rice in bamboo',price:'~NZ$8 pp'},
+      {icon:'🥣',bg:'#EFF6FF',area:'City Centre',ll:[29.5590,106.5620],type:'Noodles',title:'Suanla Fen (酸辣粉)',desc:'Hot and sour glass noodle soup. Chongqing specialty — sour, spicy, rich broth.',order:'Original suanla fen, add pork crackling (脆哨) topping — non-negotiable',price:'~NZ$3 pp'},
+      {icon:'🫙',bg:'#FDF4FF',area:'Hongyadong Cliffs',ll:[29.5609,106.5780],type:'Riverside Skewers',title:'Chuanchuan at Hongyadong',desc:'Riverside skewer stalls below the cliff dwellings. View + food = perfect evening.',order:'Beef, mushroom, pork belly, fishball, lotus root sticks. Cold Chongqing beer',price:'~NZ$13 pp'},
+      {icon:'🍡',bg:'#F5F3FF',area:'City Centre',ll:[29.5640,106.5510],type:'Dessert',title:'Tangyuan (汤圆)',desc:'Glutinous rice balls in sweet broth. Perfect after a round of spicy hotpot.',order:'Black sesame tangyuan in osmanthus sweet broth',price:'~NZ$4 pp'},
+      {icon:'🥩',bg:'#FEF9EC',area:'Nan\'an District',ll:[29.5468,106.5800],type:'Local',title:'Local Chongqing Family Restaurant',desc:'Ask your hotel for a neighbourhood spot. No English menu. Point at what others have.',order:'Steamed fish, braised pork ribs, stir-fried greens, cold beers',price:'~NZ$17 pp'},
+      {icon:'🍺',bg:'#F0FFF4',area:'Jiefangbei CBD',ll:[29.5636,106.5755],type:'Night Eats',title:'Jiefangbei Night Stalls',desc:'CBD comes alive after 9pm. Grills, skewers, cold beer.',order:'BBQ lamb skewers, grilled corn, cold Chongqing Lager beer',price:'~NZ$10 pp'},
+      {icon:'🌊',bg:'#EFF6FF',area:'Nanbin Road',ll:[29.5486,106.5804],type:'Riverside Dining',title:'Nanbin Road Restaurant Strip',desc:'1.5km of restaurants along the south bank of the Yangtze. Spectacular city light reflections at night. Where locals eat on weekends.',order:'Chongqing grilled fish (烤鱼) — the whole fish baked in spicy tallow. Order the Yangtze river shrimp too.',price:'~NZ$22 pp'},
+      {icon:'🥟',bg:'#FFF7ED',area:'City Centre',ll:[29.5570,106.5650],type:'Street Breakfast',title:'Steamed Buns (重庆包子)',desc:'Chongqing steamed buns from early morning cart sellers. The fillings are spicier than anywhere else in China.',order:'Pork and chilli bun (辣肉包), leek and egg bun. Two is breakfast. Three is better.',price:'~NZ$2 pp'},
+      {icon:'🐟',bg:'#F0F9FF',area:'Jiangbei District',ll:[29.5752,106.5318],type:'Grilled Fish',title:'Wan Zhou Kao Yu (万州烤鱼)',desc:'Chongqing\'s famous spiced grilled whole fish — a different style to any other Chinese region. Wood-fire charcoal, spice rub, then topped with stir-fried chilli and veg.',order:'Whole tilapia or grass carp (1kg), mala or garlic-pepper flavour. Get extra rice',price:'~NZ$18 pp'},
+      {icon:'🫕',bg:'#FEF2F2',area:'Jiefangbei CBD',ll:[29.5641,106.5712],type:'Premium Hot Pot',title:'Liuyishou Hot Pot (刘一手)',desc:'The most famous Chongqing hotpot chain. Better than it sounds — the buttery red broth is the real thing.',order:'Mandarin duck split pot, sliced fatty beef, tripe, enoki mushrooms, tofu',price:'~NZ$28 pp'},
+      {icon:'🥗',bg:'#ECFDF5',area:'Ciqikou Ancient Town',ll:[29.5572,106.4843],type:'Cold Noodles',title:'Shan Cheng Liang Mian (山城凉面)',desc:'Cold sesame noodles — a Chongqing version with more chilli oil and vinegar than you expect. Eaten year-round.',order:'Cold noodles with sesame paste, chilli oil, spring onion, roasted peanuts. Eat standing up.',price:'~NZ$3 pp'},
+      {icon:'🍲',bg:'#FFF7ED',area:'Jiangbei District',ll:[29.5755,106.5322],type:'Braised Offal',title:'Mao Du Xian (毛肚鲜)',desc:'Chongqing\'s famous beef tripe, blanched in hot tallow oil and served with dipping sauces. A local ritual.',order:'Order the premium beef tripe (毛肚), blanch 10–15 seconds only. Sesame-garlic dip',price:'~NZ$16 pp'},
     ],
     transport:[
       {status:'confirmed',method:'🚄 Arrive from Chengdu',detail:'G-train ~75 min. Chongqing North or Bei station — both have metro connections.'},
@@ -445,7 +480,7 @@ const CITIES={
   bangkok:{
     name:'Bangkok',flag:'🇹🇭',dates:'21–23 Jul',badge:'2 nights',
     color:'#7C3AED',latlng:[13.7563,100.5018],
-    hotel:'TBC — Bangkok (Sukhumvit or Silom area)',
+    hotel:'Waldorf Astoria Bangkok (21–22 Jul) · ibis Bangkok Sathorn (22–24 Jul)',
     explore:[
       {icon:'🏯',bg:'#FFF7ED',title:'Grand Palace & Wat Phra Kaew',desc:'Go before 10am. Dress code strictly enforced — shoulders and knees covered. Allow 2–3 hrs.'},
       {icon:'⛵',bg:'#EFF6FF',title:'Wat Arun at Sunset',desc:'Temple of Dawn across the Chao Phraya. Best viewed from opposite bank at golden hour.'},
@@ -454,15 +489,21 @@ const CITIES={
       {icon:'🚢',bg:'#ECFDF5',title:'Chao Phraya River',desc:'Public Chao Phraya Express boat (15 THB / NZ$0.70) or evening dinner cruise ~NZ$55.'},
     ],
     food:[
-      {icon:'🍳',bg:'#FFF7ED',type:'Street Legend',title:'Jay Fai (ร้านเจ๊ไฝ)',desc:'Michelin-starred street food. Crab omelette is the dish. Book weeks in advance or queue at 2pm.',order:'Crab omelette (ไข่เจียวปูอัด) — the only thing you really need to order. ~NZ$69 alone',price:'~NZ$69–92 pp'},
-      {icon:'🍜',bg:'#FEF2F2',type:'Pad Thai',title:'Thip Samai Pad Thai',desc:'Famous since 1966. Pad thai wrapped in egg net. Queue moves fast. Pratunam area.',order:'Pad thai in egg net (ผัดไทยห่อไข่), fresh prawn version — eat immediately',price:'~NZ$7 pp'},
-      {icon:'🍲',bg:'#ECFDF5',type:'Boat Noodles',title:'Boat Noodle Alley (Victory Monument)',desc:'Tiny bowls of rich, dark broth. Each bowl is 15 THB (NZ$0.70). Order 10.',order:'Pork or beef broth noodles — keep ordering until you\'re full (usually 8–12 bowls)',price:'~NZ$5 pp'},
-      {icon:'🌶',bg:'#FDF4FF',type:'Som Tam',title:'Som Tam Nua',desc:'Best papaya salad in the city. Long queue at lunch but worth every minute.',order:'Papaya salad with blue crab (ส้มตำปูม้า), add a sticky rice portion',price:'~NZ$9 pp'},
-      {icon:'🍗',bg:'#F5F3FF',type:'Chicken Rice',title:'Khao Man Gai Pratunam',desc:'Thai comfort food done perfectly. Poached chicken over rice.',order:'Chicken rice plate, dark soy drizzle, ginger soup on the side',price:'~NZ$5 pp'},
-      {icon:'🦀',bg:'#EFF6FF',type:'Seafood',title:'Yaowarat Chinatown Night',desc:'Bangkok Chinatown electric after 7pm. Walk Yaowarat Road and eat as you go.',order:'Roast duck on rice, oyster noodles, dim sum from street stalls',price:'~NZ$14 pp'},
-      {icon:'🥭',bg:'#ECFDF5',type:'Market',title:'Or Tor Kor Market',desc:"Bangkok's finest fresh market. Near Chatuchak. Best in the morning.",order:'Mango sticky rice (the best version in BKK), grilled pork neck with sticky rice',price:'~NZ$9 pp'},
-      {icon:'🌮',bg:'#FFF7ED',type:'Late Night',title:'Silom Late Night Street Food',desc:'Silom Soi 20 area after 10pm. Locals only, no tourists, incredible food.',order:'Pad krapao (basil pork/chicken) with fried egg on rice. Classic nightcap meal',price:'~NZ$5 pp'},
-      {icon:'🥂',bg:'#FDF4FF',type:'Rooftop',title:'Lebua Sky Bar Drinks',desc:'The view is worth one overpriced cocktail. Dress code: smart casual.',order:'Hang Signature cocktail or a classic G&T. One drink, take 100 photos, leave',price:'~NZ$35 pp (drinks only)'},
+      {icon:'🍳',bg:'#FFF7ED',area:'Old Town / Samran Rat',ll:[13.7579,100.5005],type:'Street Legend',title:'Jay Fai (ร้านเจ๊ไฝ)',desc:'Michelin-starred street food. Crab omelette is the dish. Book weeks in advance or queue at 2pm.',order:'Crab omelette (ไข่เจียวปูอัด) — the only thing you really need to order. ~NZ$69 alone',price:'~NZ$69–92 pp'},
+      {icon:'🍜',bg:'#FEF2F2',area:'Old Town / Mahanak',ll:[13.7548,100.5014],type:'Pad Thai',title:'Thip Samai Pad Thai',desc:'Famous since 1966. Pad thai wrapped in egg net. Queue moves fast.',order:'Pad thai in egg net (ผัดไทยห่อไข่), fresh prawn version — eat immediately',price:'~NZ$7 pp'},
+      {icon:'🍲',bg:'#ECFDF5',area:'Victory Monument',ll:[13.7644,100.5375],type:'Boat Noodles',title:'Boat Noodle Alley (Victory Monument)',desc:'Tiny bowls of rich, dark broth. Each bowl is 15 THB (NZ$0.70). Order 10.',order:'Pork or beef broth noodles — keep ordering until you\'re full (usually 8–12 bowls)',price:'~NZ$5 pp'},
+      {icon:'🌶',bg:'#FDF4FF',area:'Siam / Ratchaprasong',ll:[13.7394,100.5289],type:'Som Tam',title:'Som Tam Nua',desc:'Best papaya salad in the city. Long queue at lunch but worth every minute.',order:'Papaya salad with blue crab (ส้มตำปูม้า), add a sticky rice portion',price:'~NZ$9 pp'},
+      {icon:'🍗',bg:'#F5F3FF',area:'Pratunam',ll:[13.7507,100.5385],type:'Chicken Rice',title:'Khao Man Gai Pratunam',desc:'Thai comfort food done perfectly. Poached chicken over rice.',order:'Chicken rice plate, dark soy drizzle, ginger soup on the side',price:'~NZ$5 pp'},
+      {icon:'🦀',bg:'#EFF6FF',area:'Yaowarat Chinatown',ll:[13.7393,100.5141],type:'Seafood',title:'Yaowarat Chinatown Night',desc:'Bangkok Chinatown electric after 7pm. Walk Yaowarat Road and eat as you go.',order:'Roast duck on rice, oyster noodles, dim sum from street stalls',price:'~NZ$14 pp'},
+      {icon:'🥭',bg:'#ECFDF5',area:'Chatuchak',ll:[13.7987,100.5471],type:'Market',title:'Or Tor Kor Market',desc:"Bangkok's finest fresh market. Near Chatuchak. Best in the morning.",order:'Mango sticky rice (the best version in BKK), grilled pork neck with sticky rice',price:'~NZ$9 pp'},
+      {icon:'🌮',bg:'#FFF7ED',area:'Silom',ll:[13.7242,100.5232],type:'Late Night',title:'Silom Late Night Street Food',desc:'Silom Soi 20 area after 10pm. Locals only, no tourists, incredible food.',order:'Pad krapao (basil pork/chicken) with fried egg on rice. Classic nightcap meal',price:'~NZ$5 pp'},
+      {icon:'🥂',bg:'#FDF4FF',area:'Bang Rak',ll:[13.7228,100.5222],type:'Rooftop',title:'Lebua Sky Bar Drinks',desc:'The view is worth one overpriced cocktail. Dress code: smart casual.',order:'Hang Signature cocktail or a classic G&T. One drink, take 100 photos, leave',price:'~NZ$35 pp (drinks only)'},
+      {icon:'🍗',bg:'#FFF7ED',area:'Lumphini / Polo',ll:[13.7276,100.5350],type:'Fried Chicken',title:'Polo Fried Chicken (Soi Polo)',desc:'Legendary HK-style fried chicken in Lumphini. The skin is battered, crackling, impossible. Locals queue daily.',order:'Half chicken (fried), sticky rice portion, papaya salad. Eat until you can\'t move.',price:'~NZ$10 pp'},
+      {icon:'🥘',bg:'#ECFDF5',area:'Old Town / Tha Tian',ll:[13.7437,100.5056],type:'Curry Rice',title:'Khao Gaeng Jek Pui',desc:'Bangkok\'s best old-school curry rice. In business for 70+ years near Wat Pho.',order:'Point at 3 curries on display — ladle them over rice. Get the pork belly and stewed egg',price:'~NZ$5 pp'},
+      {icon:'🍝',bg:'#FEF9EC',area:'Ekkamai',ll:[13.7192,100.5821],type:'Modern Thai',title:'Err Restaurant (Ekkamai)',desc:'Award-winning modern Thai. Fermented, pickled, smoky — serious cooking.',order:'Smoked pork with fermented shrimp paste, chargrilled chicken with herbs',price:'~NZ$32 pp'},
+      {icon:'🦑',bg:'#F0F9FF',area:'Silom / Bang Rak',ll:[13.7265,100.5230],type:'Seafood',title:'Ruen Urai Night Seafood',desc:'Riverside seafood garden. Choose your fish from the tank and watch it cooked.',order:'Steamed barramundi with lime and garlic, tom kha gai soup, stir-fried morning glory',price:'~NZ$22 pp'},
+      {icon:'🍹',bg:'#F5F3FF',area:'Sukhumvit',ll:[13.7309,100.5695],type:'Thai Dessert',title:'Mango Tango (Asok)',desc:'The mango dessert place everyone goes to. Sticky rice, fresh Nam Dok Mai mango, coconut cream.',order:'Mango sticky rice grande, fresh mango sorbet. Also try the coconut ice cream sundae',price:'~NZ$9 pp'},
+      {icon:'🫓',bg:'#FFF7ED',area:'Old Town',ll:[13.7553,100.5023],type:'Street Breakfast',title:'Roti Mataba (Phra Athit)',desc:'Old town Muslim roti shop. Crispy roti with curry dipping sauce — Bangkok\'s best breakfast.',order:'Roti mataba stuffed with egg and chicken, massaman curry for dipping. Order 2 each',price:'~NZ$5 pp'},
     ],
     transport:[
       {status:'confirmed',method:'✈️ Arrive Don Mueang (DMK) — FD557 13:20',detail:'A1 Express bus to Victory Monument BTS (40 min, 30 THB / NZ$1.30), or taxi ~NZ$20–30. BTS Skytrain from Victory Monument.'},
@@ -476,7 +517,7 @@ const CITIES={
   krabi:{
     name:'Krabi',flag:'🇹🇭',dates:'23–26 Jul',badge:'3 nights',
     color:'#0EA5E9',latlng:[8.0863,98.9063],
-    hotel:'TBC — Ao Nang, Krabi',
+    hotel:'Sofitel Krabi Phokeethra Golf & Spa Resort',
     explore:[
       {icon:'🏝',bg:'#F0F9FF',title:'4 Islands Tour',desc:'Longtail boat to Tup, Chicken, Poda Islands & Emerald Cave. Book from Ao Nang. ~NZ$55.'},
       {icon:'⛰',bg:'#ECFDF5',title:'Tiger Cave Temple (5:30am)',desc:'1,237 steps to sunrise. Go at 5:30am for golden light over mangroves. Life-changing.'},
@@ -485,15 +526,21 @@ const CITIES={
       {icon:'🌅',bg:'#FFF7ED',title:'Ao Nang Beach Sunset',desc:'Watch the sun drop between limestone karsts from the beach. Grab a Chang and a sunlounger.'},
     ],
     food:[
-      {icon:'🦞',bg:'#F0F9FF',type:'Seafood',title:'Ton Kla Restaurant',desc:'Beachfront Thai seafood. Whole fish, spicy clams, tom yum — local favourite in Krabi Town.',order:'Grilled barramundi with garlic butter, spicy clam stir-fry, tom yum goong',price:'~NZ$22 pp'},
-      {icon:'🍛',bg:'#ECFDF5',type:'Thai',title:"May & Mark's Kitchen",desc:'Ao Nang standout. Excellent curries and fresh seafood at reasonable beach prices.',order:'Massaman lamb curry, pad see ew with prawns — both are excellent',price:'~NZ$18 pp'},
-      {icon:'🌙',bg:'#FFF7ED',type:'Night Market',title:'Krabi Town Night Market',desc:'Tue/Fri/weekend walking street. 30+ stalls. Go hungry, spend NZ$15 total.',order:'Satay sticks, roti with curry, fresh coconut ice cream, mango juice',price:'~NZ$9 pp'},
-      {icon:'🥘',bg:'#EFF6FF',type:'Local Thai',title:'Ruan Mai Krabi',desc:'No-frills local restaurant. Extremely fresh, dirt cheap. Order the daily specials.',order:'Papaya salad (som tam), grilled pork neck with sticky rice, spicy basil chicken',price:'~NZ$7 pp'},
-      {icon:'🐟',bg:'#FDF4FF',type:'Seafood',title:'Kwan Seafood',desc:'Pick your own seafood from ice display. Generous portions, good prices.',order:'Half crab in yellow curry sauce, giant king prawns with garlic and pepper',price:'~NZ$22 pp'},
-      {icon:'🍹',bg:'#F0FFF4',type:'Beach Bar',title:'Relax Beach Bar (Ao Nang)',desc:'Beachfront views, cold drinks, solid Thai food.',order:'Pad thai (legit version), green curry with roti. Order a frozen mango daiquiri',price:'~NZ$16 pp'},
-      {icon:'🥩',bg:'#FEF9EC',type:'Western',title:'Carnivore Steak & Grill',desc:'Good Australian beef in Ao Nang if you need a break from Thai.',order:'Sirloin or ribeye (250g), house fries, Caesar salad',price:'~NZ$32 pp'},
-      {icon:'☕',bg:'#F5F3FF',type:'Breakfast',title:'On the Rock Restaurant',desc:'Built on rocks above the sea at Railay East. The view is the whole point.',order:'Full breakfast set or fresh seafood lunch. Order a fresh lime soda',price:'~NZ$18 pp'},
-      {icon:'🍜',bg:'#FEF2F2',type:'Morning',title:'Local Boat Noodles (Krabi Town)',desc:'Morning ritual at the fresh market near the river. Under NZ$2 per bowl.',order:'Small pork broth boat noodles. Order 3–4 bowls, eat standing up',price:'~NZ$2 pp'},
+      {icon:'🦞',bg:'#F0F9FF',area:'Krabi Town',ll:[8.0715,98.9104],type:'Seafood',title:'Ton Kla Restaurant',desc:'Beachfront Thai seafood. Whole fish, spicy clams, tom yum — local favourite in Krabi Town.',order:'Grilled barramundi with garlic butter, spicy clam stir-fry, tom yum goong',price:'~NZ$22 pp'},
+      {icon:'🍛',bg:'#ECFDF5',area:'Ao Nang',ll:[8.0322,98.8322],type:'Thai',title:"May & Mark's Kitchen",desc:'Ao Nang standout. Excellent curries and fresh seafood at reasonable beach prices.',order:'Massaman lamb curry, pad see ew with prawns — both are excellent',price:'~NZ$18 pp'},
+      {icon:'🌙',bg:'#FFF7ED',area:'Krabi Town',ll:[8.0617,98.9085],type:'Night Market',title:'Krabi Town Night Market',desc:'Tue/Fri/weekend walking street. 30+ stalls. Go hungry, spend NZ$15 total.',order:'Satay sticks, roti with curry, fresh coconut ice cream, mango juice',price:'~NZ$9 pp'},
+      {icon:'🥘',bg:'#EFF6FF',area:'Krabi Town',ll:[8.0667,98.9088],type:'Local Thai',title:'Ruan Mai Krabi',desc:'No-frills local restaurant. Extremely fresh, dirt cheap. Order the daily specials.',order:'Papaya salad (som tam), grilled pork neck with sticky rice, spicy basil chicken',price:'~NZ$7 pp'},
+      {icon:'🐟',bg:'#FDF4FF',area:'Ao Nang',ll:[8.0285,98.8294],type:'Seafood',title:'Kwan Seafood',desc:'Pick your own seafood from ice display. Generous portions, good prices.',order:'Half crab in yellow curry sauce, giant king prawns with garlic and pepper',price:'~NZ$22 pp'},
+      {icon:'🍹',bg:'#F0FFF4',area:'Ao Nang Beach',ll:[8.0296,98.8319],type:'Beach Bar',title:'Relax Beach Bar (Ao Nang)',desc:'Beachfront views, cold drinks, solid Thai food.',order:'Pad thai (legit version), green curry with roti. Order a frozen mango daiquiri',price:'~NZ$16 pp'},
+      {icon:'🥩',bg:'#FEF9EC',area:'Ao Nang',ll:[8.0321,98.8323],type:'Western',title:'Carnivore Steak & Grill',desc:'Good Australian beef in Ao Nang if you need a break from Thai.',order:'Sirloin or ribeye (250g), house fries, Caesar salad',price:'~NZ$32 pp'},
+      {icon:'☕',bg:'#F5F3FF',area:'Railay Beach',ll:[8.0105,98.8360],type:'Breakfast',title:'On the Rock Restaurant',desc:'Built on rocks above the sea at Railay East. The view is the whole point.',order:'Full breakfast set or fresh seafood lunch. Order a fresh lime soda',price:'~NZ$18 pp'},
+      {icon:'🍜',bg:'#FEF2F2',area:'Krabi Town Market',ll:[8.0601,98.9103],type:'Morning',title:'Local Boat Noodles (Krabi Town)',desc:'Morning ritual at the fresh market near the river. Under NZ$2 per bowl.',order:'Small pork broth boat noodles. Order 3–4 bowls, eat standing up',price:'~NZ$2 pp'},
+      {icon:'🌊',bg:'#EFF6FF',area:'Krabi Town Pier',ll:[8.0718,98.9129],type:'Riverside Seafood',title:'Lae Lay Grill (Riverside)',desc:'Floating restaurant on the river. Best views, freshest catch, locals and tourists together.',order:'Whole red snapper steamed with lime and garlic, tiger prawn pad cha',price:'~NZ$26 pp'},
+      {icon:'🥥',bg:'#ECFDF5',area:'Ao Nang',ll:[8.0310,98.8328],type:'Smoothie & Fruit',title:'Fresh Coconut + Fruit Stalls',desc:'Ao Nang beachfront stalls. The coconuts are picked daily. Best after a morning island tour.',order:'Young coconut with extra coconut meat, fresh mango smoothie, banana roti',price:'~NZ$4 pp'},
+      {icon:'🍲',bg:'#FFF7ED',area:'Krabi Town',ll:[8.0650,98.9095],type:'Café',title:'Mellow Morning (Krabi Town)',desc:'Popular café near the riverside. Good for a slow breakfast before heading out.',order:'Full Thai breakfast (eggs, toast, fruit), fresh-brewed coffee, roti with jam',price:'~NZ$9 pp'},
+      {icon:'🥗',bg:'#F0FFF4',area:'Sofitel Resort',ll:[8.1145,98.9200],type:'Resort Dining',title:'Sala Bua Restaurant (Sofitel)',desc:'Your resort restaurant. Worth a dinner — the Thai food is genuinely excellent.',order:'Green curry with jasmine rice, grilled local squid, tom kha coconut soup to start',price:'~NZ$35 pp'},
+      {icon:'🫓',bg:'#FDF4FF',area:'Krabi Town',ll:[8.0688,98.9115],type:'Street Thai',title:'Pad Krapao Cart (Krabi Town)',desc:'Classic basil stir-fry from a street cart. The most eaten dish in Thailand.',order:'Pad krapao moo (pork basil) or gai (chicken), fried egg on top, steamed rice',price:'~NZ$3 pp'},
+      {icon:'🍧',bg:'#F5F3FF',area:'Ao Nang',ll:[8.0303,98.8315],type:'Dessert',title:'Ice Cream & Coconut Gelato',desc:'The coconut gelato shops along Ao Nang beach. End every beach day here.',order:'Coconut gelato in coconut shell, mango sorbet — both are excellent',price:'~NZ$5 pp'},
     ],
     transport:[
       {status:'confirmed',method:'✈️ Arrive Krabi Airport (KBV)',detail:'Minivan to Ao Nang ~NZ$9. Taxi ~NZ$28. About 30 min drive.'},
@@ -508,7 +555,7 @@ const CITIES={
   phuket:{
     name:'Phuket',flag:'🇹🇭',dates:'26–28 Jul',badge:'2 nights',
     color:'#FF6B35',latlng:[7.8804,98.3923],
-    hotel:'TBC — Phuket (Old Town or Kata area)',
+    hotel:'ibis Phuket Patong',
     explore:[
       {icon:'⛵',bg:'#F0F9FF',title:'Phang Nga Bay (James Bond Island)',desc:'Karst limestone islands, sea canoeing through caves. Full day ~NZ$69. Book night before.'},
       {icon:'🌇',bg:'#FFF7ED',title:'Phuket Old Town',desc:'Sino-Portuguese architecture, street art, indie cafés. Saturday Walking Street.'},
@@ -517,15 +564,21 @@ const CITIES={
       {icon:'🌅',bg:'#FFF7ED',title:'Promthep Cape Sunset',desc:"Southernmost point of Phuket. The whole island turns up for this. Then dinner at Da Maurizio."},
     ],
     food:[
-      {icon:'🦀',bg:'#FFF7ED',type:'Seafood',title:'Kan Eang @ Pier',desc:'Rawai pier seafood. Watch the fishing boats while eating whole crab.',order:'Whole steamed blue crab, grilled tiger prawns, sea urchin if available',price:'~NZ$32 pp'},
-      {icon:'☕',bg:'#ECFDF5',type:'Local Café',title:'Kopitiam by Wilai',desc:'Phuket Old Town institution. Genuine Peranakan food.',order:'O-tao (oyster cake), mee hun sua (rice vermicelli), local kopi O coffee',price:'~NZ$11 pp'},
-      {icon:'🥩',bg:'#EFF6FF',type:'Fine Dining',title:'Suay Restaurant',desc:"Chef Noi's modern Thai. Best fine dining on the island. Book ahead.",order:'5-course tasting menu — let them choose. The wagyu larb course is exceptional',price:'~NZ$55 pp'},
-      {icon:'🌊',bg:'#FDF4FF',type:'Fine Dining',title:'Baan Rim Pa',desc:'Royal Thai cuisine on a cliffside above Kalim Beach. Dress smart.',order:'Roast duck red curry, grilled sea bass, mango sticky rice to finish',price:'~NZ$69 pp'},
-      {icon:'🌙',bg:'#F0FFF4',type:'Night Market',title:'Phuket Town Night Market',desc:'Walking street Fri–Sun. 100+ stalls. Good for a NZ$20 all-in dinner.',order:'Satay skewers, khanom krok (coconut pancakes), pad thai, fresh mango juice',price:'~NZ$9 pp'},
-      {icon:'🍜',bg:'#FFF7ED',type:'Noodles',title:'Mor Mu Dong Floating Restaurant',desc:'Built on a wooden pier in Phuket Town. Order the house noodle dish.',order:'Khanom jeen (rice noodles with green curry sauce), Thai sausage side',price:'~NZ$11 pp'},
-      {icon:'🍞',bg:'#FFFBEB',type:'Breakfast',title:'Roti Tarad Morning Market',desc:'Pre-dawn roti market near Ranong Road. Get there before 7am.',order:'Roti with massaman curry dip, banana sweet roti, hot Thai iced tea',price:'~NZ$4 pp'},
-      {icon:'🍕',bg:'#FEF2F2',type:'Italian',title:'Da Maurizio',desc:'Cliffside sunset cocktails and Italian food at Promthep Cape.',order:'Squid ink spaghetti, grilled fresh catch of the day, tiramisu. One glass of wine',price:'~NZ$55 pp'},
-      {icon:'🦞',bg:'#F0F9FF',type:'Seafood',title:'Rock Salt Restaurant',desc:'Beachfront at Mai Khao. Fresh catch, beach fire pits, excellent service.',order:'Seafood BBQ platter for two, signature cocktails — book sunset slot',price:'~NZ$37 pp'},
+      {icon:'🦀',bg:'#FFF7ED',area:'Rawai',ll:[7.7773,98.3363],type:'Seafood',title:'Kan Eang @ Pier',desc:'Rawai pier seafood. Watch the fishing boats while eating whole crab.',order:'Whole steamed blue crab, grilled tiger prawns, sea urchin if available',price:'~NZ$32 pp'},
+      {icon:'☕',bg:'#ECFDF5',area:'Phuket Old Town',ll:[8.0841,98.3916],type:'Local Café',title:'Kopitiam by Wilai',desc:'Phuket Old Town institution. Genuine Peranakan food.',order:'O-tao (oyster cake), mee hun sua (rice vermicelli), local kopi O coffee',price:'~NZ$11 pp'},
+      {icon:'🥩',bg:'#EFF6FF',area:'Cherng Talay',ll:[7.9833,98.2982],type:'Fine Dining',title:'Suay Restaurant',desc:"Chef Noi's modern Thai. Best fine dining on the island. Book ahead.",order:'5-course tasting menu — let them choose. The wagyu larb course is exceptional',price:'~NZ$55 pp'},
+      {icon:'🌊',bg:'#FDF4FF',area:'Kalim Beach',ll:[7.9266,98.2936],type:'Fine Dining',title:'Baan Rim Pa',desc:'Royal Thai cuisine on a cliffside above Kalim Beach. Dress smart.',order:'Roast duck red curry, grilled sea bass, mango sticky rice to finish',price:'~NZ$69 pp'},
+      {icon:'🌙',bg:'#F0FFF4',area:'Phuket Old Town',ll:[8.0855,98.3914],type:'Night Market',title:'Phuket Town Night Market',desc:'Walking street Fri–Sun. 100+ stalls. Good for a NZ$20 all-in dinner.',order:'Satay skewers, khanom krok (coconut pancakes), pad thai, fresh mango juice',price:'~NZ$9 pp'},
+      {icon:'🍜',bg:'#FFF7ED',area:'Phuket Old Town',ll:[8.0889,98.3886],type:'Noodles',title:'Mor Mu Dong Floating Restaurant',desc:'Built on a wooden pier in Phuket Town. Order the house noodle dish.',order:'Khanom jeen (rice noodles with green curry sauce), Thai sausage side',price:'~NZ$11 pp'},
+      {icon:'🍞',bg:'#FFFBEB',area:'Phuket Old Town',ll:[8.0854,98.3892],type:'Breakfast',title:'Roti Tarad Morning Market',desc:'Pre-dawn roti market near Ranong Road. Get there before 7am.',order:'Roti with massaman curry dip, banana sweet roti, hot Thai iced tea',price:'~NZ$4 pp'},
+      {icon:'🍕',bg:'#FEF2F2',area:'Promthep Cape',ll:[7.7478,98.2961],type:'Italian',title:'Da Maurizio',desc:'Cliffside sunset cocktails and Italian food at Promthep Cape.',order:'Squid ink spaghetti, grilled fresh catch of the day, tiramisu. One glass of wine',price:'~NZ$55 pp'},
+      {icon:'🦞',bg:'#F0F9FF',area:'Mai Khao',ll:[8.1791,98.3011],type:'Seafood',title:'Rock Salt Restaurant',desc:'Beachfront at Mai Khao. Fresh catch, beach fire pits, excellent service.',order:'Seafood BBQ platter for two, signature cocktails — book sunset slot',price:'~NZ$37 pp'},
+      {icon:'🏛',bg:'#FFFBEB',area:'Phuket Old Town',ll:[8.0858,98.3913],type:'Heritage Café',title:'China Inn Café',desc:'A stunning heritage Peranakan shophouse in the old town. Beautiful tiled courtyard, excellent food.',order:'Mee hoon soup, kerabu (Nyonya salad), steamed fresh fish in soy ginger',price:'~NZ$18 pp'},
+      {icon:'🥘',bg:'#FFF7ED',area:'Chalong',ll:[7.8237,98.3596],type:'Seafood',title:'Krua Thara Seafood',desc:'Chalong Bay location. Views of the islands, fishing boats, and mangroves.',order:'BBQ whole grouper with sambal, stir-fried clams with basil, steamed rice',price:'~NZ$28 pp'},
+      {icon:'🥗',bg:'#ECFDF5',area:'Phuket Old Town',ll:[8.0843,98.3925],type:'Traditional',title:'One Chun Café & Restaurant',desc:'Genuine southern Thai food in a heritage shophouse. Local favourite since 1986.',order:'Moo hong (slow-braised pork belly), gaeng som (sour curry), steamed sea bass',price:'~NZ$16 pp'},
+      {icon:'🛍',bg:'#EFF6FF',area:'Naka Weekend Market',ll:[7.9106,98.3631],type:'Market',title:'Naka Weekend Market',desc:'Phuket\'s best weekend market. Clothes, art, and food. Saturday nights.',order:'Grilled corn, pad thai, chocolate waffle, fresh coconut — wander for 2 hours',price:'~NZ$9 pp'},
+      {icon:'🌮',bg:'#FDF4FF',area:'Patong',ll:[7.8966,98.2996],type:'Street Thai',title:'Patong Street Food Soi Bangla',desc:'Bypass the tourist traps and find the stall cart on Rat-U-Thit. Real Thai food behind the chaos.',order:'Pad krapao (basil chicken), fried eggs over rice, cold Leo beer. Eat fast.',price:'~NZ$5 pp'},
+      {icon:'🍧',bg:'#F5F3FF',area:'Phuket Old Town',ll:[8.0834,98.3910],type:'Dessert',title:'Kaab Gluay Desserts (Old Town)',desc:'A tiny shop on Thalang Road. Old-school Thai desserts done perfectly.',order:'Tab tim krob (water chestnuts in coconut cream and ice), taro in coconut milk',price:'~NZ$4 pp'},
     ],
     transport:[
       {status:'tbc',method:'🚐 Arrive from Krabi',detail:'Minivan or ferry transfer from Ao Nang. ~2–3 hrs depending on route.'},
@@ -539,7 +592,7 @@ const CITIES={
   singapore:{
     name:'Singapore',flag:'🇸🇬',dates:'28–30 Jul',badge:'2 nights',
     color:'#DC2626',latlng:[1.3521,103.8198],
-    hotel:'TBC — Singapore (Marina Bay or Tanjong Pagar area)',
+    hotel:'Sofitel Singapore City Centre',
     explore:[
       {icon:'🌿',bg:'#ECFDF5',title:'Gardens by the Bay',desc:'Cloud Forest dome is worth the $28 entry. Supertree light show 7:45pm & 8:45pm — free.'},
       {icon:'🏙',bg:'#EFF6FF',title:'Marina Bay Sands Skypark',desc:'Book observation deck in advance. Infinity pool for hotel guests only — views are public.'},
@@ -548,29 +601,35 @@ const CITIES={
       {icon:'🦁',bg:'#F0FFF4',title:'Night Safari',desc:'World-class. Tram tour through nocturnal animals at 7:30pm. Book online. NZ$58.'},
     ],
     food:[
-      {icon:'🍗',bg:'#FFF7ED',type:'Hawker Classic',title:'Tian Tian Chicken Rice (Maxwell)',desc:'Best hainanese chicken rice in SG. Maxwell Food Centre stall #01-10. Arrive before 11:30am.',order:'Chicken rice plate (roasted or white poached), add chilli sauce and ginger paste',price:'~NZ$9 pp'},
-      {icon:'🦀',bg:'#FEF2F2',type:'Signature',title:'Chilli Crab at Jumbo Seafood',desc:"Singapore's national dish. Robertson Quay location. Pre-book dinner.",order:'Sri Lankan chilli crab (1kg for two), black pepper crab, fried mantou buns to soak the sauce',price:'~NZ$80–100 pp'},
-      {icon:'🍢',bg:'#ECFDF5',type:'Hawker',title:'Newton Food Centre',desc:'The OG hawker centre. Go after 6pm when it heats up.',order:'Satay (chicken and prawn), BBQ stingray with sambal, oyster omelette, tiger beer',price:'~NZ$29 pp'},
-      {icon:'🥘',bg:'#EFF6FF',type:'BBQ',title:'Burnt Ends',desc:'Wood-fire BBQ temple. Book weeks ahead. Counter seats are walk-in from open.',order:'Burnt ends brisket, ox tongue, bone marrow with onion jam — counter must-orders',price:'~NZ$110–138 pp'},
-      {icon:'🍢',bg:'#FDF4FF',type:'Night',title:'Lau Pa Sat Satay Street',desc:'After 7pm Boon Tat Street closes. Satay vendors set up 50+ stalls. Cold Tiger Beer. Classic.',order:'Chicken, prawn and mutton satay by the stick (10–15 pp), peanut sauce',price:'~NZ$23 pp'},
-      {icon:'🍲',bg:'#F0FFF4',type:'Peranakan',title:'True Blue Cuisine',desc:'Authentic Peranakan in Armenian Street. Unique to Singapore.',order:'Buah keluak chicken, ayam buah keluak, kueh pie tee starters',price:'~NZ$57 pp'},
-      {icon:'🥐',bg:'#FFFBEB',type:'Café',title:'Tiong Bahru Bakery',desc:'Flaky croissants, kouign-amann, excellent espresso. The neighbourhood is worth exploring.',order:'Kouign-amann (the signature), almond croissant, flat white',price:'~NZ$17 pp'},
-      {icon:'🥂',bg:'#F5F3FF',type:'Bar',title:'Atlas Bar',desc:'1920s art deco gin palace. 1,000+ gins. Rafflles Hotel Singapore Sling is tradition — Atlas is better.',order:'G&T with rare aged gin, or ask the bartender to surprise you',price:'~NZ$35–46 pp'},
-      {icon:'🍛',bg:'#FEF9EC',type:'Indian',title:'Banana Leaf Apolo (Little India)',desc:'Banana leaf rice done properly. Fish head curry is the signature.',order:'Fish head curry poured on your banana leaf. Eat with hands. Refill rice and dhal free',price:'~NZ$23 pp'},
-    ],
+      {icon:'🍗',bg:'#FFF7ED',area:'Chinatown / Maxwell',ll:[1.2802,103.8444],type:'Hawker Classic',title:'Tian Tian Chicken Rice (Maxwell)',desc:'Best hainanese chicken rice in SG. Maxwell Food Centre stall #01-10. Arrive before 11:30am.',order:'Chicken rice plate (roasted or white poached), add chilli sauce and ginger paste',price:'~NZ$9 pp'},
+      {icon:'🦀',bg:'#FEF2F2',area:'Robertson Quay',ll:[1.2905,103.8342],type:'Signature',title:'Chilli Crab at Jumbo Seafood',desc:"Singapore's national dish. Robertson Quay location. Pre-book dinner.",order:'Sri Lankan chilli crab (1kg for two), black pepper crab, fried mantou buns to soak the sauce',price:'~NZ$80–100 pp'},
+      {icon:'🍢',bg:'#ECFDF5',area:'Newton',ll:[1.3114,103.8319],type:'Hawker',title:'Newton Food Centre',desc:'The OG hawker centre. Go after 6pm when it heats up.',order:'Satay (chicken and prawn), BBQ stingray with sambal, oyster omelette, tiger beer',price:'~NZ$29 pp'},
+      {icon:'🥘',bg:'#EFF6FF',area:'Chinatown / Teck Lim',ll:[1.2822,103.8406],type:'BBQ',title:'Burnt Ends',desc:'Wood-fire BBQ temple. Book weeks ahead. Counter seats are walk-in from open.',order:'Burnt ends brisket, ox tongue, bone marrow with onion jam — counter must-orders',price:'~NZ$110–138 pp'},
+      {icon:'🍢',bg:'#FDF4FF',area:'Raffles Place / CBD',ll:[1.2812,103.8509],type:'Night Satay',title:'Lau Pa Sat Satay Street',desc:'After 7pm Boon Tat Street closes. Satay vendors set up 50+ stalls. Cold Tiger Beer. Classic.',order:'Chicken, prawn and mutton satay by the stick (10–15 pp), peanut sauce',price:'~NZ$23 pp'},
+      {icon:'🍲',bg:'#F0FFF4',area:'Armenian Street',ll:[1.2969,103.8487],type:'Peranakan',title:'True Blue Cuisine',desc:'Authentic Peranakan in Armenian Street. Unique to Singapore.',order:'Buah keluak chicken, ayam buah keluak, kueh pie tee starters',price:'~NZ$57 pp'},
+      {icon:'🥐',bg:'#FFFBEB',area:'Tiong Bahru',ll:[1.2842,103.8268],type:'Café',title:'Tiong Bahru Bakery',desc:'Flaky croissants, kouign-amann, excellent espresso. The neighbourhood is worth exploring.',order:'Kouign-amann (the signature), almond croissant, flat white',price:'~NZ$17 pp'},
+      {icon:'🥂',bg:'#F5F3FF',area:'Bugis / City Hall',ll:[1.2985,103.8553],type:'Bar',title:'Atlas Bar',desc:"1920s art deco gin palace. 1,000+ gins. Singapore Sling is tradition — Atlas is better.",order:'G&T with rare aged gin, or ask the bartender to surprise you',price:'~NZ$35–46 pp'},
+      {icon:'🍛',bg:'#FEF9EC',area:'Little India',ll:[1.3066,103.8515],type:'Indian',title:'Banana Leaf Apolo (Little India)',desc:'Banana leaf rice done properly. Fish head curry is the signature.',order:'Fish head curry poured on your banana leaf. Eat with hands. Refill rice and dhal free',price:'~NZ$23 pp'},
+      {icon:'🏆',bg:'#FFF7ED',area:'Chinatown Complex',ll:[1.2806,103.8431],type:'Michelin Hawker',title:'Hawker Chan',desc:"World's cheapest Michelin star. Soy sauce chicken rice and noodle — astonishing for the price.",order:'Soy sauce chicken rice (whole thigh), soy sauce chicken noodle. Both for under NZ$5',price:'~NZ$5 pp'},
+      {icon:'🍝',bg:'#EFF6FF',area:'Lavender',ll:[1.3000,103.8551],type:'Pork Noodle',title:'Hill Street Tai Hwa Pork Noodle',desc:'Michelin-starred bak chor mee. Queue for an hour. Worth every minute.',order:'Minced pork noodle (dry), add vinegar and chilli to taste. Medium portion',price:'~NZ$9 pp'},
+      {icon:'🕌',bg:'#FFF7ED',area:'Kampong Glam',ll:[1.3039,103.8591],type:'Murtabak',title:'Zam Zam Restaurant (Arab St)',desc:'Established 1908. The murtabak is a Singapore icon — stuffed pancake, curry dipping sauce.',order:'Mutton murtabak (large), teh tarik (pulled tea), curry dipping sauce',price:'~NZ$14 pp'},
+      {icon:'🥗',bg:'#ECFDF5',area:'Dempsey Hill',ll:[1.3057,103.8099],type:'Modern SG',title:'Candlenut Restaurant',desc:"World's first Michelin-starred Peranakan restaurant. Book ahead.",order:"Chef's tasting menu — the buah keluak fried rice and beef cheek rendang are unmissable",price:'~NZ$92 pp'},
+      {icon:'🐟',bg:'#F0FFF4',area:'Little India',ll:[1.3066,103.8516],type:'Hawker',title:'Tekka Centre',desc:'Multi-ethnic hawker centre. Best variety of Indian, Chinese, and Malay food under one roof.',order:'Fish head curry (Indian stall), mee rebus (Malay stall), roti prata — three different stalls',price:'~NZ$8 pp'},
+      {icon:'🍦',bg:'#FDF4FF',area:'Chinatown',ll:[1.2839,103.8449],type:'Dessert',title:'Ice Kachang (Maxwell)',desc:"Singapore's beloved shaved ice dessert. The rainbow of syrups and toppings is the point.",order:'Traditional ice kachang with attap chee, grass jelly, red beans and rainbow syrup',price:'~NZ$4 pp'},
+        ],
     transport:[
       {status:'confirmed',method:'✈️ Arrive Changi Airport (SIN)',detail:'MRT from Changi to city. Spend 30 min exploring Jewel — the waterfall alone is worth it.'},
       {status:'confirmed',method:'🚇 Getting Around',detail:'MRT is excellent and cheap. EZ-Link card from any station. Grab for after midnight.'},
     ],
     nextstop:{destination:'Bintan 🇮🇩',options:[
-      {status:'tbc',method:'⛴ Ferry',detail:'Tanah Merah Ferry Terminal → Bintan Lagoon ferry terminal. ~50 min. Bintan Resort Ferries.'},
+      {status:'confirmed',method:'⛴ Ferry — Bintan Resort Ferries',detail:'Ref: 2179813 · Thu 30 Jul — dep 14:00 SIN → arrive Bintan BBT. Return Sat 1 Aug — dep 11:35 Bintan, arr 13:45 SIN. ~1h 10m each way.'},
     ]}
   },
 
   bintan:{
     name:'Bintan Island',flag:'🇮🇩',dates:'30 Jul – 1 Aug',badge:'2 nights',
     color:'#0EA5E9',latlng:[1.0634,104.3521],
-    hotel:'TBC — Bintan Resort (Lagoi Bay area)',
+    hotel:'Mövenpick Resort & Spa Bintan Lagoon',
     explore:[
       {icon:'🏖',bg:'#F0F9FF',title:'Bintan Resort Beach Clubs',desc:'Banyu Beach Club, Surf Beach — pure relaxation mode. Book sunloungers in advance.'},
       {icon:'🐠',bg:'#ECFDF5',title:'Snorkelling & Watersports',desc:'Jet ski, kayaking, windsurfing all available from the resort beach. Morning is calmest.'},
@@ -579,18 +638,24 @@ const CITIES={
       {icon:'🌅',bg:'#F5F3FF',title:'Trikora Beach (East Coast)',desc:"Undeveloped village beach. Fishing boats, calm water — total escape from resort life."},
     ],
     food:[
-      {icon:'🦞',bg:'#F0F9FF',type:'Fresh Seafood',title:'Tanjung Uban Seafood Market',desc:'Local fishing town. Pick fresh catch from morning market, have it cooked next door.',order:'Pick your fish/crab by weight. Steamed or grilled with sambal. Rice and veggies',price:'~NZ$10 pp'},
-      {icon:'🍛',bg:'#FEF9EC',type:'Indonesian',title:'Warung Nasi Padang',desc:'Padang food — pick from 20+ pre-cooked dishes in the window. Fill your plate.',order:'Rendang beef (mandatory), gulai ayam (coconut curry chicken), tempe goreng',price:'~NZ$5 pp'},
-      {icon:'🐟',bg:'#ECFDF5',type:'Grilled Fish',title:'Ikan Bakar (Grilled Fish)',desc:'Beachside warungs with charcoal grills. The smell will find you.',order:'Whole grilled fish (snapper or grouper), sambal matah, coconut rice',price:'~NZ$8 pp'},
-      {icon:'☕',bg:'#EFF6FF',type:'Breakfast',title:'Mie Ayam (Chicken Noodles)',desc:'Morning bowl at local warung. Under NZ$2. The most satisfying budget meal.',order:'Mie ayam with extra wonton and a splash of chilli oil',price:'~NZ$2 pp'},
-      {icon:'🍜',bg:'#FFF7ED',type:'Local Noodles',title:'Laksa Bintan',desc:"Fishier, spicier than Singapore laksa. Try it at Tanjung Pinang morning market.",order:'Thick version with extra fish cake and a side of hard-boiled egg',price:'~NZ$3 pp'},
-      {icon:'🥥',bg:'#F0FFF4',type:'Drinks',title:'Roadside Coconut Stalls',desc:'Young coconut water straight from the shell. NZ$1–2. Everywhere on the island.',order:'Young coconut water + fresh-cut papaya and pineapple alongside',price:'~NZ$2 pp'},
-      {icon:'🍗',bg:'#FEF2F2',type:'Warung',title:'Ayam Penyet (Smashed Chicken)',desc:'Fried chicken smashed with sambal. Cheap, filling, genuinely great.',order:'Ayam penyet with sambal, tofu, tempeh, steamed rice',price:'~NZ$4 pp'},
-      {icon:'🫕',bg:'#FDF4FF',type:'Soup',title:'Soto Ayam',desc:"Indonesian chicken soup with turmeric broth. Breakfast staple across the island.",order:'Soto ayam with lontong rice cakes, boiled egg, lime squeeze, sambal on the side',price:'~NZ$2 pp'},
-      {icon:'🍰',bg:'#FFF7ED',type:'Snack',title:'Kue Tradisional (Tanjung Pinang)',desc:'Traditional Indonesian rice cakes from old-town night market vendors.',order:'Klepon (pandan rice balls with palm sugar), onde-onde, dadar gulung',price:'~NZ$3 pp'},
+      {icon:'🦞',bg:'#F0F9FF',area:'Tanjung Uban',ll:[1.0462,104.3064],type:'Fresh Seafood',title:'Tanjung Uban Seafood Market',desc:'Local fishing town. Pick fresh catch from morning market, have it cooked next door.',order:'Pick your fish/crab by weight. Steamed or grilled with sambal. Rice and veggies',price:'~NZ$10 pp'},
+      {icon:'🍛',bg:'#FEF9EC',area:'Tanjung Pinang',ll:[0.9190,104.4604],type:'Indonesian',title:'Warung Nasi Padang',desc:'Padang food — pick from 20+ pre-cooked dishes in the window. Fill your plate.',order:'Rendang beef (mandatory), gulai ayam (coconut curry chicken), tempe goreng',price:'~NZ$5 pp'},
+      {icon:'🐟',bg:'#ECFDF5',area:'Bintan Lagoon',ll:[1.0625,104.3530],type:'Grilled Fish',title:'Ikan Bakar (Grilled Fish)',desc:'Beachside warungs with charcoal grills. The smell will find you.',order:'Whole grilled fish (snapper or grouper), sambal matah, coconut rice',price:'~NZ$8 pp'},
+      {icon:'☕',bg:'#EFF6FF',area:'Resort Area',ll:[1.0634,104.3521],type:'Breakfast',title:'Mie Ayam (Chicken Noodles)',desc:'Morning bowl at local warung. Under NZ$2. The most satisfying budget meal.',order:'Mie ayam with extra wonton and a splash of chilli oil',price:'~NZ$2 pp'},
+      {icon:'🍜',bg:'#FFF7ED',area:'Tanjung Pinang',ll:[0.9181,104.4592],type:'Local Noodles',title:'Laksa Bintan',desc:"Fishier, spicier than Singapore laksa. Try it at Tanjung Pinang morning market.",order:'Thick version with extra fish cake and a side of hard-boiled egg',price:'~NZ$3 pp'},
+      {icon:'🥥',bg:'#F0FFF4',area:'Island-Wide',ll:[1.0634,104.3521],type:'Drinks',title:'Roadside Coconut Stalls',desc:'Young coconut water straight from the shell. NZ$1–2. Everywhere on the island.',order:'Young coconut water + fresh-cut papaya and pineapple alongside',price:'~NZ$2 pp'},
+      {icon:'🍗',bg:'#FEF2F2',area:'Tanjung Pinang',ll:[0.9195,104.4598],type:'Warung',title:'Ayam Penyet (Smashed Chicken)',desc:'Fried chicken smashed with sambal. Cheap, filling, genuinely great.',order:'Ayam penyet with sambal, tofu, tempeh, steamed rice',price:'~NZ$4 pp'},
+      {icon:'🫕',bg:'#FDF4FF',area:'Tanjung Uban',ll:[1.0455,104.3071],type:'Soup',title:'Soto Ayam',desc:"Indonesian chicken soup with turmeric broth. Breakfast staple across the island.",order:'Soto ayam with lontong rice cakes, boiled egg, lime squeeze, sambal on the side',price:'~NZ$2 pp'},
+      {icon:'🍰',bg:'#FFF7ED',area:'Tanjung Pinang',ll:[0.9188,104.4587],type:'Snack',title:'Kue Tradisional (Tanjung Pinang)',desc:'Traditional Indonesian rice cakes from old-town night market vendors.',order:'Klepon (pandan rice balls with palm sugar), onde-onde, dadar gulung',price:'~NZ$3 pp'},
+      {icon:'🎣',bg:'#EFF6FF',area:'Bintan Lagoon',ll:[1.0650,104.3547],type:'Kelong Seafood',title:'Kelong Seafood Restaurant',desc:'Stilted wooden fishing pier restaurant over the water. The freshest catch possible.',order:'Grilled whole snapper, chilli crab, prawn beehoon, cold Bintang beer',price:'~NZ$16 pp'},
+      {icon:'🍚',bg:'#F0FFF4',area:'Resort Area',ll:[1.0628,104.3515],type:'Indonesian',title:'Nasi Goreng Kampung',desc:'Village-style fried rice. Every warung has it. The Bintan version has more shrimp paste.',order:'Nasi goreng kampung with fried egg on top, prawn crackers, pickled vegetables',price:'~NZ$3 pp'},
+      {icon:'🥟',bg:'#FEF9EC',area:'Tanjung Pinang',ll:[0.9183,104.4600],type:'Fishcake',title:'Pempek Palembang (Tanjung Pinang)',desc:'South Sumatran fish cake — one of the best street foods in the Indonesian archipelago.',order:'Pempek kapal selam (egg-stuffed fishcake), served with sour kuah cuko dipping sauce',price:'~NZ$4 pp'},
+      {icon:'🌙',bg:'#FFF7ED',area:'Tanjung Pinang',ll:[0.9174,104.4580],type:'Night Market',title:'Night Market (Pasar Malam, Tanjung Pinang)',desc:'30-min taxi from resort. Worth the trip. Local street food, batik, fresh fruit.',order:'Martabak manis (sweet pancake), satay, grilled corn, fresh watermelon juice',price:'~NZ$7 pp'},
+      {icon:'🌊',bg:'#F0F9FF',area:'Banyan Tree',ll:[1.1390,104.2310],type:'Resort Dining',title:'Banyan Tree Bintan Sundowner',desc:'Cliff-top infinity bar at Banyan Tree Resort. NZ$45 sunset cocktails with a view over the South China Sea.',order:'Signature cocktail or mocktail at sunset. Stay for dinner if the wallet allows',price:'~NZ$45 pp (drinks)'},
+      {icon:'🍦',bg:'#FFFBEB',area:'Resort Area',ll:[1.0635,104.3522],type:'Dessert',title:'Es Teler (Indonesian Fruit Cocktail)',desc:'Sweetened condensed milk, fresh coconut, avocado, jackfruit on shaved ice. Everywhere on the island.',order:'Es teler + es campur (mixed shaved ice). Best on a hot beach afternoon',price:'~NZ$2 pp'},
     ],
     transport:[
-      {status:'tbc',method:'⛴ Ferry from Singapore',detail:'Tanah Merah Ferry Terminal → Bandar Bentan Telani. ~50 min. Book Bintan Resort Ferries in advance.'},
+      {status:'confirmed',method:'⛴ Ferry from Singapore — Bintan Resort Ferries',detail:'Ref: 2179813 · Thu 30 Jul dep 14:00 (TMFT) → BBT. Return Sat 1 Aug dep 11:35 Bintan, arr 13:45 SIN. Tickets: P1 (Lucas) / P2 (Caitlin).'},
       {status:'confirmed',method:'🚐 Resort Shuttle',detail:'Shuttle runs between ferry terminal and resort. Confirm with hotel when booking.'},
     ],
     nextstop:{destination:'Kuala Lumpur 🇲🇾',options:[
@@ -601,7 +666,7 @@ const CITIES={
   kl:{
     name:'Kuala Lumpur',flag:'🇲🇾',dates:'1–3 Aug',badge:'2 nights',
     color:'#059669',latlng:[3.1390,101.6869],
-    hotel:'TBC — Bukit Bintang or KLCC area',
+    hotel:'Sofitel Kuala Lumpur Damansara',
     explore:[
       {icon:'🏙',bg:'#F0FDFA',title:'Petronas Twin Towers',desc:'Book observation deck online. Best at dusk — towers light up as sun goes down.'},
       {icon:'🕌',bg:'#FFF7ED',title:'Batu Caves',desc:'272 rainbow stairs to Hindu temple caves. Leave before 9am. 30 min by commuter train.'},
@@ -610,22 +675,28 @@ const CITIES={
       {icon:'🌿',bg:'#ECFDF5',title:'KLCC Park',desc:'Free park around the Twin Towers. Morning jog path, fountains, great tower views from below.'},
     ],
     food:[
-      {icon:'🌙',bg:'#FFF7ED',type:'Street Food',title:'Jalan Alor Food Street',desc:"KL's most famous food strip. Goes all night. Essential last night in Malaysia.",order:'BBQ chicken wings (Weng Kee stall), char kway teow, satay on sticks, fresh durian',price:'~NZ$20 pp'},
-      {icon:'🍛',bg:'#F0FDFA',type:'Nasi Lemak',title:'Village Park Restaurant',desc:'Best nasi lemak in KL. Queue from 8am. Worth every minute.',order:'Nasi lemak plate with rendang or fried chicken. Crispy anchovies, hard egg, sambal',price:'~NZ$7 pp'},
-      {icon:'🥘',bg:'#ECFDF5',type:'Noodles',title:'Kim Lian Kee Hokkien Mee',desc:'Charcoal-fried hokkien mee in clay pot. Dark, sticky, lard-glossed noodles.',order:'Claypot hokkien mee (large), add extra lard and chilli paste on the side',price:'~NZ$8 pp'},
-      {icon:'🍢',bg:'#EFF6FF',type:'Hawker',title:'Lot 10 Hutong Food Court',desc:'Underground hawker hall. Air-conditioned. 30+ stalls from across Malaysia.',order:'Wantan mee (egg noodles with BBQ pork), char kway teow, fresh coconut',price:'~NZ$13 pp'},
-      {icon:'🫕',bg:'#FDF4FF',type:'Curry',title:'Restoran Yusoof dan Zakhir',desc:'Banana leaf rice. Unlimited refills of dhal, curry, veg. Under NZ$5.',order:'Fish head curry or mutton curry on banana leaf. Eat with your hands. Pappadum',price:'~NZ$5 pp'},
-      {icon:'🍜',bg:'#F5F3FF',type:'Peranakan',title:'Old China Café',desc:'Beautiful heritage shophouse in Chinatown. Peranakan cuisine.',order:'Beef rendang, curry kapitan chicken, acar (pickled vegetables)',price:'~NZ$16 pp'},
-      {icon:'🥐',bg:'#FFFBEB',type:'Kopitiam',title:'Yut Kee (since 1928)',desc:'Legendary coffee shop. Breakfast only. Go before 10am.',order:'Roti babi (pork-stuffed bread), Hainanese chicken chop, kaya toast, soft-boiled eggs, kopi O',price:'~NZ$8 pp'},
-      {icon:'🦁',bg:'#FEF2F2',type:'Iconic',title:"Madam Kwan's KLCC",desc:'Upscale Malaysian comfort food inside Suria KLCC mall.',order:'Nasi bojari (KL-style nasi lemak with all the sides), ice kacang dessert',price:'~NZ$20 pp'},
-      {icon:'🍈',bg:'#F0FDFA',type:'Seasonal',title:'Musang King Durian (SS2)',desc:"July is durian season. KL's famous Musang King stalls are an experience.",order:'Musang King variety — creamy, bittersweet. One box for two to start. Cold water nearby',price:'~NZ$13–26 pp'},
+      {icon:'🌙',bg:'#FFF7ED',area:'Bukit Bintang',ll:[3.1454,101.7091],type:'Street Food',title:'Jalan Alor Food Street',desc:"KL's most famous food strip. Goes all night. Essential last night in Malaysia.",order:'BBQ chicken wings (Weng Kee stall), char kway teow, satay on sticks, fresh durian',price:'~NZ$20 pp'},
+      {icon:'🍛',bg:'#F0FDFA',area:'Damansara Uptown',ll:[3.1305,101.6540],type:'Nasi Lemak',title:'Village Park Restaurant',desc:'Best nasi lemak in KL. Queue from 8am. Worth every minute.',order:'Nasi lemak plate with rendang or fried chicken. Crispy anchovies, hard egg, sambal',price:'~NZ$7 pp'},
+      {icon:'🥘',bg:'#ECFDF5',area:'Petaling Street',ll:[3.1429,101.6974],type:'Noodles',title:'Kim Lian Kee Hokkien Mee',desc:'Charcoal-fried hokkien mee in clay pot. Dark, sticky, lard-glossed noodles.',order:'Claypot hokkien mee (large), add extra lard and chilli paste on the side',price:'~NZ$8 pp'},
+      {icon:'🍢',bg:'#EFF6FF',area:'Bukit Bintang',ll:[3.1485,101.7118],type:'Hawker',title:'Lot 10 Hutong Food Court',desc:'Underground hawker hall. Air-conditioned. 30+ stalls from across Malaysia.',order:'Wantan mee (egg noodles with BBQ pork), char kway teow, fresh coconut',price:'~NZ$13 pp'},
+      {icon:'🫕',bg:'#FDF4FF',area:'Masjid India',ll:[3.1484,101.6945],type:'Curry',title:'Restoran Yusoof dan Zakhir',desc:'Banana leaf rice. Unlimited refills of dhal, curry, veg. Under NZ$5.',order:'Fish head curry or mutton curry on banana leaf. Eat with your hands. Pappadum',price:'~NZ$5 pp'},
+      {icon:'🍜',bg:'#F5F3FF',area:'Chinatown / Petaling St',ll:[3.1442,101.6975],type:'Peranakan',title:'Old China Café',desc:'Beautiful heritage shophouse in Chinatown. Peranakan cuisine.',order:'Beef rendang, curry kapitan chicken, acar (pickled vegetables)',price:'~NZ$16 pp'},
+      {icon:'🥐',bg:'#FFFBEB',area:'Chow Kit / Dang Wangi',ll:[3.1548,101.7024],type:'Kopitiam',title:'Yut Kee (since 1928)',desc:'Legendary coffee shop. Breakfast only. Go before 10am.',order:'Roti babi (pork-stuffed bread), Hainanese chicken chop, kaya toast, soft-boiled eggs, kopi O',price:'~NZ$8 pp'},
+      {icon:'🦁',bg:'#FEF2F2',area:'KLCC',ll:[3.1589,101.7134],type:'Iconic',title:"Madam Kwan's KLCC",desc:'Upscale Malaysian comfort food inside Suria KLCC mall.',order:'Nasi bojari (KL-style nasi lemak with all the sides), ice kacang dessert',price:'~NZ$20 pp'},
+      {icon:'🍈',bg:'#F0FDFA',area:'SS2 / PJ',ll:[3.1290,101.6230],type:'Seasonal',title:'Musang King Durian (SS2)',desc:"July is durian season. KL's famous Musang King stalls are an experience.",order:'Musang King variety — creamy, bittersweet. One box for two to start. Cold water nearby',price:'~NZ$13–26 pp'},
+      {icon:'🌄',bg:'#ECFDF5',area:'Imbi',ll:[3.1439,101.7162],type:'Morning Market',title:'Imbi Market (Pasar Imbi)',desc:'Old-school wet market with attached hawker section. Excellent morning session.',order:'Char kway teow, Hokkien noodles, carrot cake. Go before 10am — it closes early',price:'~NZ$7 pp'},
+      {icon:'🍲',bg:'#EFF6FF',area:'Bangsar',ll:[3.1162,101.6714],type:'Malaysian Buffet',title:'Rebung Chef Ismail',desc:'Chef Ismail\'s famous Malaysian buffet in Bangsar. 60+ dishes, mostly traditional kampung food.',order:'Rendang tok, ulam (fresh herb salad), budu (fermented anchovy dip), gulai lemak ikan',price:'~NZ$28 pp'},
+      {icon:'🥗',bg:'#FFF7ED',area:'Jalan Ipoh',ll:[3.1865,101.6846],type:'Noodles',title:'Claypot Chicken Rice (Jalan Ipoh)',desc:'The Jalan Ipoh claypot strip. Midnight comfort food. The chicken caramelises at the edges.',order:'Full claypot (2 pax), extra soy sauce chicken. Eat from the pot, scrape the bottom',price:'~NZ$18 pp'},
+      {icon:'🫓',bg:'#F0FDFA',area:'Bangsar',ll:[3.1508,101.6811],type:'Roti Canai',title:'Nasi Kandar Pelita (Bangsar)',desc:'24-hour mamak. The roti canai is the benchmark. A KL institution.',order:'Roti canai with dhal and sambal, teh tarik, murtabak egg for the table',price:'~NZ$5 pp'},
+      {icon:'🦐',bg:'#FEF9EC',area:'Chinatown / Petaling St',ll:[3.1447,101.6972],type:'Claypot',title:'Yap Kee Claypot (Petaling St)',desc:'Classic claypot rice in Chinatown. The crust at the bottom of the pot is everything.',order:'Claypot rice with chicken and lap cheong (sausage), extra dark soy drizzle',price:'~NZ$11 pp'},
+      {icon:'☕',bg:'#FFFBEB',area:'KLCC / Bukit Bintang',ll:[3.1514,101.7120],type:'Café',title:'Breakfast Thief (KLCC)',desc:'Top brunch spot near the towers. Modern café, solid eggs.',order:'Shakshuka, smashed avo on sourdough, flat white. Good for a slow morning',price:'~NZ$20 pp'},
     ],
     transport:[
-      {status:'tbc',method:'✈️ Arrive KLIA / KLIA2',detail:'KLIA Ekspres to KL Sentral (28 min, NZ$18). KLIA2 is the budget terminal — same train link.'},
+      {status:'confirmed',method:'✈️ Arrive KLIA — Malaysia Airlines',detail:'Ref: DZIXNZ · Fly via Sat 1 Aug SIN→KUL then depart Mon 3 Aug 21:30. KLIA Ekspres to KL Sentral (28 min, NZ$18).'},
       {status:'confirmed',method:'🚇 Getting Around',detail:'LRT and MRT cover key areas. Grab is essential for anything off the rail network. Very cheap vs SG.'},
     ],
     nextstop:{destination:'Home 🇳🇿',options:[
-      {status:'tbc',method:'✈️ KUL → AKL',detail:'KLIA to Auckland. ~10 hrs direct (Malaysia Airlines or Air NZ). Check in 3 hrs before.'},
+      {status:'confirmed',method:'✈️ KUL → AKL — Malaysia Airlines',detail:'Ref: DZIXNZ · Mon 3 Aug, dep 21:30 KLIA T1 → arrive Tue 4 Aug 11:25 AKL. ~11 hrs. Check in 3 hrs before.'},
     ]}
   }
 };
@@ -636,7 +707,7 @@ const DAYS=[
   {day:2,date:'Wed 15 Jul',city:'Hong Kong',emoji:'🇭🇰',color:'#FF6B35',morning:{title:'Tian Tan Buddha (Lantau)',desc:'Ferry or bus to Lantau Island. Ngong Ping cable car to the Giant Buddha. Morning before the afternoon cloud rolls in.'},afternoon:{title:'Mong Kok Markets',desc:"Ladies Market, Flower Market, Goldfish Market. Dense and chaotic — exactly what you want."},evening:{title:'Temple Street Night Market',desc:'Street food, fortune tellers, live Cantonese opera. Start at 7pm. End with wonton noodles.'},tip:'💡 Temple Street is best 7–10pm. Most stalls pack up after 11pm.'},
   {day:3,date:'Thu 16 Jul',city:'Hong Kong → Chengdu',emoji:'🇨🇳',color:'#FF3B30',morning:{title:"Last HK Morning",desc:"Early yum cha before heading to airport. Mak's Noodle for a final bowl of wonton soup."},afternoon:{title:'Fly HKG → CTU (~2.5 hrs)',desc:'Arrive Chengdu Tianfu. Metro Line 18 to city centre (~45 min).'},evening:{title:'Arrive Chengdu',desc:"Check in, explore Chunxi Road. First taste of Sichuan — dan dan mian or mapo tofu."},tip:'💡 Activate your VPN before landing — download ExpressVPN while still in HK.'},
   {day:4,date:'Fri 17 Jul',city:'Chengdu',emoji:'🇨🇳',color:'#FF3B30',morning:{title:'Giant Panda Research Base',desc:'Taxi at 8am sharp. Pandas are active feeding in the morning. After 10am they sleep.'},afternoon:{title:'Wuhou Shrine + Jinli Street',desc:'Han dynasty memorial, then the adjacent old street for snacks — rabbit head, dumplings, sweet tofu.'},evening:{title:'Hot Pot Dinner',desc:'Huangcheng Laoma or Haidilao. Order the split broth pot. First Sichuan hotpot experience.'},tip:'💡 Panda base: get there right at 8am and head to the nursery area first.'},
-  {day:5,date:'Sat 18 Jul',city:'Chengdu → Chongqing',emoji:'🇨🇳',color:'#DC2626',morning:{title:'Kuanzhai Alley',desc:'Wide and Narrow Lanes — Qing dynasty alleyways. Go before 10am for a quiet walkthrough.'},afternoon:{title:'High-Speed Train to Chongqing (~75 min)',desc:'G-train from Chengdu East. Fast, comfortable, punctual.'},evening:{title:'Arrive Chongqing + Hongyadong',desc:'Drop bags, head straight to the cliff dwellings at night. Views are spectacular after dark.'},tip:'💡 Book G-train on Trip.com a few days ahead. Seats sell out at peak hours.'},
+  {day:5,date:'Sat 18 Jul',city:'Chengdu → Chongqing',emoji:'🇨🇳',color:'#DC2626',morning:{title:'Kuanzhai Alley',desc:'Wide and Narrow Lanes — Qing dynasty alleyways. Go before 10am for a quiet walkthrough.'},afternoon:{title:'High-Speed Train to Chongqing (~75 min)',desc:'G-train from Chengdu East. Fast, comfortable, punctual.'},evening:{title:'Arrive Chongqing + Hongyadong',desc:'Drop bags, head straight to the cliff dwellings at night. Views are spectacular after dark.'},tip:'💡 G-train from Chengdu East is booked ✅ — confirm your exact departure time closer to the date. Chongqing North station has metro connections.'},
   {day:6,date:'Sun 19 Jul',city:'Chongqing',emoji:'🇨🇳',color:'#DC2626',morning:{title:'Ciqikou Ancient Town',desc:'Morning is quieter — locals buying fresh produce, temple incense burning. Street food walk.'},afternoon:{title:'Yangtze River + Monorail',desc:'Eling Park panoramic viewpoint. Then the famous monorail Line 2 that runs through a building.'},evening:{title:'Chongqing Hot Pot',desc:'De Zhuang or a local spot. Chongqing-style is oilier and spicier than Chengdu. The original.'},tip:'💡 Order the mandarin (yuanyang) split pot — half spicy, half mild. Your stomach will thank you.'},
   {day:7,date:'Mon 20 Jul',city:'Chongqing',emoji:'🇨🇳',color:'#DC2626',morning:{title:'Jiefangbei CBD Sky Bridge',desc:'Liberation Monument area — glass-floored sky bridge over the busy intersection. Last morning in China.'},afternoon:{title:'Yangtze River Cruise',desc:'Short public ferry across the Yangtze for panoramic river city views. Cable car option too.'},evening:{title:'Last Chongqing Hotpot Night',desc:'One final hotpot before Thailand. Chuanchuan skewers at Hongyadong riverside stalls.'},tip:'💡 Pack bags tonight — flight tomorrow morning at 11:10. Aim to leave hotel by 9am.'},
   {day:8,date:'Tue 21 Jul',city:'Chongqing → Bangkok',emoji:'🇹🇭',color:'#7C3AED',morning:{title:'Head to Chongqing Jiangbei Airport',desc:'Check out, taxi to CKG T3. FD557 departs 11:10. Clear security early — Chinese airports are busy.'},afternoon:{title:'Fly FD557 → Arrive Bangkok DMK 13:20',desc:'Thai AirAsia FD557. 3h 10m non-stop. Land 13:20 at Don Mueang T1. (Ref: CELCFD, Lucas 20D, Caitlin 20E)'},evening:{title:'Settle in Bangkok + Street Food',desc:'A1 Express bus or taxi to the city. Check in, change into shorts. First street food — pad krapao or boat noodles.'},tip:'💡 You gain 1 hour crossing into Thailand (GMT+8 → GMT+7). DMK to central Bangkok: ~40 min by bus, ~30 min by taxi.'},
@@ -742,11 +813,11 @@ const BOOKINGS={
   ],
   trains:[
     {
-      status:'tbc',ref:'Book on Trip.com',
+      status:'confirmed',ref:'Confirmed — ref pending',
       operator:'China Rail (G-Train)',icon:'🚄',
       from:'Chengdu East (成都东)',to:'Chongqing North (重庆北)',
       date:'Sat 18 Jul 2026',dep:'TBC',arr:'TBC',duration:'~75 min',
-      note:'Under NZ$30 pp. Book G-series train. Seats sell fast.',
+      note:'Booked ✅ — exact times TBC. G-series train. Chengdu East → Chongqing North.',
     },
   ],
   ferries:[
@@ -919,10 +990,11 @@ function openCity(key){
         <a class="map-link" href="${mapsLink(e.title,c.name)}" target="_blank">📍 Maps</a>
       </div>
     </div>`).join('');
-  const foodHtml=c.food.map(f=>`
+  const foodListHtml=c.food.map(f=>`
     <div class="card">
       <div class="card-icon" style="background:${f.bg}">${f.icon}</div>
       <div class="card-body">
+        ${f.area?`<div class="card-area">📍 ${f.area}</div>`:''}
         <div class="card-type">${f.type}</div>
         <div class="card-title">${f.title}</div>
         <div class="card-desc">${f.desc}</div>
@@ -936,6 +1008,21 @@ function openCity(key){
         </div>
       </div>
     </div>`).join('');
+  const foodHtml=`
+  <div class="food-header">
+    <span class="food-count">${c.food.length} spots in ${c.name}</span>
+    <div class="food-toggle">
+      <button class="ftab on" onclick="setFoodView('list',this,'${key}')">☰ List</button>
+      <button class="ftab" onclick="setFoodView('map',this,'${key}')">🗺 Map</button>
+    </div>
+  </div>
+  <div id="food-list-view">${foodListHtml}</div>
+  <div id="food-map-view" style="display:none">
+    <div class="food-map-outer">
+      <div class="food-map-el" id="food-map-el"></div>
+      <div class="food-map-detail" id="food-map-detail"></div>
+    </div>
+  </div>`;
   const transportHtml=c.transport.map(t=>`
     <div class="tc">
       <div class="tc-dot ${t.status}"></div>
@@ -966,6 +1053,36 @@ function setSTab(id,btn){
   btn.classList.add('on');
   document.getElementById('st-'+id).classList.add('on');
   document.getElementById('sheet-body').scrollTop=0;
+}
+let _foodMap=null;
+function setFoodView(view,btn,key){
+  document.querySelectorAll('.ftab').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  const lv=document.getElementById('food-list-view');
+  const mv=document.getElementById('food-map-view');
+  if(view==='map'){if(lv)lv.style.display='none';if(mv)mv.style.display='';initFoodMap(key);}
+  else{if(mv)mv.style.display='none';if(lv)lv.style.display='';}
+}
+function initFoodMap(key){
+  const c=CITIES[key];if(!c||!c.food)return;
+  const mapEl=document.getElementById('food-map-el');if(!mapEl)return;
+  if(_foodMap){_foodMap.remove();_foodMap=null;}
+  const items=c.food.filter(f=>f.ll&&f.ll.length===2);
+  if(!items.length){mapEl.innerHTML='<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--text2);font-size:13px;background:var(--bg2)">📍 Map data coming soon</div>';return;}
+  const lat=items.reduce((s,f)=>s+f.ll[0],0)/items.length;
+  const lng=items.reduce((s,f)=>s+f.ll[1],0)/items.length;
+  _foodMap=L.map(mapEl,{zoomControl:false}).setView([lat,lng],14);
+  L.control.zoom({position:'topright'}).addTo(_foodMap);
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',{maxZoom:19,attribution:'© CartoDB'}).addTo(_foodMap);
+  const detailEl=document.getElementById('food-map-detail');detailEl.innerHTML='';
+  items.forEach((f,i)=>{
+    const n=i+1;
+    const bg=f.bg||'#EFF6FF';
+    const ic=L.divIcon({className:'',html:`<div style="width:26px;height:26px;border-radius:50%;background:${bg};border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#1a1a1a">${n}</div>`,iconSize:[26,26],iconAnchor:[13,13]});
+    L.marker(f.ll,{icon:ic}).addTo(_foodMap).bindPopup(`<b>${f.title}</b><br><small>${f.type} · 💰 ${f.price}</small>`);
+    detailEl.innerHTML+=`<div class="fmd-card"><div class="fmd-num">${n}</div><div style="flex:1"><div class="fmd-type">${f.icon} ${f.type}${f.area?' · '+f.area:''}</div><div class="fmd-title">${f.title}</div><div class="fmd-row"><span class="fmd-price">💰 ${f.price}</span><a class="map-link" href="${mapsLink(f.title,c.name)}" target="_blank">📍 Maps</a></div></div></div>`;
+  });
+  setTimeout(()=>_foodMap&&_foodMap.invalidateSize(),120);
 }
 function closeSheet(){
   const s=document.getElementById('sheet');
