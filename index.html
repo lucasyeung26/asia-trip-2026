@@ -53,7 +53,7 @@ html,body{height:100%;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-
 #sheet-tabs::-webkit-scrollbar{display:none}
 .stab{padding:10px 14px;font-size:13px;font-weight:600;color:var(--text2);border:none;background:none;border-bottom:2.5px solid transparent;cursor:pointer;white-space:nowrap;transition:.15s}
 .stab.on{color:var(--blue);border-bottom-color:var(--blue)}
-#sheet-body{overflow-y:auto;flex:1;padding:14px 14px 6px}
+#sheet-body{overflow-y:auto;flex:1;padding:14px 14px 6px;-webkit-overflow-scrolling:touch}
 
 /* ─── CARDS ─── */
 .t-content{display:none}
@@ -65,11 +65,11 @@ html,body{height:100%;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-
 }
 .card-icon{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
 .card-body{flex:1;min-width:0}
-.card-type{font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--text3);margin-bottom:3px}
+.card-type{font-size:12px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--text3);margin-bottom:3px}
 .card-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:3px}
 .card-desc{font-size:12.5px;color:var(--text2);line-height:1.55}
 .order-box{margin-top:8px;padding:7px 9px;background:var(--blue-bg);border-radius:8px}
-.order-label{font-size:10px;font-weight:700;letter-spacing:.4px;color:var(--blue);text-transform:uppercase;margin-bottom:2px;display:block}
+.order-label{font-size:11px;font-weight:700;letter-spacing:.4px;color:var(--blue);text-transform:uppercase;margin-bottom:2px;display:block}
 .order-text{font-size:12px;color:#1C3A6B;font-weight:500;line-height:1.4}
 .card-footer{display:flex;align-items:center;justify-content:space-between;margin-top:8px}
 .price-badge{display:inline-flex;align-items:center;gap:3px;padding:3px 9px;background:#F0FDF4;border-radius:20px;font-size:12px;font-weight:700;color:#166534}
@@ -177,20 +177,20 @@ html,body{height:100%;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-
 .fk-card{background:var(--card);border-radius:var(--r);margin-bottom:10px;box-shadow:var(--shadow);overflow:hidden}
 .fk-header{display:flex;align-items:center;justify-content:space-between;padding:10px 14px 0}
 .fk-airline{font-size:12px;font-weight:600;color:var(--text2)}
-.fk-pill{font-size:10px;font-weight:700;padding:3px 9px;border-radius:20px;letter-spacing:.3px}
+.fk-pill{font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px;letter-spacing:.3px}
 .fk-pill.confirmed{background:var(--green-bg);color:#166534}
 .fk-pill.tbc{background:var(--amber-bg);color:#92400E}
 .fk-route{display:flex;align-items:center;padding:10px 14px 4px;gap:0}
 .fk-city{flex:1}
 .fk-code{font-size:26px;font-weight:800;color:var(--text);letter-spacing:-1px;line-height:1}
 .fk-city-name{font-size:11px;color:var(--text2);margin-top:2px}
-.fk-terminal{font-size:10px;font-weight:600;color:var(--blue);background:var(--blue-bg);padding:2px 5px;border-radius:5px;display:inline-block;margin-top:3px}
+.fk-terminal{font-size:11px;font-weight:600;color:var(--blue);background:var(--blue-bg);padding:2px 5px;border-radius:5px;display:inline-block;margin-top:3px}
 .fk-mid{flex:0 0 auto;text-align:center;padding:0 10px}
-.fk-dur{font-size:10px;color:var(--text3);font-weight:600;margin-bottom:3px}
+.fk-dur{font-size:11px;color:var(--text3);font-weight:600;margin-bottom:3px}
 .fk-arrow{display:flex;align-items:center;gap:3px}
 .fk-line{height:1.5px;width:32px;background:var(--border)}
 .fk-arrowhead{color:var(--text3);font-size:12px;line-height:1}
-.fk-nonstop{font-size:9px;color:var(--text3);margin-top:3px;font-weight:600;letter-spacing:.3px;text-transform:uppercase}
+.fk-nonstop{font-size:10px;color:var(--text3);margin-top:3px;font-weight:600;letter-spacing:.3px;text-transform:uppercase}
 .fk-times{display:flex;justify-content:space-between;padding:6px 14px 0}
 .fk-time-block{text-align:left}
 .fk-time-block:last-child{text-align:right}
@@ -199,10 +199,10 @@ html,body{height:100%;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-
 .fk-divider{height:1px;background:var(--border);margin:10px 14px 0}
 .fk-details{padding:10px 14px 12px;display:grid;grid-template-columns:1fr 1fr;gap:6px 14px}
 .fk-detail-item{}
-.fk-detail-label{font-size:10px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--text3);margin-bottom:2px}
+.fk-detail-label{font-size:11px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--text3);margin-bottom:2px}
 .fk-detail-val{font-size:12px;font-weight:600;color:var(--text);line-height:1.45}
 .fk-ref{background:var(--bg);border-radius:var(--r-sm);padding:8px 14px;margin:0 14px 12px;display:flex;align-items:center;justify-content:space-between}
-.fk-ref-label{font-size:10px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--text3)}
+.fk-ref-label{font-size:11px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--text3)}
 .fk-ref-val{font-size:15px;font-weight:800;color:var(--text);letter-spacing:1.5px}
 
 /* Train / ferry card */
@@ -220,7 +220,7 @@ html,body{height:100%;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-
 .hk-dates{font-size:12px;color:var(--text2);margin-top:2px}
 .hk-detail{font-size:12px;color:var(--text2);margin-top:4px;line-height:1.5}
 .hk-ref{font-size:11px;font-weight:600;color:var(--text3);margin-top:4px}
-.hk-pill{font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;flex-shrink:0}
+.hk-pill{font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;flex-shrink:0}
 .hk-pill.confirmed{background:var(--green-bg);color:#166534}
 .hk-pill.tbc{background:var(--amber-bg);color:#92400E}
 
@@ -229,7 +229,7 @@ html,body{height:100%;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-
 .bk-sum-item{flex:1;text-align:center;border-right:1px solid var(--border)}
 .bk-sum-item:last-child{border-right:none}
 .bk-sum-num{font-size:22px;font-weight:800}
-.bk-sum-label{font-size:10px;font-weight:600;letter-spacing:.4px;text-transform:uppercase;color:var(--text3);margin-top:2px}
+.bk-sum-label{font-size:11px;font-weight:600;letter-spacing:.4px;text-transform:uppercase;color:var(--text3);margin-top:2px}
 
 /* ─── MAP LEGEND ─── */
 #legend{position:absolute;top:16px;right:12px;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);border-radius:12px;padding:9px 12px;box-shadow:var(--shadow)}
@@ -265,38 +265,43 @@ html,body{height:100%;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-
 #sheet-backdrop{position:fixed;inset:0;z-index:299;background:rgba(0,0,0,0.32);pointer-events:none;opacity:0;transition:opacity .25s}
 #sheet-backdrop.show{pointer-events:auto;opacity:1}
 /* Trip chip pill */
-.chip-pill{display:inline-flex;margin-top:5px;padding:2px 9px;background:var(--blue-bg);color:var(--blue);font-size:10px;font-weight:700;border-radius:20px;letter-spacing:0.04em}
+.chip-pill{display:inline-flex;margin-top:5px;padding:2px 9px;background:var(--blue-bg);color:var(--blue);font-size:11px;font-weight:700;border-radius:20px;letter-spacing:0.04em}
 
 /* ── FOOD MAP FEATURE ── */
 .food-header{display:flex;align-items:center;justify-content:space-between;padding:10px 14px 8px;border-bottom:1px solid var(--border);margin-bottom:4px}
 .food-count{font-size:12px;font-weight:600;color:var(--text2)}
 .food-toggle{display:flex;gap:4px}
-.ftab{padding:5px 12px;border-radius:100px;border:1px solid var(--border);background:var(--bg2);font-size:12px;font-weight:600;cursor:pointer;color:var(--text2)}
+.ftab{padding:9px 16px;border-radius:100px;border:1px solid var(--border);background:var(--bg2);font-size:13px;font-weight:600;cursor:pointer;color:var(--text2);min-height:36px}
 .ftab.on{background:var(--blue);color:#fff;border-color:transparent}
-.card-area{font-size:11px;color:var(--blue);font-weight:600;margin-bottom:2px}
+.card-area{font-size:12px;color:var(--blue);font-weight:600;margin-bottom:2px}
 .food-map-outer{padding:12px}
 .food-map-el{height:290px;border-radius:12px;overflow:hidden;border:1px solid var(--border)}
 .food-map-detail{margin-top:8px;display:flex;flex-direction:column;gap:8px}
-.fmd-card{display:flex;gap:10px;padding:10px 12px;background:var(--card);border-radius:12px;box-shadow:var(--shadow);align-items:flex-start}
+.fmd-card{display:flex;gap:10px;padding:12px 14px;background:var(--card);border-radius:12px;box-shadow:var(--shadow);align-items:flex-start;min-height:60px}
 .fmd-num{width:28px;height:28px;border-radius:50%;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;flex-shrink:0;margin-top:1px}
-.fmd-type{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--text3)}
+.fmd-type{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--text3)}
 .fmd-title{font-size:13px;font-weight:700;margin-top:1px}
 .fmd-row{display:flex;align-items:center;gap:8px;margin-top:5px;flex-wrap:wrap}
-.fmd-price{font-size:11px;color:var(--text2)}
+.fmd-price{font-size:12px;color:var(--text2)}
 ::-webkit-scrollbar{width:3px}
 ::-webkit-scrollbar-thumb{background:#D1D1D6;border-radius:2px}
 .hotel-strip{display:flex;align-items:center;gap:10px;padding:12px 14px;background:linear-gradient(135deg,#1e3a5f 0%,#2563EB 100%);margin:0 0 6px;border-radius:0;border-bottom:2px solid rgba(255,255,255,.15)}
    .hs-icon{font-size:18px;flex-shrink:0}
-   .hs-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:rgba(255,255,255,.6)}
+   .hs-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:rgba(255,255,255,.6)}
    .hs-name{font-size:13px;font-weight:700;color:#fff;line-height:1.3;margin-top:2px}
    .hs-map{font-size:12px;font-weight:700;color:#93c5fd;text-decoration:none;white-space:nowrap;background:rgba(255,255,255,.12);padding:5px 10px;border-radius:100px}
    
 /* ── FULLSCREEN MAP MODE ── */
-#sheet.map-full{height:100vh;max-height:100vh;bottom:0;border-radius:14px 14px 0 0}
+#sheet.map-full{height:100dvh;max-height:100dvh;bottom:0;border-radius:14px 14px 0 0}
 #sheet.map-full #sheet-body{padding:0;overflow:hidden}
 #sheet.map-full .food-map-outer{padding:0}
 #sheet.map-full .food-map-el{border-radius:0;border:none}
 #sheet.map-full .food-map-detail{border-top:1px solid var(--border);background:var(--bg);max-height:200px;overflow-y:auto;padding:10px 12px 16px}
+
+/* ── SAFE AREA / NOTCH SUPPORT ── */
+#nav{padding-bottom:env(safe-area-inset-bottom,0px)}
+#sheet{padding-bottom:env(safe-area-inset-bottom,0px)}
+.map-link{min-height:36px;display:inline-flex;align-items:center}
 </style>
 </head>
 <body>
@@ -535,8 +540,8 @@ const CITIES={
       {icon:'🍜',bg:'#FEF3C7',type:'Street Food',area:'Ratchathewi',title:'Guay Tiew Kua Gai (Wiphawadi)',desc:'Famous chicken dry noodle stir-fried in a screaming-hot wok. Slightly charred, impossibly fragrant. Cash only, closes at 3pm.',order:'Guay tiew kua gai + a Thai iced tea. One portion each minimum',price:'~NZ$6 pp',ll:[13.7730,100.5493]},
       {icon:'🍖',bg:'#FEF3C7',type:'BBQ',area:'Pratunam',title:'Laos BBQ & Beer Garden',desc:'Massive open-air BBQ garden packed nightly with locals. Order a tower of beer, grill your own pork neck, catfish, and corn. Classic Bangkok night.',order:'Pork neck, river fish, sticky rice, mango salad. Beer tower is mandatory',price:'~NZ$22 pp',ll:[13.7519,100.5355]},
       {icon:'🦐',bg:'#FEF3C7',type:'Seafood',area:'Sukhumvit',title:'Samrub Samrub Thai',desc:'Underground supper club celebrating regional Thai ingredients chefs have forgotten. 10-course tasting menu, one seating nightly. Book weeks ahead.',order:'Fixed 10-course tasting menu — no substitutions, no menu preview. Trust it',price:'~NZ$130 pp',ll:[13.7385,100.5678]},
-      {icon:'☕',bg:'#F3F4F6',type:'Café',area:'Ari',title:'Phil Coffee Co. (Ari)',desc:'Bangkok's best specialty coffee neighbourhood. Phil does outstanding single origins, and the Ari area has a dozen equally good cafés nearby.',order:'Pour over or espresso, croissant. Walk the Ari café crawl afterwards',price:'~NZ$10 pp',ll:[13.7749,100.5425]},
-      {icon:'🌶️',bg:'#FEF3C7',type:'Street Food',area:'Silom',title:'Hia Kheng Satay (Silom)',desc:'The satay stand that draws Bangkok's top chefs after their own services. Pork and chicken skewers grilled on charcoal, peanut sauce made to order.',order:'10 pork + 10 chicken skewers, roti toast on the side, extra peanut sauce',price:'~NZ$8 pp',ll:[13.7285,100.5310]},],
+      {icon:'☕',bg:'#F3F4F6',type:'Café',area:'Ari',title:'Phil Coffee Co. (Ari)',desc:'Bangkok\'s best specialty coffee neighbourhood. Phil does outstanding single origins, and the Ari area has a dozen equally good cafés nearby.',order:'Pour over or espresso, croissant. Walk the Ari café crawl afterwards',price:'~NZ$10 pp',ll:[13.7749,100.5425]},
+      {icon:'🌶️',bg:'#FEF3C7',type:'Street Food',area:'Silom',title:'Hia Kheng Satay (Silom)',desc:'The satay stand that draws Bangkok\'s top chefs after their own services. Pork and chicken skewers grilled on charcoal, peanut sauce made to order.',order:'10 pork + 10 chicken skewers, roti toast on the side, extra peanut sauce',price:'~NZ$8 pp',ll:[13.7285,100.5310]},],
     transport:[
       {status:'confirmed',method:'✈️ Arrive Don Mueang (DMK) — FD557 13:20',detail:'A1 Express bus to Victory Monument BTS (40 min, 30 THB / NZ$1.30), or taxi ~NZ$20–30. BTS Skytrain from Victory Monument.'},
       {status:'confirmed',method:'🚅 Getting Around',detail:'BTS Skytrain + MRT for major areas. Grab (Thai Uber) everywhere else. Never take unmetered taxis.'},
@@ -577,7 +582,7 @@ const CITIES={
     
       {icon:'🐟',bg:'#EFF6FF',type:'Seafood',area:'Ao Nang Beach',title:'Krua Thara Seafood',desc:'The freshest catch in Ao Nang. Choose your fish from the iced display, pick a cooking method, watch it land perfectly on your table.',order:'Steamed grouper with lime and chilli, garlic prawns, morning glory stir-fry',price:'~NZ$35 pp',ll:[8.0349,98.8449]},
       {icon:'🍕',bg:'#F3F4F6',type:'Western',area:'Krabi Town',title:'Pizzeria Venezia',desc:'Unexpected gem in Krabi Town. Wood-fired pizzas by an Italian expat who somehow ended up here. Perfect after a day of island hopping.',order:'Margherita + prosciutto e rucola. The pasta is also genuinely good',price:'~NZ$25 pp',ll:[8.0786,98.9064]},
-      {icon:'🍹',bg:'#EFF6FF',type:'Bar & Food',area:'Railay Beach',title:'The Last Fisherman's Bar (Railay)',desc:'Only accessible by longtail. Clifftop bar at Railay East with cold Singha, barbecue skewers and the most dramatic karst views in Thailand.',order:'Grilled fish skewers, spring rolls, bucket of Chang, watch the sunset',price:'~NZ$20 pp',ll:[8.0107,98.8376]},
+      {icon:'🍹',bg:'#EFF6FF',type:'Bar & Food',area:'Railay Beach',title:'The Last Fisherman\'s Bar (Railay)',desc:'Only accessible by longtail. Clifftop bar at Railay East with cold Singha, barbecue skewers and the most dramatic karst views in Thailand.',order:'Grilled fish skewers, spring rolls, bucket of Chang, watch the sunset',price:'~NZ$20 pp',ll:[8.0107,98.8376]},
       {icon:'🥭',bg:'#ECFDF5',type:'Tropical Fruit',area:'Krabi Town Market',title:'Morning Market Fruit Stalls (Krabi Town)',desc:'The produce market behind the Maharaj Pier is where locals shop. Pre-cut mango, rambutan, longan, langsat — all astonishingly cheap and ripe.',order:'Mixed fruit bag (mango + dragon fruit), fresh-squeezed OJ, steamed corn',price:'~NZ$3 pp',ll:[8.0742,98.9133]},],
     transport:[
       {status:'confirmed',method:'✈️ Arrive Krabi Airport (KBV)',detail:'Minivan to Ao Nang ~NZ$9. Taxi ~NZ$28. About 30 min drive.'},
@@ -621,7 +626,7 @@ const CITIES={
       {icon:'🦐',bg:'#FEF3C7',type:'Seafood',area:'Rawai Beach',title:'Rawai Seafood Market',desc:'Buy directly from fishermen at the pier, hand it to a nearby restaurant to cook it. The most honest seafood experience in Phuket.',order:'Pick 500g tiger prawns + a whole snapper. Any stall will grill for NZ$5',price:'~NZ$30 pp',ll:[7.7788,98.3249]},
       {icon:'🍜',bg:'#FEF3C7',type:'Phuket Local',area:'Phuket Old Town',title:'Raan Mae Duang Hokkien Mee',desc:'Local Phuket Hokkien noodles made by a grandmother since 1955. Thick yellow noodles in rich prawn broth. Opens 7am, sells out by 11.',order:'Hokkien noodle soup, add pork crackling on top. Cash only, eat standing',price:'~NZ$5 pp',ll:[7.8830,98.3912]},
       {icon:'🍷',bg:'#F3F4F6',type:'Rooftop Bar',area:'Patong',title:'White Box Restaurant & Bar',desc:'Sleek rooftop with views over Patong Bay. Best spot to watch the sunset with a gin and tonic before heading to Bangla Road.',order:'Cocktails at sunset, then the Thai sharing platter. Book the balcony table',price:'~NZ$50 pp',ll:[7.8967,98.3021]},
-      {icon:'🥥',bg:'#ECFDF5',type:'Street Food',area:'Phuket Town',title:'O-Tao (Oyster Omelette) Cart',desc:'Phuket's signature street dish — crispy oyster omelette on taro, sticky on the inside, charred on the outside. A different style from Bangkok.',order:'One crispy o-tao, one soft o-tao to compare. Add sweet chilli sauce',price:'~NZ$6 pp',ll:[7.8841,98.3929]},],
+      {icon:'🥥',bg:'#ECFDF5',type:'Street Food',area:'Phuket Town',title:'O-Tao (Oyster Omelette) Cart',desc:'Phuket\'s signature street dish — crispy oyster omelette on taro, sticky on the inside, charred on the outside. A different style from Bangkok.',order:'One crispy o-tao, one soft o-tao to compare. Add sweet chilli sauce',price:'~NZ$6 pp',ll:[7.8841,98.3929]},],
     transport:[
       {status:'tbc',method:'🚐 Arrive from Krabi',detail:'Minivan or ferry transfer from Ao Nang. ~2–3 hrs depending on route.'},
       {status:'confirmed',method:'🚗 Getting Around',detail:'Rent a car or scooter — beaches are spread out. Grab works in Phuket Town. Avoid tuk-tuks.'},
@@ -706,7 +711,7 @@ const CITIES={
       {icon:'🦞',bg:'#FEF3C7',type:'Seafood',area:'Trikora Beach',title:'Warung Trikora Seafood',desc:'Half-hour drive east of the resorts but absolutely worth it. Plastic chairs on a black-sand beach, lobster grilled over coconut husks. Extraordinary.',order:'Grilled lobster (market price), garlic clams, steamed rice, cold Bintang',price:'~NZ$45 pp',ll:[0.8977,104.5167]},
       {icon:'☕',bg:'#F3F4F6',type:'Café',area:'Lagoi Bay',title:'Lagoi Bay Coffee & Gelato',desc:'The best spot near the main resort hub to decompress over a cold brew and Italian-style gelato. Popular with resort guests avoiding resort prices.',order:'Cold brew, coconut gelato, mango sorbet. Sit outside under the palms',price:'~NZ$10 pp',ll:[1.1625,104.2073]},
       {icon:'🍛',bg:'#FEF3C7',type:'Indonesian',area:'Tanjung Uban',title:'Rumah Makan Sederhana',desc:'The most reliable Padang-style restaurant near the ferry port. Pile your plate with rendang, jackfruit curry, cassava leaves, and sambal.',order:'Mixed Padang plate — point at what you want, they stack it. Plus ice tea',price:'~NZ$10 pp',ll:[1.1198,104.2045]},
-      {icon:'🌅',bg:'#EFF6FF',type:'Resort Dining',area:'Banyan Tree Bintan',title:'Saffron Restaurant (Banyan Tree)',desc:'Walk-in if you're not staying — they rarely turn away guests for dinner. Elevated Thai menu with beachfront tables and extraordinary sunset timing.',order:'Tiger prawn curry, sea bass in banana leaf, jasmine rice, lychee mocktail',price:'~NZ$80 pp',ll:[1.1621,104.2131]},],
+      {icon:'🌅',bg:'#EFF6FF',type:'Resort Dining',area:'Banyan Tree Bintan',title:'Saffron Restaurant (Banyan Tree)',desc:'Walk-in if you\'re not staying — they rarely turn away guests for dinner. Elevated Thai menu with beachfront tables and extraordinary sunset timing.',order:'Tiger prawn curry, sea bass in banana leaf, jasmine rice, lychee mocktail',price:'~NZ$80 pp',ll:[1.1621,104.2131]},],
     transport:[
       {status:'confirmed',method:'⛴ Ferry from Singapore — Bintan Resort Ferries',detail:'Ref: 2179813 · Thu 30 Jul dep 14:00 (TMFT) → BBT. Return Sat 1 Aug dep 11:35 Bintan, arr 13:45 SIN. Tickets: P1 (Lucas) / P2 (Caitlin).'},
       {status:'confirmed',method:'🚐 Resort Shuttle',detail:'Shuttle runs between ferry terminal and resort. Confirm with hotel when booking.'},
@@ -746,7 +751,7 @@ const CITIES={
       {icon:'☕',bg:'#FFFBEB',area:'KLCC / Bukit Bintang',ll:[3.1514,101.7120],type:'Café',title:'Breakfast Thief (KLCC)',desc:'Top brunch spot near the towers. Modern café, solid eggs.',order:'Shakshuka, smashed avo on sourdough, flat white. Good for a slow morning',price:'~NZ$20 pp'},
     
       {icon:'🍚',bg:'#FEF3C7',type:'Local Breakfast',area:'Chow Kit',title:'Nasi Lemak Wanjo (Gurney Drive)',desc:'The nasi lemak that KL food writers argue about the most. Fragrant coconut rice, crispy anchovies, half a boiled egg, fiery sambal, served on banana leaf.',order:'Nasi lemak ayam (chicken) + teh tarik. Arrive before 9am or miss out',price:'~NZ$5 pp',ll:[3.1537,101.7185]},
-      {icon:'🦆',bg:'#FEF3C7',type:'Chinese',area:'Pudu',title:'Sek Yuen Restaurant (since 1948)',desc:'Old-school Cantonese in a pre-war shophouse. Roast duck carved tableside, dim lighting, no frills. The kind of place that hasn't changed since the 1970s.',order:'Roast duck, har gow, char siu, steamed egg custard bun. Go for dim sum lunch',price:'~NZ$30 pp',ll:[3.1436,101.6934]},
+      {icon:'🦆',bg:'#FEF3C7',type:'Chinese',area:'Pudu',title:'Sek Yuen Restaurant (since 1948)',desc:'Old-school Cantonese in a pre-war shophouse. Roast duck carved tableside, dim lighting, no frills. The kind of place that hasn\'t changed since the 1970s.',order:'Roast duck, har gow, char siu, steamed egg custard bun. Go for dim sum lunch',price:'~NZ$30 pp',ll:[3.1436,101.6934]},
       {icon:'🍢',bg:'#FEF3C7',type:'Street Food',area:'Petaling Street',title:'Char Kuey Teow (Petaling St)',desc:'Malaysian-style flat rice noodles stir-fried with cockles, bean sprouts, egg and Chinese sausage in a screaming-hot wok. Street-food perfection.',order:'One plate each, add extra cockles. Watch the wok master work',price:'~NZ$6 pp',ll:[3.1453,101.6985]},
       {icon:'🥂',bg:'#F3F4F6',type:'Rooftop Bar',area:'KLCC',title:'Heli Lounge Bar (Rooftop)',desc:'Tiny helipad-turned-bar on the 34th floor with unbeatable views of the Petronas Towers. Come at dusk for the towers lighting up. Queues form early.',order:'Any cocktail (all fine), nachos to share, arrive 30 min before sunset',price:'~NZ$25 pp',ll:[3.1569,101.7127]},
       {icon:'🍜',bg:'#EFF6FF',type:'Mamak',area:'Bangsar',title:'Restoran Bawalsamy (Bangsar)',desc:'The best roti canai in Bangsar — flaky, layered, blistered at the edges. Opens at 7am, packed until midnight. Classic Malaysian mamak experience.',order:'Roti canai + dhal curry + teh tarik (pulled tea). Cost of a KL coffee is NZ$2',price:'~NZ$5 pp',ll:[3.1305,101.6719]},],
