@@ -290,7 +290,15 @@ html,body{height:100%;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-
    .hs-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:rgba(255,255,255,.6)}
    .hs-name{font-size:13px;font-weight:700;color:#fff;line-height:1.3;margin-top:2px}
    .hs-map{font-size:12px;font-weight:700;color:#93c5fd;text-decoration:none;white-space:nowrap;background:rgba(255,255,255,.12);padding:5px 10px;border-radius:100px}
-   </style>
+   
+/* ── FULLSCREEN MAP MODE ── */
+#sheet.map-full{max-height:100vh;bottom:0;border-radius:14px 14px 0 0;transition:max-height .3s ease,border-radius .3s ease}
+#sheet.map-full #sheet-body{padding:0;display:flex;flex-direction:column;overflow:hidden}
+#sheet.map-full #food-map-view{flex:1;display:flex;flex-direction:column;min-height:0}
+#sheet.map-full .food-map-outer{flex:1;display:flex;flex-direction:column;padding:0;min-height:0}
+#sheet.map-full .food-map-el{flex:1;height:auto!important;border-radius:0;border:none}
+#sheet.map-full .food-map-detail{max-height:200px;overflow-y:auto;padding:10px 12px 16px;background:var(--bg);border-top:1px solid var(--border);flex-shrink:0}
+</style>
 </head>
 <body>
 
@@ -1113,8 +1121,17 @@ function setFoodView(view,btn,key){
   btn.classList.add('on');
   const lv=document.getElementById('food-list-view');
   const mv=document.getElementById('food-map-view');
-  if(view==='map'){if(lv)lv.style.display='none';if(mv)mv.style.display='';initFoodMap(key);}
-  else{if(mv)mv.style.display='none';if(lv)lv.style.display='';}
+  const sh=document.getElementById('sheet');
+  if(view==='map'){
+    if(lv)lv.style.display='none';
+    if(mv)mv.style.display='';
+    sh.classList.add('map-full');
+    initFoodMap(key);
+  } else {
+    if(mv)mv.style.display='none';
+    if(lv)lv.style.display='';
+    sh.classList.remove('map-full');
+  }
 }
 function haversineKm(a,b){
   const R=6371,dLat=(b[0]-a[0])*Math.PI/180,dLon=(b[1]-a[1])*Math.PI/180;
@@ -1150,7 +1167,7 @@ function initFoodMap(key){
   });
   setTimeout(()=>{if(_foodMap){_foodMap.invalidateSize();if(hll){const bounds=L.latLngBounds([hll,...items.map(f=>f.ll)]);_foodMap.fitBounds(bounds,{padding:[28,28]});}}},150);
 }
-function closeSheet(){
+function closeSheet(){document.getElementById('sheet').classList.remove('map-full');
   const s=document.getElementById('sheet');
   s.classList.remove('open');s.style.maxHeight='';s.dataset.state='';
   document.getElementById('sheet-backdrop').classList.remove('show');
