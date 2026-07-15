@@ -1126,7 +1126,7 @@ function setFoodView(view,btn,key){
     if(lv)lv.style.display='none';
     if(mv)mv.style.display='';
     sh.classList.add('map-full');
-    initFoodMap(key);
+    setTimeout(()=>{initFoodMap(key);},360);
   } else {
     if(mv)mv.style.display='none';
     if(lv)lv.style.display='';
@@ -1167,7 +1167,7 @@ function initFoodMap(key){
   });
   setTimeout(()=>{if(_foodMap){_foodMap.invalidateSize();if(hll){const bounds=L.latLngBounds([hll,...items.map(f=>f.ll)]);_foodMap.fitBounds(bounds,{padding:[28,28]});}}},150);
 }
-function closeSheet(){document.getElementById('sheet').classList.remove('map-full');
+function closeSheet(){if(_foodMap){_foodMap.remove();_foodMap=null;}document.getElementById('sheet').classList.remove('map-full');
   const s=document.getElementById('sheet');
   s.classList.remove('open');s.style.maxHeight='';s.dataset.state='';
   document.getElementById('sheet-backdrop').classList.remove('show');
